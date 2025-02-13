@@ -1,19 +1,30 @@
 import Canvas from "./canvas";
-import type Vector from "./vector";
+import type Shape from "./shape/shape";
 
 abstract class Entity {
-  constructor(public zIndex: number, public position: Vector) {
+  public key: string;
+
+  constructor(public zIndex: number, public shape: Shape) {
     this.key = crypto.randomUUID();
   }
+
+  public abstract update(): void;
+
+  public draw(): void {
+    this.shape.draw();
+  }
+
   protected init(): void {
     Canvas.instance.add(this);
   }
-  public abstract draw(): void;
+
   protected destroy(): void {
     Canvas.instance.destroy(this);
   }
-  public abstract update(): void;
-  public key: string;
+
+  public store(): void {
+    Canvas.instance.add(this);
+  }
 }
 
 export default Entity;
