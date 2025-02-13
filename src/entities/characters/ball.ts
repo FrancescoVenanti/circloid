@@ -1,15 +1,22 @@
+import Canvas from "../../core/canvas";
 import Entity from "../../core/entity";
-import type Vector from "../../core/vector";
+import Vector from "../../core/vector";
+import CircleEntity from "../circle-entity";
 
-class Ball extends Entity {
-  constructor(zIndex: number, key: string, vector: Vector) {
-    super(zIndex, key, vector);
+class Ball extends CircleEntity {
+  constructor(
+    zIndex: number,
+    radius: number,
+    vector: Vector,
+    direction: Vector
+  ) {
+    super(zIndex, radius, vector, direction);
   }
-  public init(): void {}
-  public draw(): void {}
-  public destroy(): void {}
-  public update(): void {}
-  public isColliding(entity: Entity): boolean {
-    return false;
+
+  public static spawn(amount: number): void {
+    for (let i = 0; i < amount; i++) {
+      let vector = Vector.generateRandom();
+      let ball = new Ball(1, 5, vector, new Vector(1, 1));
+    }
   }
 }

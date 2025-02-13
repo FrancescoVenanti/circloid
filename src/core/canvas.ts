@@ -1,13 +1,13 @@
+import Drawer from "./drawer";
 import type Entity from "./entity";
 
 class Canvas {
-  private static instance: Canvas = new Canvas();
+  public static instance: Canvas = new Canvas();
   private entities: Map<String, Entity> = new Map();
-  context: CanvasRenderingContext2D;
   private constructor() {
     const canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
-    this.context = canvas.getContext("2d")!;
+    Drawer.instance.init(canvas.getContext("2d")!);
   }
 
   public add(entity: Entity): void {

@@ -1,25 +1,19 @@
+import Canvas from "./canvas";
 import type Vector from "./vector";
 
-interface IEntity {
-  init(): void;
-  draw(): void;
-  destroy(): void;
-  update(): void;
-  isColliding(entity: Entity): boolean;
-}
-
-abstract class Entity implements IEntity {
-  public init(): void {}
+abstract class Entity {
+  constructor(public zIndex: number, public position: Vector) {
+    this.key = crypto.randomUUID();
+  }
+  protected init(): void {
+    Canvas.instance.add(this);
+  }
   public abstract draw(): void;
-  public destroy(): void {}
+  protected destroy(): void {
+    Canvas.instance.destroy(this);
+  }
   public abstract update(): void;
-  public abstract isColliding(entity: Entity): boolean;
-
-  constructor(
-    public zIndex: number,
-    public key: string,
-    public position: Vector
-  ) {}
+  public key: string;
 }
 
 export default Entity;
