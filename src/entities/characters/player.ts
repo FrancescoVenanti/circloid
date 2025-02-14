@@ -1,42 +1,77 @@
 import Drawer from "../../core/drawer";
 import Entity from "../../core/entity";
+import Circle from "../../core/shape/circle";
 import Rect from "../../core/shape/rect";
 import Vector from "../../core/vector";
 import { EventMixin } from "../../mixins/events";
 
 class Player extends EventMixin(Entity) {
-  public direction: Vector;
   private counter = 0;
   constructor(
     zIndex: number,
     vector: Vector,
-    direction: Vector = new Vector(0, 0)
+    public angle: number,
+    public speed: number
   ) {
-    super(zIndex, new Rect(vector, 10, 10));
-    this.direction = direction;
+    super(zIndex, new Circle(vector, 10));
+    this.angle = angle;
+    this.speed = speed;
+    this.listenKeyboard();
+  }
+
+  private listenKeyboard() {
+    window.addEventListener("keydown", (e) => {
+      const keys = new Set(["w", "a", "s", "d"]);
+      if (keys.has(e.key)) {
+        this.keyMap.add(e.key);
+      }
+    });
+    window.addEventListener("keyup", (e) => {
+      this.keyMap.delete(e.key);
+    });
+  }
+
+  private keyMap: Set<String> = new Set();
+
+  private move() {
+    // const directions = ['d', "s", "a", "w"]
+    const x = ["a", "d"];
+    const y = ["w", "s"];
+    const newDirection = new Vector(0, 0);
+    if (this.keyMap.has(x[0])) {
+      newDirection.x = -1;
+    }
+    if (this.keyMap.has(x[1])) {
+      newDirection.x += 1;
+    }
+    if (this.keyMap.has(y[0])) {
+      newDirection.y = -1;
+    }
+    if (this.keyMap.has(y[1])) {
+      newDirection.y += 1;
+    }
+
+    if (newDirection.y === 0 && newDirection.x === 0) return;
+    this.angle = Math.atan2(newDirection.y, newDirection.x);
+
+    const direction = Vector.fromAngle(this.angle);
+    direction.mul(new Vector(this.speed, this.speed));
+    this.shape.vector.add(direction);
   }
 
   public update(): void {
-    this.direction = Vector.fromAngle(this.counter % (Math.PI * 2));
-
-    this.direction.mul(new Vector(10, 20));
-
-    this.shape.vector.add(this.direction);
-    // if (this.shape.vector.distance(Canvas.instance.rect.bottomRight) < 600) {
-    //   this.destroy();
-    // }
-    this.counter += 0.05;
+    this.move();
   }
   public override draw(): void {
     Drawer.instance.text(
-      "lucia",
-      this.shape.vector.moveTo(new Vector(0, -10)),
+      "Player",
+      this.shape.vector.moveTo(new Vector(-15, 10)),
       {
-        font: "bold 30px Arial",
+        font: "bold 10px Arial",
         style: "white",
       }
     );
-    Drawer.instance.fillRect(this.shape as Rect, "blue");
+    Drawer.instance.circle(this.shape.vector, 10);
   }
 }
 

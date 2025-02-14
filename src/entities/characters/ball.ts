@@ -8,7 +8,8 @@ class Ball extends Entity {
     zIndex: number,
     radius: number,
     vector: Vector,
-    public direction: Vector
+    public angle: number,
+    public speed: number
   ) {
     super(zIndex, new Circle(vector, radius));
   }
@@ -18,7 +19,7 @@ class Ball extends Entity {
       let vector = Vector.generateRandom();
       let direction = Vector.generateRandom();
       direction.mul(new Vector(0.01, 0.01));
-      new Ball(1, 5, vector, direction).store();
+      new Ball(1, 5, vector, Math.PI / 4, 2).store();
     }
   }
 
@@ -30,8 +31,13 @@ class Ball extends Entity {
     });
   }
 
+  private tempAngle = Math.random() - 0.5;
+
   public override update(): void {
-    this.shape.vector.add(this.direction);
+    const direction = Vector.fromAngle(this.angle);
+    direction.mul(new Vector(this.speed, this.speed));
+    this.shape.vector.add(direction);
+    this.angle += this.tempAngle / 200;
   }
 }
 
