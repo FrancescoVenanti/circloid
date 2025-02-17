@@ -1,5 +1,4 @@
 import Canvas from "./src/core/canvas";
-import Button from "./src/entities/button";
 import Ball from "./src/entities/characters/ball";
 import Constraint from "./src/entities/characters/constraint";
 import Player from "./src/entities/characters/player";
@@ -16,7 +15,6 @@ function loop(delay: number) {
 document.addEventListener("DOMContentLoaded", () => {
   Canvas.instance.init();
   Ball.spawn(10);
-  Button.spawn();
   const topCenter = Canvas.instance.rect.topLeft.middle(
     Canvas.instance.rect.topRight
   );

@@ -1,3 +1,4 @@
+import Canvas from "../../core/canvas";
 import Drawer from "../../core/drawer";
 import Entity from "../../core/entity";
 import Circle from "../../core/shape/circle";
@@ -34,7 +35,6 @@ class Player extends EventMixin(Entity) {
   private keyMap: Set<String> = new Set();
 
   private move() {
-    // const directions = ['d', "s", "a", "w"]
     const x = ["a", "d"];
     const y = ["w", "s"];
     const newDirection = new Vector(0, 0);
@@ -52,11 +52,37 @@ class Player extends EventMixin(Entity) {
     }
 
     if (newDirection.y === 0 && newDirection.x === 0) return;
+    this.preventEscape(newDirection);
+    // if (newDirection.y === 0 && newDirection.x === 0) return;
     this.angle = Math.atan2(newDirection.y, newDirection.x);
 
     const direction = Vector.fromAngle(this.angle);
     direction.mul(new Vector(this.speed, this.speed));
     this.shape.vector.add(direction);
+  }
+
+  private preventEscape(direction: Vector) {
+    const constraint = Canvas.instance.get("constraint");
+    if (!constraint) return;
+    if (
+      !(this.shape instanceof Circle) ||
+      !(constraint.shape instanceof Circle)
+    )
+      return;
+
+    const position = constraint.shape.vector;
+    const distance = position.distance(this.shape.vector);
+    const maxDistance = constraint.shape.radius - this.shape.radius; // Distanza massima consentita
+
+    if (distance >= maxDistance) {
+      // Riporta il Player al bordo esatto
+      const angle = position.angleFromVect(this.shape.vector);
+      direction.x = position.x + maxDistance * Math.cos(angle);
+      direction.y = position.y + maxDistance * Math.sin(angle);
+
+      // direction.x = 0;
+      // direction.y = 0;
+    }
   }
 
   public update(): void {

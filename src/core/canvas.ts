@@ -51,6 +51,10 @@ class Canvas {
       e.draw();
     });
   }
+
+  public get(key: string) {
+    return this.entities.get(key);
+  }
 }
 
 export default Canvas;

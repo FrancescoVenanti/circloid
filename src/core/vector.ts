@@ -40,6 +40,10 @@ class Vector {
   public middle(vector: Vector): Vector {
     return new Vector((this.x + vector.x) / 2, (this.y + vector.y) / 2);
   }
+
+  public angleFromVect(vect: Vector) {
+    return Math.atan2(vect.y - this.y, vect.x - this.x);
+  }
 }
 
 export default Vector;
