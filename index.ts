@@ -14,14 +14,11 @@ function loop(delay: number) {
 
 document.addEventListener("DOMContentLoaded", () => {
   Canvas.instance.init();
-  Ball.spawn(10);
-  const topCenter = Canvas.instance.rect.topLeft.middle(
-    Canvas.instance.rect.topRight
-  );
-  const player = new Player(1, Canvas.instance.rect.center, 0, 2);
 
-  player.store();
-  const constraint = new Constraint(1, Canvas.instance.rect.center, 100);
+  new Player(1, Canvas.instance.rect.center, 0, 2);
+  new Constraint(1, Canvas.instance.rect.center, 100);
+
+  Ball.spawnAmount(10);
 
   loop(0);
 });

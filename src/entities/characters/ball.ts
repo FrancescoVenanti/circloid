@@ -1,3 +1,4 @@
+import Canvas from "../../core/canvas";
 import Drawer from "../../core/drawer";
 import Entity from "../../core/entity";
 import Circle from "../../core/shape/circle";
@@ -14,13 +15,29 @@ class Ball extends Entity {
     super(zIndex, new Circle(vector, radius));
   }
 
-  public static spawn(amount: number): void {
-    for (let i = 0; i < amount; i++) {
-      let vector = Vector.generateRandom();
-      let direction = Vector.generateRandom();
-      direction.mul(new Vector(0.01, 0.01));
-      new Ball(1, 5, vector, Math.PI / 4, 2).store();
+  public static spawnAmount(amount: number): void {
+    for(let i = 0; i < amount; i++) {
+      Ball.spawn();
     }
+  }
+
+  public static spawn() {
+    const constraint = Canvas.instance.get('constraint');
+    if(!constraint || !(constraint.shape instanceof Circle))return;
+    
+    // const randomPoint = Canvas.instance.rect.randomPointFromBorder();
+    const randomPoint = new Vector(0, 0);
+
+    const [min, max] = constraint.shape.tangentsFromVector(randomPoint);
+    
+    if(!min) return;
+
+    console.log(randomPoint, min, max)
+    let angle = min;
+    if (max) {
+      angle = (Math.random() * (max - min)) + min;
+    }
+    new Ball(0, 5, randomPoint, angle, 10).store();
   }
 
   public override draw(): void {
@@ -31,13 +48,10 @@ class Ball extends Entity {
     });
   }
 
-  private tempAngle = Math.random() - 0.5;
-
   public override update(): void {
     const direction = Vector.fromAngle(this.angle);
     direction.mul(new Vector(this.speed, this.speed));
     this.shape.vector.add(direction);
-    this.angle += this.tempAngle / 200;
   }
 }
 

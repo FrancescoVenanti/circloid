@@ -30,6 +30,15 @@ class Rect extends Shape {
   draw(): void {
     Drawer.instance.rect(this);
   }
+
+  public randomPointFromBorder() {
+    const start = [this.topLeft, this.topRight, this.bottomRight, this.bottomLeft];
+    const end = [this.topRight, this.bottomRight, this.bottomLeft, this.topLeft]; // Fixing the array order
+
+    const randomSegment = Math.floor(Math.random() * 4);
+    
+    return start[randomSegment].randomVectorFromSegment(end[randomSegment]);
+}
 }
 
 export default Rect;

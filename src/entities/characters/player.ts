@@ -17,6 +17,7 @@ class Player extends EventMixin(Entity) {
     super(zIndex, new Circle(vector, 10));
     this.angle = angle;
     this.speed = speed;
+    this.store();
     this.listenKeyboard();
   }
 
@@ -63,27 +64,24 @@ class Player extends EventMixin(Entity) {
 
   private preventEscape(direction: Vector) {
     const constraint = Canvas.instance.get("constraint");
-    if (!constraint) return;
-    if (
-      !(this.shape instanceof Circle) ||
-      !(constraint.shape instanceof Circle)
-    )
+    if (!constraint || !(constraint.shape instanceof Circle) || !(this.shape instanceof Circle)) {
       return;
+    }
+  
+    const center = constraint.shape.vector;
+    const distance = center.distance(this.shape.vector);
+    const maxDistance = constraint.shape.radius - this.shape.radius;
+  
+    if (distance + direction.distance(new Vector(0, 0)) > maxDistance) {
+      const vector = Vector.fromAngle(center.angleFromVect(this.shape.vector))
+      const newPosition = center.clone();
+      newPosition.add(vector.mulScalar(maxDistance))
 
-    const position = constraint.shape.vector;
-    const distance = position.distance(this.shape.vector);
-    const maxDistance = constraint.shape.radius - this.shape.radius; // Distanza massima consentita
-
-    if (distance >= maxDistance) {
-      // Riporta il Player al bordo esatto
-      const angle = position.angleFromVect(this.shape.vector);
-      direction.x = position.x + maxDistance * Math.cos(angle);
-      direction.y = position.y + maxDistance * Math.sin(angle);
-
-      // direction.x = 0;
-      // direction.y = 0;
+      this.shape.vector.set(newPosition)
     }
   }
+  
+  
 
   public update(): void {
     this.move();
