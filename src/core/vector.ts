@@ -26,6 +26,16 @@ class Vector {
     return this;
   }
 
+  public addX(num: number) {
+    this.x += num;
+    return this;
+  }
+
+  public addY(num: number) {
+    this.y += num;
+    return this;
+  }
+
   public delta(vector: Vector): Vector {
     return new Vector(this.x - vector.x, this.y - vector.y);
   }

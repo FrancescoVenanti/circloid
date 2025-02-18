@@ -13,7 +13,8 @@ class Player extends EventMixin(Entity) {
     public angle: number,
     public speed: number,
     public lives: number,
-    public points: number
+    public points: number,
+    public credits: number
   ) {
     super(zIndex, new Circle(vector, 40));
     this.store();
@@ -92,6 +93,7 @@ class Player extends EventMixin(Entity) {
     if (this.lives < 1) {
       this.lives = 3;
       this.points = 0;
+      this.credits = 0;
     }
     this.move();
     this.collisions();
@@ -120,6 +122,7 @@ class Player extends EventMixin(Entity) {
     //     style: "white",
     //   }
     // );
+    this.drawCredits();
     this.drawPoints();
     this.drawLives();
     Drawer.instance.with(() => this.shape.draw(), {
@@ -133,8 +136,25 @@ class Player extends EventMixin(Entity) {
     Drawer.instance.with(
       () =>
         Drawer.instance.text(
-          this.points.toString(),
+          "POINTS: " + this.points.toString(),
           Canvas.instance.rect.topLeft.addScalar(60),
+          {
+            font: "50px monospace",
+          }
+        ),
+      {
+        fillStyle: "white",
+        fill: true,
+      }
+    );
+  }
+
+  private drawCredits() {
+    Drawer.instance.with(
+      () =>
+        Drawer.instance.text(
+          "CREDITS: " + this.credits.toString(),
+          Canvas.instance.rect.topLeft.addScalar(120).addX(-60),
           {
             font: "50px monospace",
           }
@@ -151,9 +171,7 @@ class Player extends EventMixin(Entity) {
       Drawer.instance.with(
         () =>
           Drawer.instance.drawHeart(
-            Canvas.instance.rect.bottomRight
-              .addScalar(-100)
-              .add(new Vector(-50 * i, 0)),
+            Canvas.instance.rect.bottomRight.addScalar(-100).addX(-50 * i),
             30
           ),
         {
@@ -165,7 +183,10 @@ class Player extends EventMixin(Entity) {
   }
 
   private upgradeSpeed(key: number): void {
-    this.speed = this.speed + 1;
+    if (this.credits >= 10) {
+      this.speed = this.speed + 1;
+      this.credits -= 10;
+    }
   }
 }
 
