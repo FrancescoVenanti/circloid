@@ -1,3 +1,4 @@
+import Drawer from "../../core/drawer";
 import Entity from "../../core/entity";
 import Circle from "../../core/shape/circle";
 import type Vector from "../../core/vector";
@@ -9,6 +10,13 @@ class Constraint extends Entity {
     this.store();
   }
   public update() {}
+  public override draw() {
+    Drawer.instance.with(() => this.shape.draw(), {
+      fillStyle: "palegreen",
+      lineWidth: 5,
+      strokeStyle: "palegreen",
+    });
+  }
 }
 
 export default Constraint;

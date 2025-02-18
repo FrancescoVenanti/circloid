@@ -20,8 +20,14 @@ class Vector {
     return this;
   }
 
+  public addScalar(num: number) {
+    this.x += num;
+    this.y += num;
+    return this;
+  }
+
   public delta(vector: Vector): Vector {
-    return new Vector(this.x -vector.x, this.y - vector.y);
+    return new Vector(this.x - vector.x, this.y - vector.y);
   }
   public atan2() {
     return Math.atan2(this.y, this.x);
@@ -32,12 +38,12 @@ class Vector {
     this.y *= vector.y;
     return this;
   }
-  
+
   public mulScalar(scalar: number) {
     this.x *= scalar;
     this.y *= scalar;
     return this;
-  } 
+  }
 
   public moveTo(vector: Vector): Vector {
     return new Vector(this.x + vector.x, this.y + vector.y);
@@ -66,7 +72,7 @@ class Vector {
   public randomVectorFromSegment(v: Vector) {
     const distance = this.distance(v);
     const random = Math.random() * distance;
-    return Vector.fromAngle(this.angleFromVect(v)).mulScalar(random)
+    return Vector.fromAngle(this.angleFromVect(v)).mulScalar(random);
   }
 }
 

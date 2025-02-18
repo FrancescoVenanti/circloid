@@ -5,7 +5,7 @@ abstract class Entity {
   public key: string;
 
   constructor(public zIndex: number, public shape: Shape) {
-    this.key = crypto.randomUUID();
+    this.key = this.constructor.name + "_" + crypto.randomUUID();
   }
 
   public abstract update(): void;
@@ -18,7 +18,7 @@ abstract class Entity {
     Canvas.instance.add(this);
   }
 
-  protected destroy(): void {
+  public destroy(): void {
     Canvas.instance.destroy(this);
   }
 

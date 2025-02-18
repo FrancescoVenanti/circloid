@@ -56,17 +56,57 @@ class Drawer {
 
   public with(
     callback: (ctx: CanvasRenderingContext2D) => void,
-    options?: { fillStyle?: string; style?: string; strokeStyle?: string }
+    options?: Options
   ) {
     if (!this.context) return;
+    this.context.beginPath();
     if (options) {
       if (options.fillStyle) this.context.fillStyle = options.fillStyle;
-      if (options.style) this.context.strokeStyle = options.style;
       if (options.strokeStyle) this.context.strokeStyle = options.strokeStyle;
+      if (options.lineWidth !== undefined)
+        this.context.lineWidth = options.lineWidth;
+      if (options.globalAlpha !== undefined)
+        this.context.globalAlpha = options.globalAlpha;
+      if (options.shadowColor) this.context.shadowColor = options.shadowColor;
+      if (options.shadowBlur !== undefined)
+        this.context.shadowBlur = options.shadowBlur;
     }
+
     callback(this.context);
-    this.context.stroke();
+
+    if (options?.fill) {
+      this.context.fill();
+    } else {
+      this.context.stroke();
+    }
+  }
+  public drawHeart({ x, y }: Vector, size: number) {
+    const ctx = this.context!;
+    ctx.beginPath();
+    ctx.moveTo(x, y + size / 4);
+    ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + size / 4);
+    ctx.bezierCurveTo(x - size / 2, y + size / 2, x, y + size, x, y + size);
+    ctx.bezierCurveTo(
+      x,
+      y + size,
+      x + size / 2,
+      y + size / 2,
+      x + size / 2,
+      y + size / 4
+    );
+    ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + size / 4);
+    ctx.closePath();
   }
 }
+
+type Options = {
+  fillStyle?: string;
+  strokeStyle?: string;
+  lineWidth?: number;
+  globalAlpha?: number;
+  shadowColor?: string;
+  shadowBlur?: number;
+  fill?: boolean;
+};
 
 export default Drawer;

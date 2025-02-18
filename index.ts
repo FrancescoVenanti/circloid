@@ -15,10 +15,13 @@ function loop(delay: number) {
 document.addEventListener("DOMContentLoaded", () => {
   Canvas.instance.init();
 
-  new Player(1, Canvas.instance.rect.center, 0, 2);
-  new Constraint(1, Canvas.instance.rect.center, 100);
+  new Player(1, Canvas.instance.rect.center, 0, 2, 3);
+  new Constraint(1, Canvas.instance.rect.center, 120);
 
-  Ball.spawnAmount(10);
+  // Ball.spawnAmount(10);
+  setInterval(() => {
+    Ball.spawn();
+  }, 1000);
 
   loop(0);
 });

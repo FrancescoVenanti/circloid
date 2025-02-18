@@ -32,13 +32,42 @@ class Rect extends Shape {
   }
 
   public randomPointFromBorder() {
-    const start = [this.topLeft, this.topRight, this.bottomRight, this.bottomLeft];
-    const end = [this.topRight, this.bottomRight, this.bottomLeft, this.topLeft]; // Fixing the array order
+    const start = [
+      this.topLeft,
+      this.topRight,
+      this.bottomRight,
+      this.bottomLeft,
+    ];
+    const end = [
+      this.topRight,
+      this.bottomRight,
+      this.bottomLeft,
+      this.topLeft,
+    ]; // Fixing the array order
 
     const randomSegment = Math.floor(Math.random() * 4);
-    
+
     return start[randomSegment].randomVectorFromSegment(end[randomSegment]);
-}
+  }
+
+  public inBetween(num: number, min: number, max: number): boolean {
+    return num >= min && num <= max;
+  }
+
+  public containsVector(vect: Vector, padding: number = 0): boolean {
+    return (
+      this.inBetween(
+        vect.x,
+        this.vector.x + padding,
+        this.bottomRight.x - padding
+      ) &&
+      this.inBetween(
+        vect.y,
+        this.vector.y + padding,
+        this.bottomRight.y - padding
+      )
+    );
+  }
 }
 
 export default Rect;

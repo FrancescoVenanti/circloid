@@ -33,7 +33,6 @@ class Canvas {
   }
 
   public destroy(entity: Entity): void {
-    console.log("destroy", entity.constructor.name);
     this.entities.delete(entity.key);
   }
 
@@ -54,6 +53,16 @@ class Canvas {
 
   public get(key: string) {
     return this.entities.get(key);
+  }
+
+  public startsWith(key: string) {
+    const entities: Entity[] = [];
+    this.entities.forEach((e) => {
+      if (e.key.toLowerCase().startsWith(key.toLowerCase())) {
+        entities.push(e);
+      }
+    });
+    return entities;
   }
 }
 

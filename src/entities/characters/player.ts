@@ -7,16 +7,14 @@ import Vector from "../../core/vector";
 import { EventMixin } from "../../mixins/events";
 
 class Player extends EventMixin(Entity) {
-  private counter = 0;
   constructor(
     zIndex: number,
     vector: Vector,
     public angle: number,
-    public speed: number
+    public speed: number,
+    public lives: number
   ) {
-    super(zIndex, new Circle(vector, 10));
-    this.angle = angle;
-    this.speed = speed;
+    super(zIndex, new Circle(vector, 40));
     this.store();
     this.listenKeyboard();
   }
@@ -26,6 +24,10 @@ class Player extends EventMixin(Entity) {
       const keys = new Set(["w", "a", "s", "d"]);
       if (keys.has(e.key)) {
         this.keyMap.add(e.key);
+      }
+      if (e.key == "1") {
+        this.upgradeSpeed(parseInt(e.key));
+        console.log(this.speed);
       }
     });
     window.addEventListener("keyup", (e) => {
@@ -64,38 +66,80 @@ class Player extends EventMixin(Entity) {
 
   private preventEscape(direction: Vector) {
     const constraint = Canvas.instance.get("constraint");
-    if (!constraint || !(constraint.shape instanceof Circle) || !(this.shape instanceof Circle)) {
+    if (
+      !constraint ||
+      !(constraint.shape instanceof Circle) ||
+      !(this.shape instanceof Circle)
+    ) {
       return;
     }
-  
+
     const center = constraint.shape.vector;
     const distance = center.distance(this.shape.vector);
     const maxDistance = constraint.shape.radius - this.shape.radius;
-  
-    if (distance + direction.distance(new Vector(0, 0)) > maxDistance) {
-      const vector = Vector.fromAngle(center.angleFromVect(this.shape.vector))
-      const newPosition = center.clone();
-      newPosition.add(vector.mulScalar(maxDistance))
 
-      this.shape.vector.set(newPosition)
+    if (distance + direction.distance(new Vector(0, 0)) > maxDistance) {
+      const vector = Vector.fromAngle(center.angleFromVect(this.shape.vector));
+      const newPosition = center.clone();
+      newPosition.add(vector.mulScalar(maxDistance));
+
+      this.shape.vector.set(newPosition);
     }
   }
-  
-  
 
   public update(): void {
+    if (this.lives < 1) this.destroy();
     this.move();
+    this.collisions();
   }
-  public override draw(): void {
-    Drawer.instance.text(
-      "Player",
-      this.shape.vector.moveTo(new Vector(-15, 10)),
-      {
-        font: "bold 10px Arial",
-        style: "white",
+
+  public collisions() {
+    const balls = Canvas.instance.startsWith("ball");
+    for (const ball of balls) {
+      if (!(ball.shape instanceof Circle) || !(this.shape instanceof Circle))
+        continue;
+      const distance = ball.shape.vector.distance(this.shape.vector);
+      const maxDistance = ball.shape.radius + this.shape.radius;
+      if (distance <= maxDistance) {
+        ball.destroy();
+        this.lives--;
       }
-    );
-    Drawer.instance.circle(this.shape.vector, 10);
+    }
+  }
+
+  public override draw(): void {
+    // Drawer.instance.text(
+    //   "Player",
+    //   this.shape.vector.moveTo(new Vector(-15, 10)),
+    //   {
+    //     font: "bold 10px Arial",
+    //     style: "white",
+    //   }
+    // );
+    for (let i = 0; i < this.lives; i++) {
+      Drawer.instance.with(
+        () =>
+          Drawer.instance.drawHeart(
+            Canvas.instance.rect.bottomRight
+              .addScalar(-100)
+              .add(new Vector(-50 * i, 0)),
+            30
+          ),
+        {
+          fill: true,
+          fillStyle: "red",
+        }
+      );
+    }
+    Drawer.instance.with(() => this.shape.draw(), {
+      fillStyle: "lightblue",
+      fill: true,
+      strokeStyle: "lightblue",
+    });
+  }
+
+  private upgradeSpeed(key: number): void {
+    this.speed = this.speed + 1;
   }
 }
 
