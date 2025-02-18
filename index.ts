@@ -15,12 +15,13 @@ function loop(delay: number) {
 document.addEventListener("DOMContentLoaded", () => {
   Canvas.instance.init();
 
-  new Player(1, Canvas.instance.rect.center, 0, 2, 3);
+  const player = new Player(1, Canvas.instance.rect.center, 0, 2, 3, 0);
   new Constraint(1, Canvas.instance.rect.center, 120);
 
   // Ball.spawnAmount(10);
   setInterval(() => {
     Ball.spawn();
+    player.points++;
   }, 1000);
 
   loop(0);

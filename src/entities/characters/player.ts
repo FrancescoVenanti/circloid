@@ -12,7 +12,8 @@ class Player extends EventMixin(Entity) {
     vector: Vector,
     public angle: number,
     public speed: number,
-    public lives: number
+    public lives: number,
+    public points: number
   ) {
     super(zIndex, new Circle(vector, 40));
     this.store();
@@ -88,7 +89,10 @@ class Player extends EventMixin(Entity) {
   }
 
   public update(): void {
-    if (this.lives < 1) this.destroy();
+    if (this.lives < 1) {
+      this.lives = 3;
+      this.points = 0;
+    }
     this.move();
     this.collisions();
   }
@@ -116,6 +120,33 @@ class Player extends EventMixin(Entity) {
     //     style: "white",
     //   }
     // );
+    this.drawPoints();
+    this.drawLives();
+    Drawer.instance.with(() => this.shape.draw(), {
+      fillStyle: "lightblue",
+      fill: true,
+      strokeStyle: "lightblue",
+    });
+  }
+
+  private drawPoints() {
+    Drawer.instance.with(
+      () =>
+        Drawer.instance.text(
+          this.points.toString(),
+          Canvas.instance.rect.topLeft.addScalar(60),
+          {
+            font: "50px monospace",
+          }
+        ),
+      {
+        fillStyle: "white",
+        fill: true,
+      }
+    );
+  }
+
+  private drawLives() {
     for (let i = 0; i < this.lives; i++) {
       Drawer.instance.with(
         () =>
@@ -131,11 +162,6 @@ class Player extends EventMixin(Entity) {
         }
       );
     }
-    Drawer.instance.with(() => this.shape.draw(), {
-      fillStyle: "lightblue",
-      fill: true,
-      strokeStyle: "lightblue",
-    });
   }
 
   private upgradeSpeed(key: number): void {
