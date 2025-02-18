@@ -79,6 +79,7 @@ class Drawer {
     } else {
       this.context.stroke();
     }
+    this.setDefault();
   }
   public drawHeart({ x, y }: Vector, size: number) {
     const ctx = this.context!;
@@ -96,6 +97,32 @@ class Drawer {
     );
     ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + size / 4);
     ctx.closePath();
+  }
+  public drawButton({ x, y }: Vector, size: number, text: string) {
+    console.log(x, y);
+    const ctx = this.context!;
+    ctx.fillRect(x, y, size, size);
+
+    ctx.fillStyle = "red";
+    ctx.font = "24px monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, x + size / 2, y + size / 2);
+  }
+
+  private setDefault() {
+    const ctx = this.context!;
+    ctx.fillStyle = "white";
+    ctx.font = "20px monospace";
+    ctx.textAlign = "start";
+    ctx.textBaseline = "top"; // Setting a default text baseline
+
+    // Set a default stroke style (optional)
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+
+    // Reset transformations (if any)
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 }
 

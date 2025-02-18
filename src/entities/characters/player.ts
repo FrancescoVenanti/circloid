@@ -97,6 +97,10 @@ class Player extends EventMixin(Entity) {
     }
     this.move();
     this.collisions();
+    this.drawSpeedButton();
+    this.drawCredits();
+    this.drawPoints();
+    this.drawLives();
   }
 
   public collisions() {
@@ -122,9 +126,7 @@ class Player extends EventMixin(Entity) {
     //     style: "white",
     //   }
     // );
-    this.drawCredits();
-    this.drawPoints();
-    this.drawLives();
+
     Drawer.instance.with(() => this.shape.draw(), {
       fillStyle: "lightblue",
       fill: true,
@@ -137,7 +139,7 @@ class Player extends EventMixin(Entity) {
       () =>
         Drawer.instance.text(
           "POINTS: " + this.points.toString(),
-          Canvas.instance.rect.topLeft.addScalar(60),
+          Canvas.instance.rect.topLeft.clone().addScalar(60),
           {
             font: "50px monospace",
           }
@@ -154,7 +156,7 @@ class Player extends EventMixin(Entity) {
       () =>
         Drawer.instance.text(
           "CREDITS: " + this.credits.toString(),
-          Canvas.instance.rect.topLeft.addScalar(120).addX(-60),
+          Canvas.instance.rect.topLeft.clone().addScalar(120).addX(-60),
           {
             font: "50px monospace",
           }
@@ -171,7 +173,10 @@ class Player extends EventMixin(Entity) {
       Drawer.instance.with(
         () =>
           Drawer.instance.drawHeart(
-            Canvas.instance.rect.bottomRight.addScalar(-100).addX(-50 * i),
+            Canvas.instance.rect.topRight
+              .clone()
+              .addX(-60 - 60 * i)
+              .addY(60),
             30
           ),
         {
@@ -180,6 +185,21 @@ class Player extends EventMixin(Entity) {
         }
       );
     }
+  }
+
+  public drawSpeedButton() {
+    Drawer.instance.with(
+      () =>
+        Drawer.instance.drawButton(
+          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(100),
+          40,
+          "1"
+        ),
+      {
+        fill: false,
+        fillStyle: "white",
+      }
+    );
   }
 
   private upgradeSpeed(key: number): void {

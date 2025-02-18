@@ -17,11 +17,11 @@ class Ball extends Entity {
 
   public static spawnAmount(amount: number): void {
     for (let i = 0; i < amount; i++) {
-      Ball.spawn();
+      Ball.spawn(1);
     }
   }
 
-  public static spawn() {
+  public static spawn(speedMultiplier: number) {
     const constraint = Canvas.instance.get("constraint");
     if (!constraint || !(constraint.shape instanceof Circle)) return;
 
@@ -36,7 +36,7 @@ class Ball extends Entity {
     if (max) {
       angle = Math.random() * (max - min) + min;
     }
-    new Ball(0, 10, randomPoint, angle, 6).store();
+    new Ball(0, 10, randomPoint, angle, 6 + speedMultiplier).store();
   }
 
   public override draw(): void {
