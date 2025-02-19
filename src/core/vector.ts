@@ -79,10 +79,14 @@ class Vector {
     return Math.atan2(vect.y - this.y, vect.x - this.x);
   }
 
+  public angle(v: Vector) {
+    return Vector.fromAngle(this.angleFromVect(v));
+  }
+
   public randomVectorFromSegment(v: Vector) {
     const distance = this.distance(v);
     const random = Math.random() * distance;
-    return Vector.fromAngle(this.angleFromVect(v)).mulScalar(random);
+    return this.angle(v).mulScalar(random);
   }
 }
 

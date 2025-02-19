@@ -99,7 +99,6 @@ class Drawer {
     ctx.closePath();
   }
   public drawButton({ x, y }: Vector, size: number, text: string) {
-    console.log(x, y);
     const ctx = this.context!;
     ctx.fillRect(x, y, size, size);
 

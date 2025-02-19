@@ -43,11 +43,12 @@ class Rect extends Shape {
       this.bottomRight,
       this.bottomLeft,
       this.topLeft,
-    ]; // Fixing the array order
+    ];
 
     const randomSegment = Math.floor(Math.random() * 4);
-
-    return start[randomSegment].randomVectorFromSegment(end[randomSegment]);
+    return start[randomSegment]
+      .clone()
+      .randomVectorFromSegment(end[randomSegment].clone());
   }
 
   public inBetween(num: number, min: number, max: number): boolean {

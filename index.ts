@@ -3,8 +3,7 @@ import Ball from "./src/entities/characters/ball";
 import Constraint from "./src/entities/characters/constraint";
 import Player from "./src/entities/characters/player";
 
-let delay1 = 0;
-let delay2 = 0;
+let beforeDelay = 0;
 let counter = 0;
 const fps = 60;
 function loop(delay: number, player: Player) {
@@ -13,8 +12,8 @@ function loop(delay: number, player: Player) {
     player.points++;
     player.credits++;
   }
-  delay2 = delay1;
-  delay1 = delay;
+  console.log(1000 / (delay - beforeDelay));
+  beforeDelay = delay;
   Canvas.instance.render();
   counter = (counter + 1) % fps;
 

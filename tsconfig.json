@@ -5,7 +5,6 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
     "allowJs": true,
 
     // Bundler mode
@@ -14,17 +13,19 @@
     "verbatimModuleSyntax": true,
     "noEmit": true,
 
-    // Best practices
+    // Disable strict mode
     "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitThis": false,
-    "noImplicitOverride": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noImplicitReturns": false,
+    "noImplicitOverride": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false,
 
-    // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    // Enable experimental features
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": false
   }
 }

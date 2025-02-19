@@ -26,9 +26,8 @@ class Ball extends Entity {
     if (!constraint || !(constraint.shape instanceof Circle)) return;
 
     const randomPoint = Canvas.instance.rect.randomPointFromBorder();
-    // const randomPoint = new Vector(0, 0);
 
-    const [min, max] = constraint.shape.tangentsFromVector(randomPoint);
+    const [min, max] = constraint.shape.tangentsFromVector(randomPoint, 10);
 
     if (!min) return;
 
@@ -51,7 +50,9 @@ class Ball extends Entity {
     if (!Canvas.instance.rect.containsVector(this.shape.vector, -10))
       return this.destroy();
     const direction = Vector.fromAngle(this.angle);
-    direction.mul(new Vector(this.speed, this.speed));
+
+    direction.mulScalar(this.speed);
+
     this.shape.vector.add(direction);
   }
 }

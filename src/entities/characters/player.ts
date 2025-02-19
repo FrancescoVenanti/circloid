@@ -2,11 +2,9 @@ import Canvas from "../../core/canvas";
 import Drawer from "../../core/drawer";
 import Entity from "../../core/entity";
 import Circle from "../../core/shape/circle";
-import Rect from "../../core/shape/rect";
 import Vector from "../../core/vector";
-import { EventMixin } from "../../mixins/events";
 
-class Player extends EventMixin(Entity) {
+class Player extends Entity {
   constructor(
     zIndex: number,
     vector: Vector,
@@ -17,6 +15,7 @@ class Player extends EventMixin(Entity) {
     public credits: number
   ) {
     super(zIndex, new Circle(vector, 40));
+    this.speed = 20;
     this.store();
     this.listenKeyboard();
   }
@@ -57,23 +56,24 @@ class Player extends EventMixin(Entity) {
     }
 
     if (newDirection.y === 0 && newDirection.x === 0) return;
-    this.preventEscape(newDirection);
-    // if (newDirection.y === 0 && newDirection.x === 0) return;
-    this.angle = Math.atan2(newDirection.y, newDirection.x);
 
-    const direction = Vector.fromAngle(this.angle);
-    direction.mul(new Vector(this.speed, this.speed));
+    this.angle = newDirection.atan2();
+
+    const direction = Vector.fromAngle(this.angle).mulScalar(this.speed);
+
     this.shape.vector.add(direction);
+
+    this.preventEscape(newDirection);
   }
 
   private preventEscape(direction: Vector) {
-    const constraint = Canvas.instance.get("constraint");
+    const constraint = this.canvas.get("constraint");
     if (
       !constraint ||
       !(constraint.shape instanceof Circle) ||
       !(this.shape instanceof Circle)
     ) {
-      return;
+      return false;
     }
 
     const center = constraint.shape.vector;
@@ -81,12 +81,16 @@ class Player extends EventMixin(Entity) {
     const maxDistance = constraint.shape.radius - this.shape.radius;
 
     if (distance + direction.distance(new Vector(0, 0)) > maxDistance) {
-      const vector = Vector.fromAngle(center.angleFromVect(this.shape.vector));
+      const vector = center.angle(this.shape.vector);
+
       const newPosition = center.clone();
+
       newPosition.add(vector.mulScalar(maxDistance));
 
       this.shape.vector.set(newPosition);
+      return true;
     }
+    return false;
   }
 
   public update(): void {
@@ -118,23 +122,21 @@ class Player extends EventMixin(Entity) {
   }
 
   public override draw(): void {
-    // Drawer.instance.text(
-    //   "Player",
-    //   this.shape.vector.moveTo(new Vector(-15, 10)),
-    //   {
-    //     font: "bold 10px Arial",
-    //     style: "white",
-    //   }
-    // );
-
-    Drawer.instance.with(() => this.shape.draw(), {
+    const style = {
       fillStyle: "lightblue",
       fill: true,
       strokeStyle: "lightblue",
-    });
+    };
+
+    Drawer.instance.with(() => this.shape.draw(), style);
   }
 
   private drawPoints() {
+    const style = {
+      fillStyle: "white",
+      fill: true,
+    };
+
     Drawer.instance.with(
       () =>
         Drawer.instance.text(
@@ -144,10 +146,7 @@ class Player extends EventMixin(Entity) {
             font: "50px monospace",
           }
         ),
-      {
-        fillStyle: "white",
-        fill: true,
-      }
+      style
     );
   }
 

@@ -1,10 +1,10 @@
-// import { EventMixin } from "./events";
-
-// export function KeyboardMixin<Base extends Constructor>(base: Base) {
-//   return class Keyboard extends EventMixin(base) {
-//     public constructor() {
-//       super();
-//       window.addEventListener("keydown", (e) => this.emit(["keydown"], e));
-//     }
-//   };
-// }
+export function KeyboardMixin<Base extends Constructor>(base: Base) {
+  return class extends base {
+    protected keyPressed = new Set<string>();
+    public constructor() {
+      super();
+      window.addEventListener("keydown", (e) => this.keyPressed.add(e.key));
+      window.addEventListener("keyup", (e) => this.keyPressed.delete(e.key));
+    }
+  };
+}
