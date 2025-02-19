@@ -15,9 +15,9 @@ class Ball extends Entity {
     super(zIndex, new Circle(vector, radius));
   }
 
-  public static spawnAmount(amount: number): void {
+  public static spawnAmount(amount: number, speedMultiplier: number): void {
     for (let i = 0; i < amount; i++) {
-      Ball.spawn(1);
+      Ball.spawn(speedMultiplier);
     }
   }
 

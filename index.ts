@@ -6,9 +6,11 @@ import Player from "./src/entities/characters/player";
 let beforeDelay = 0;
 let counter = 0;
 const fps = 60;
-function loop(delay: number, player: Player) {
+function loop(delay: number) {
+  const player = Canvas.instance.get("player");
+  if (!player || !(player instanceof Player)) return;
   if (counter === 0) {
-    Ball.spawn(player.points / 10);
+    Ball.spawnAmount(1 + Math.round(player.points / 30), player.points / 20);
     player.points++;
     player.credits++;
   }
@@ -17,7 +19,7 @@ function loop(delay: number, player: Player) {
   Canvas.instance.render();
   counter = (counter + 1) % fps;
 
-  requestAnimationFrame((newDelay) => loop(newDelay, player)); // Passa il player correttamente
+  requestAnimationFrame(loop); // Passa il player correttamente
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,5 +28,5 @@ document.addEventListener("DOMContentLoaded", () => {
   const player = new Player(1, Canvas.instance.rect.center, 0, 2, 3, 0, 0);
   new Constraint(1, Canvas.instance.rect.center, 120);
 
-  loop(0, player);
+  loop(0);
 });

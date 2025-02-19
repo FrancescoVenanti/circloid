@@ -15,7 +15,7 @@ class Player extends Entity {
     public credits: number
   ) {
     super(zIndex, new Circle(vector, 40));
-    this.speed = 20;
+    this.key = "player";
     this.store();
     this.listenKeyboard();
   }
@@ -27,7 +27,11 @@ class Player extends Entity {
         this.keyMap.add(e.key);
       }
       if (e.key == "1") {
-        this.upgradeSpeed(parseInt(e.key));
+        this.upgradeSpeed();
+        console.log(this.speed);
+      }
+      if (e.key == "2") {
+        this.upgradeConstraint();
         console.log(this.speed);
       }
     });
@@ -101,7 +105,8 @@ class Player extends Entity {
     }
     this.move();
     this.collisions();
-    this.drawSpeedButton();
+    this.increaseSpeedButton();
+    this.increaseConstraintButton();
     this.drawCredits();
     this.drawPoints();
     this.drawLives();
@@ -186,7 +191,7 @@ class Player extends Entity {
     }
   }
 
-  public drawSpeedButton() {
+  public increaseSpeedButton() {
     Drawer.instance.with(
       () =>
         Drawer.instance.drawButton(
@@ -199,13 +204,44 @@ class Player extends Entity {
         fillStyle: "white",
       }
     );
+    Drawer.instance.text(
+      "Speed",
+      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(90)
+    );
   }
 
-  private upgradeSpeed(key: number): void {
+  public increaseConstraintButton() {
+    Drawer.instance.with(
+      () =>
+        Drawer.instance.drawButton(
+          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(200),
+          40,
+          "2"
+        ),
+      {
+        fill: false,
+        fillStyle: "white",
+      }
+    );
+    Drawer.instance.text(
+      "Constraint",
+      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(170)
+    );
+  }
+
+  private upgradeSpeed(): void {
     if (this.credits >= 10) {
       this.speed = this.speed + 1;
       this.credits -= 10;
     }
+  }
+  private upgradeConstraint(): void {
+    if (this.credits < 10) return;
+    const constraint = Canvas.instance.get("constraint");
+    if (!constraint) return;
+    if (!(constraint.shape instanceof Circle)) return;
+    constraint.shape.radius += 5;
+    this.credits -= 10;
   }
 }
 
