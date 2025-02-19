@@ -98,6 +98,22 @@ class Drawer {
     ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + size / 4);
     ctx.closePath();
   }
+  public drawExplosion({ x, y }: Vector, size: number) {
+    const ctx = this.context!;
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const angle = (i / 10) * Math.PI * 2;
+      const r = size * (0.5 + Math.random() * 0.5);
+      const xOffset = Math.cos(angle) * r;
+      const yOffset = Math.sin(angle) * r;
+      ctx.lineTo(x + xOffset, y + yOffset);
+    }
+    ctx.closePath();
+    ctx.fillStyle = "orange";
+    ctx.fill();
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+  }
   public drawButton({ x, y }: Vector, size: number, text: string) {
     const ctx = this.context!;
     ctx.fillRect(x, y, size, size);

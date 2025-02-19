@@ -121,6 +121,7 @@ class Player extends Entity {
       const maxDistance = ball.shape.radius + this.shape.radius;
       if (distance <= maxDistance) {
         ball.destroy();
+        Drawer.instance.drawExplosion(this.shape.vector, 40);
         this.lives--;
       }
     }
