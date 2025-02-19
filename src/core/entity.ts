@@ -1,18 +1,10 @@
 import Canvas from "./canvas";
-import Drawer from "./drawer";
 import type Shape from "./shape/shape";
 
-abstract class Entity {
-  protected get drawer() {
-    return Drawer.instance;
-  }
-  protected get canvas() {
-    return Canvas.instance;
-  }
-
+abstract class Entity<T extends Shape> {
   public key: string;
 
-  constructor(public zIndex: number, public shape: Shape) {
+  constructor(public zIndex: number, public shape: T) {
     this.key = this.constructor.name + "_" + crypto.randomUUID();
   }
 

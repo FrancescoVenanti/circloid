@@ -3,7 +3,7 @@
 // import Entity from "../core/entity";
 // import type Shape from "../core/shape/shape";
 // import Vector from "../core/vector";
-// import Ball from "./characters/ball";
+// import BallEnemy from "./characters/ball";
 // import Player from "./characters/player";
 
 // class Button extends Entity {
@@ -17,7 +17,7 @@
 //   }
 //   public update(): void {}
 //   public static spawn(): void {
-//     new Ball(2, 10, new Vector(100, 100), 0, 0).store();
+//     new BallEnemy(2, 10, new Vector(100, 100), 0, 0).store();
 //   }
 //   public override draw(): void {
 //     Drawer.instance.with(() => this.shape.draw(), {

@@ -1,4 +1,8 @@
-export function KeyboardMixin<Base extends Constructor>(base: Base) {
+import type Entity from "../core/entity";
+
+export function KeyboardMixin<Base extends Constructor<Entity<any>>>(
+  base: Base
+) {
   return class extends base {
     protected keyPressed = new Set<string>();
     public constructor() {

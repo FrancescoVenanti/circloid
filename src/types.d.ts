@@ -1,4 +1,4 @@
-type NonAbstractConstructor = new (...args: any) => any;
-type AbstractConstructor = abstract new (...args: any) => any;
-type Constructor = NonAbstractConstructor | AbstractConstructor;
+type NonAbstractConstructor<T = {}> = new (...args: any[]) => T;
+type AbstractConstructor<T = {}> = abstract new (...args: any[]) => T;
+type Constructor<T> = NonAbstractConstructor<T> | AbstractConstructor<T>;
 type Increment<N extends number> = [...Array<N>, unknown]["length"];

@@ -1,5 +1,5 @@
 import Drawer from "../drawer";
-import type Vector from "../vector";
+import Vector from "../vector";
 import Shape from "./shape";
 
 class Circle extends Shape {
@@ -24,6 +24,11 @@ class Circle extends Shape {
     if (distance === radius) return [alpha + Math.PI, alpha + Math.PI];
     const theta = Math.asin(radius / distance);
     return [alpha - theta + Math.PI, alpha + theta + Math.PI];
+  }
+
+  public randomPointFromBorder(): Vector {
+    const randomAngle = Math.random() * Math.PI * 2;
+    return Vector.fromAngle(randomAngle).mulScalar(this.radius);
   }
 }
 

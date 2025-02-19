@@ -1,20 +1,21 @@
 import Canvas from "../../core/canvas";
 import Drawer from "../../core/drawer";
-import Entity from "../../core/entity";
+import MovingEntity from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
+import Explosion from "../effects/explosion";
 
-class Player extends Entity {
+class Player extends MovingEntity<Circle> {
   constructor(
     zIndex: number,
     vector: Vector,
-    public angle: number,
-    public speed: number,
+    angle: number,
+    speed: number,
     public lives: number,
     public points: number,
     public credits: number
   ) {
-    super(zIndex, new Circle(vector, 40));
+    super(zIndex, new Circle(vector, 40), angle, speed);
     this.key = "player";
     this.store();
     this.listenKeyboard();
@@ -70,15 +71,13 @@ class Player extends Entity {
     this.preventEscape(newDirection);
   }
 
+  private explode(vect: Vector) {
+    const explosion = new Explosion(vect.clone());
+    explosion.store();
+  }
+
   private preventEscape(direction: Vector) {
-    const constraint = this.canvas.get("constraint");
-    if (
-      !constraint ||
-      !(constraint.shape instanceof Circle) ||
-      !(this.shape instanceof Circle)
-    ) {
-      return false;
-    }
+    const constraint = Canvas.instance.get<Circle>("constraint");
 
     const center = constraint.shape.vector;
     const distance = center.distance(this.shape.vector);
@@ -97,11 +96,15 @@ class Player extends Entity {
     return false;
   }
 
+  private death() {
+    this.lives = 3;
+    this.points = 0;
+    this.credits = 0;
+  }
+
   public update(): void {
     if (this.lives < 1) {
-      this.lives = 3;
-      this.points = 0;
-      this.credits = 0;
+      this.death();
     }
     this.move();
     this.collisions();
@@ -121,10 +124,12 @@ class Player extends Entity {
       const maxDistance = ball.shape.radius + this.shape.radius;
       if (distance <= maxDistance) {
         ball.destroy();
-        Drawer.instance.drawExplosion(
-          new Vector(this.shape.vector.x, this.shape.vector.y),
-          100
-        );
+        // Drawer.instance.drawExplosion(
+        //   new Vector(this.shape.vector.x, this.shape.vector.y),
+        //   100
+        // );
+
+        this.explode(ball.shape.vector);
         this.lives--;
       }
     }
@@ -175,6 +180,8 @@ class Player extends Entity {
       }
     );
   }
+
+  private drawMaxScore() {}
 
   private drawLives() {
     for (let i = 0; i < this.lives; i++) {

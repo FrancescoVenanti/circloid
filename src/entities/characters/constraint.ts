@@ -3,7 +3,7 @@ import Entity from "../../core/entity";
 import Circle from "../../core/shape/circle";
 import type Vector from "../../core/vector";
 
-class Constraint extends Entity {
+class Constraint extends Entity<Circle> {
   constructor(zIndex: number, vector: Vector, radius: number) {
     super(zIndex, new Circle(vector, radius));
     this.key = "constraint";

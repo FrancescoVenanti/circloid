@@ -1,12 +1,13 @@
 import Drawer from "./drawer";
 import Entity from "./entity";
 import Rect from "./shape/rect";
+import type Shape from "./shape/shape";
 import Vector from "./vector";
 
 class Canvas {
   public static instance: Canvas = new Canvas();
 
-  private entities: Map<String, Entity> = new Map();
+  private entities: Map<String, Entity<any>> = new Map();
   private canvas: HTMLCanvasElement | null = null;
 
   public rect: Rect = new Rect(new Vector(0, 0), 0, 0);
@@ -28,11 +29,11 @@ class Canvas {
     this.rect.height = this.canvas!.height;
   }
 
-  public add(entity: Entity): void {
+  public add(entity: Entity<any>): void {
     this.entities.set(entity.key, entity);
   }
 
-  public destroy(entity: Entity): void {
+  public destroy(entity: Entity<any>): void {
     this.entities.delete(entity.key);
   }
 
@@ -51,12 +52,12 @@ class Canvas {
     });
   }
 
-  public get(key: string) {
+  public get<T extends Shape>(key: string): Entity<T> | null {
     return this.entities.get(key);
   }
 
   public startsWith(key: string) {
-    const entities: Entity[] = [];
+    const entities: Entity<any>[] = [];
     this.entities.forEach((e) => {
       if (e.key.toLowerCase().startsWith(key.toLowerCase())) {
         entities.push(e);
