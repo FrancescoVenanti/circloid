@@ -11,7 +11,9 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "dev": "bun server.ts"
+    "dev": "vite",
+    "build": "vite build",
+    "start": "bun server.ts"
   },
   "dependencies": {
     "express": "^4.21.2",

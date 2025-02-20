@@ -97,9 +97,25 @@ class Player extends MovingEntity<Circle> {
   }
 
   private death() {
+    this.postResults();
     this.lives = 3;
     this.points = 0;
     this.credits = 0;
+  }
+
+  public async postResults() {
+    const name = prompt("Insert your name: ");
+    const body = {
+      name: name,
+      score: this.points,
+    };
+    const res = await fetch("/score", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
   }
 
   public update(): void {
