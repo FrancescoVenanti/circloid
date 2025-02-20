@@ -2,6 +2,7 @@ import Canvas from "./src/core/canvas";
 import BallEnemy from "./src/entities/characters/ball-enemy";
 import Constraint from "./src/entities/characters/constraint";
 import Player from "./src/entities/characters/player";
+import Highscore from "./src/entities/highscore";
 
 declare global {
   interface Window {
@@ -29,10 +30,12 @@ function loop(delay: number) {
   Canvas.instance.render();
   counter = (counter + 1) % fps;
 
-  requestAnimationFrame(loop); // Passa il player correttamente
+  requestAnimationFrame(loop);
 }
 document.addEventListener("DOMContentLoaded", () => {
   Canvas.instance.init();
+  const highscore = new Highscore(1);
+  highscore.store();
 
   window.player = new Player(1, Canvas.instance.rect.center, 0, 2, 3, 0, 0);
   new Constraint(1, Canvas.instance.rect.center, 120);

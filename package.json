@@ -3,16 +3,19 @@
   "module": "index.html",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/express": "^5.0.0",
+    "@types/sqlite3": "^5.1.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "dev": "vite"
+    "dev": "bun server.ts"
   },
   "dependencies": {
     "express": "^4.21.2",
+    "sqlite": "^5.1.1",
     "vite": "^6.1.0"
   }
 }
