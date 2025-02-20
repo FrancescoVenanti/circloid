@@ -78,7 +78,7 @@ class Player extends MovingEntity<Circle> {
 
   private preventEscape(direction: Vector) {
     const constraint = Canvas.instance.get<Circle>("constraint");
-
+    if (!constraint) return;
     const center = constraint.shape.vector;
     const distance = center.distance(this.shape.vector);
     const maxDistance = constraint.shape.radius - this.shape.radius;

@@ -16,7 +16,7 @@ class Canvas {
 
   public init() {
     this.canvas = document.createElement("canvas");
-    document.body.appendChild(this.canvas);
+    document.getElementById("app")?.appendChild(this.canvas);
     Drawer.instance.init(this.canvas.getContext("2d")!);
     this.resize();
     window.addEventListener("resize", () => this.resize());
@@ -52,7 +52,7 @@ class Canvas {
     });
   }
 
-  public get<T extends Shape>(key: string): Entity<T> | null {
+  public get<T extends Shape>(key: string): Entity<T> | undefined {
     return this.entities.get(key);
   }
 
