@@ -133,7 +133,7 @@ class Player extends MovingEntity<Circle> {
   }
 
   public collisions() {
-    const balls = Canvas.instance.startsWith("ball");
+    const balls = Canvas.instance.startsWith("ballenemy");
     console.log("get balls, number: " + balls.length);
     for (const ball of balls) {
       if (!(ball.shape instanceof Circle) || !(this.shape instanceof Circle))
