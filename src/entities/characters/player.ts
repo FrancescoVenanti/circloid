@@ -18,7 +18,6 @@ class Player extends MovingEntity<Circle> {
     private credits: number
   ) {
     super(zIndex, new Circle(vector, 35), "player", angle, speed);
-    this.speed = 2;
     this.store();
     this.listenKeyboard();
   }
@@ -48,6 +47,7 @@ class Player extends MovingEntity<Circle> {
     this.lives = 3;
     this.credits = 0;
     this.speed = 3;
+    this.shape.vector = Canvas.instance.rect.center;
     Canvas.instance.get("constraint")?.destroy();
     new Constraint(1, Canvas.instance.rect.center, 120);
   }
