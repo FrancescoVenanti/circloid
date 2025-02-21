@@ -6,7 +6,8 @@ abstract class Entity<T extends Shape> {
   public key: string;
 
   constructor(public zIndex: number, public shape: T) {
-    this.key = this.constructor.name + "_" + crypto.randomUUID();
+    this.key =
+      this.constructor.name + "_" + Math.random().toString(36).substring(6);
   }
 
   public abstract update(): void;
