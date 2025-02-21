@@ -1,3 +1,4 @@
+"use client";
 class Vector {
   public static fromAngle(angle: number) {
     return new Vector(Math.cos(angle), Math.sin(angle));

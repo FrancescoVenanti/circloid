@@ -1,3 +1,4 @@
+"use client";
 import Drawer from "./drawer";
 import Entity from "./entity";
 import Rect from "./shape/rect";

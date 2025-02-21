@@ -1,3 +1,4 @@
+"use client";
 import Canvas from "./canvas";
 import type Shape from "./shape/shape";
 

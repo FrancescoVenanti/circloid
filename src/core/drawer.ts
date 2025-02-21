@@ -1,3 +1,4 @@
+"use client";
 import type Rect from "./shape/rect";
 import type Vector from "./vector";
 

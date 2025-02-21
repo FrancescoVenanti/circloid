@@ -1,3 +1,4 @@
+"use client";
 import Entity from "./entity";
 import type Shape from "./shape/shape";
 
