@@ -48,7 +48,7 @@ class Player extends MovingEntity<Circle> {
     this.lives = 3;
     this.credits = 0;
     this.speed = 3;
-    this.shape.vector = Canvas.instance.rect.center;
+    this.shape.vector = Canvas.instance.rect.center.clone();
     Canvas.instance.get("constraint")?.destroy();
     new Constraint(1, Canvas.instance.rect.center, 120);
   }
@@ -125,6 +125,7 @@ class Player extends MovingEntity<Circle> {
   }
 
   public async postResults() {
+    this.keyMap.clear();
     const name = prompt("Insert your name: ");
     const body = {
       name: name,
