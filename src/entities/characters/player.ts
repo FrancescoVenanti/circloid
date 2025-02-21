@@ -140,8 +140,7 @@ class Player extends MovingEntity<Circle> {
       const distance = ball.shape.vector.distance(this.shape.vector);
       const maxDistance = ball.shape.radius + this.shape.radius;
 
-      distance - maxDistance < 50 &&
-        console.log("Before check" + distance, maxDistance);
+      console.log("Before check" + distance, maxDistance);
       if (distance <= maxDistance) {
         console.log("player collided");
         ball.destroy();
