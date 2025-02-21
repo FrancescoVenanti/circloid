@@ -139,13 +139,16 @@ class Player extends MovingEntity<Circle> {
         continue;
       const distance = ball.shape.vector.distance(this.shape.vector);
       const maxDistance = ball.shape.radius + this.shape.radius;
+
+      distance - maxDistance < 50 &&
+        console.log("Before check" + distance, maxDistance);
       if (distance <= maxDistance) {
+        console.log("player collided");
         ball.destroy();
         // Drawer.instance.drawExplosion(
         //   new Vector(this.shape.vector.x, this.shape.vector.y),
         //   100
         // );
-        console.log("player collided");
         this.explode(ball.shape.vector);
         this.lives--;
       }
