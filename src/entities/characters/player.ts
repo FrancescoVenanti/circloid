@@ -145,7 +145,7 @@ class Player extends MovingEntity<Circle> {
         //   new Vector(this.shape.vector.x, this.shape.vector.y),
         //   100
         // );
-
+        console.log("player collided");
         this.explode(ball.shape.vector);
         this.lives--;
       }
