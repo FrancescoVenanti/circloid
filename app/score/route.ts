@@ -1,6 +1,7 @@
 import { supabase } from "@/supabase";
+import { NextRequest } from "next/server";
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req: NextRequest) {
   const { data, error } = await supabase
     .from("score")
     .select()
@@ -20,7 +21,7 @@ export async function GET(req: Request, res: Response) {
   });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const body = await req.json();
   const { data, error } = await supabase.from("score").insert([body]);
 
@@ -37,7 +38,7 @@ export async function POST(req: Request) {
   });
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
   const body = await req.json();
   const { id } = body;
   const { error } = await supabase.from("score").delete().match({ id });
