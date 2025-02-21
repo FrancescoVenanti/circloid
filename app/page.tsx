@@ -36,6 +36,7 @@ function loop(delay: number) {
   const player = Canvas.instance.get("player");
   if (!player || !(player instanceof Player)) return;
   if (counter === 0) {
+    console.log("counter");
     BallEnemy.spawnAmount(
       1 + Math.round(player.points / 30),
       player.points / 20
