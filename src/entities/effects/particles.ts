@@ -27,6 +27,7 @@ class Particles extends Shape {
       -1,
       this.radius,
       this.vector.clone(),
+      "ballparticle",
       angle,
       (Math.random() * this.speed) / 2
     );

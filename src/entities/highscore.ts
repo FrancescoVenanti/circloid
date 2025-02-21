@@ -14,7 +14,8 @@ class Highscore extends Entity<any> {
         Canvas.instance.rect.topLeft.clone().addX(60).addY(140),
         120,
         200
-      )
+      ),
+      "highscore"
     );
     this.loadScores();
   }

@@ -16,8 +16,7 @@ class Player extends MovingEntity<Circle> {
     public points: number,
     public credits: number
   ) {
-    super(zIndex, new Circle(vector, 40), angle, speed);
-    this.key = "player";
+    super(zIndex, new Circle(vector, 40), "player", angle, speed);
     this.store();
     this.listenKeyboard();
   }
@@ -134,16 +133,12 @@ class Player extends MovingEntity<Circle> {
 
   public collisions() {
     const balls = Canvas.instance.startsWith("ballenemy");
-    console.log("get balls, number: " + balls.length);
     for (const ball of balls) {
       if (!(ball.shape instanceof Circle) || !(this.shape instanceof Circle))
         continue;
       const distance = ball.shape.vector.distance(this.shape.vector);
       const maxDistance = ball.shape.radius + this.shape.radius;
-
-      console.log("Before check" + distance, maxDistance);
       if (distance <= maxDistance) {
-        console.log("player collided");
         ball.destroy();
         // Drawer.instance.drawExplosion(
         //   new Vector(this.shape.vector.x, this.shape.vector.y),

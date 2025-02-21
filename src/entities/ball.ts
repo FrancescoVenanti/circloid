@@ -8,10 +8,11 @@ class Ball extends MovingEntity<Circle> {
     zIndex: number,
     radius: number,
     vector: Vector,
+    key: string,
     angle: number,
     speed: number
   ) {
-    super(zIndex, new Circle(vector, radius), angle, speed);
+    super(zIndex, new Circle(vector, radius), key, angle, speed);
   }
   public override update(): void {
     const vector = Vector.fromAngle(this.angle).mulScalar(this.speed);

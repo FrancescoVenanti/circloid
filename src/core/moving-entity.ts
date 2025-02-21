@@ -6,10 +6,11 @@ abstract class MovingEntity<T extends Shape> extends Entity<T> {
   constructor(
     zIndex: number,
     shape: T,
+    key: string,
     public angle: number,
     public speed: number
   ) {
-    super(zIndex, shape);
+    super(zIndex, shape, key);
   }
 }
 

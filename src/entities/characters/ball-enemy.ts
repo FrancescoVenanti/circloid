@@ -13,8 +13,7 @@ class BallEnemy extends Ball {
     angle: number,
     speed: number
   ) {
-    super(zIndex, radius, vector, angle, speed);
-    // this.key = "ball";
+    super(zIndex, radius, vector, "ballenemy", angle, speed);
   }
 
   public static spawnAmount(amount: number, speedMultiplier: number): void {
