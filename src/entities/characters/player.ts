@@ -5,6 +5,7 @@ import MovingEntity from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import Explosion from "../effects/explosion";
+import Constraint from "./constraint";
 
 class Player extends MovingEntity<Circle> {
   constructor(
@@ -12,11 +13,11 @@ class Player extends MovingEntity<Circle> {
     vector: Vector,
     angle: number,
     speed: number,
-    public lives: number,
-    public points: number,
-    public credits: number
+    private lives: number,
+    private points: number,
+    private credits: number
   ) {
-    const shape = new Circle(vector, 40);
+    const shape = new Circle(vector, 35);
     super({ zIndex, shape, key: "player", angle, speed });
     this.store();
     this.listenKeyboard();
@@ -41,6 +42,28 @@ class Player extends MovingEntity<Circle> {
   }
 
   private keyMap: Set<String> = new Set();
+
+  public reset() {
+    this.points = 0;
+    this.lives = 3;
+    this.credits = 0;
+    this.speed = 3;
+    Canvas.instance.get("constraint")?.destroy();
+    new Constraint(1, Canvas.instance.rect.center, 120);
+  }
+
+  public setScore() {
+    this.points++;
+    this.credits++;
+  }
+
+  public getPoints(): number {
+    return this.points;
+  }
+
+  public getSpeed(): number {
+    return this.speed;
+  }
 
   private move() {
     const x = ["a", "d"];
@@ -97,9 +120,7 @@ class Player extends MovingEntity<Circle> {
 
   private death() {
     this.postResults();
-    this.lives = 3;
-    this.points = 0;
-    this.credits = 0;
+    this.reset();
   }
 
   public async postResults() {

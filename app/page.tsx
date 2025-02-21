@@ -7,13 +7,7 @@ import Canvas from "@/src/core/canvas";
 import Highscore from "@/src/entities/highscore";
 import Constraint from "@/src/entities/characters/constraint";
 import BallEnemy from "@/src/entities/characters/ball-enemy";
-
-declare global {
-  interface Window {
-    player: Player;
-    fps: number;
-  }
-}
+import GLOBAL from "@/src/core/global";
 
 let beforeDelay = 0;
 let counter = 0;
@@ -26,7 +20,7 @@ export default function Home() {
     const highscore = new Highscore(1);
     highscore.store();
 
-    window.player = new Player(1, Canvas.instance.rect.center, 0, 2, 3, 0, 0);
+    GLOBAL("player", new Player(1, Canvas.instance.rect.center, 0, 3, 3, 0, 0));
 
     new Constraint(1, Canvas.instance.rect.center, 120);
     loop(0);
@@ -35,17 +29,16 @@ export default function Home() {
 }
 
 function loop(delay: number) {
-  const player = window.player;
+  const player = GLOBAL("player");
   if (!player || !(player instanceof Player)) return;
   if (counter === 0) {
     BallEnemy.spawnAmount(
-      1 + Math.round(player.points / 30),
-      player.points / 20
+      1 + Math.round(player.getPoints() / 30),
+      player.getPoints() / 20
     );
-    player.points++;
-    player.credits++;
+    player.setScore();
   }
-  window.fps = 1000 / (delay - beforeDelay);
+  GLOBAL("fps", 1000 / (delay - beforeDelay));
   beforeDelay = delay;
   Canvas.instance.render();
   counter = (counter + 1) % fps;
