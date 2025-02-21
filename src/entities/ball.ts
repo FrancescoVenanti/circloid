@@ -1,3 +1,4 @@
+"use client";
 import MovingEntity from "../core/moving-entity";
 import Circle from "../core/shape/circle";
 import Vector from "../core/vector";

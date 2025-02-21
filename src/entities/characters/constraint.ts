@@ -1,3 +1,4 @@
+"use client";
 import Drawer from "../../core/drawer";
 import Entity from "../../core/entity";
 import Circle from "../../core/shape/circle";

@@ -1,3 +1,4 @@
+"use client";
 import Canvas from "../core/canvas";
 import Drawer from "../core/drawer";
 import Entity from "../core/entity";
