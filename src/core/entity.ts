@@ -3,11 +3,21 @@ import { generateKey } from "../utils";
 import Canvas from "./canvas";
 import type Shape from "./shape/shape";
 
+export interface IEntity<T extends Shape> {
+  zIndex: number;
+  shape: T;
+  key: string;
+}
+
 abstract class Entity<T extends Shape> {
   public key: string;
+  public zIndex: number;
+  public shape: T;
 
-  constructor(public zIndex: number, public shape: T, key: string) {
+  constructor({ key, zIndex = 1, shape }: IEntity<T>) {
     this.key = generateKey(key);
+    this.zIndex = zIndex;
+    this.shape = shape;
   }
 
   public abstract update(): void;

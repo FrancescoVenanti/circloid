@@ -17,7 +17,8 @@ class Player extends MovingEntity<Circle> {
     private points: number,
     private credits: number
   ) {
-    super(zIndex, new Circle(vector, 35), "player", angle, speed);
+    const shape = new Circle(vector, 35);
+    super({ zIndex, shape, key: "player", angle, speed });
     this.store();
     this.listenKeyboard();
   }
