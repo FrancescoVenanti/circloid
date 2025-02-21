@@ -20,8 +20,7 @@ class Highscore extends Entity<any> {
 
   private async loadScores() {
     const res = await fetch("/score", { method: "get" });
-    this.scores = await res.json();
-    console.log(this.scores);
+    this.scores = (await res.json()).scores;
   }
 
   public draw(): void {
