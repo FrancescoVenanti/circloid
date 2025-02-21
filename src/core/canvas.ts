@@ -60,6 +60,7 @@ class Canvas {
   public startsWith(key: string) {
     const entities: Entity<any>[] = [];
     this.entities.forEach((e) => {
+      console.log(e.key);
       if (e.key.toLowerCase().startsWith(key.toLowerCase())) {
         entities.push(e);
       }
