@@ -23,14 +23,14 @@ class Particles extends Shape {
   }
   private generate(): Ball {
     const angle = Math.PI * 2 * Math.random();
-    return new Ball(
-      -1,
-      this.radius,
-      this.vector.clone(),
-      "ballparticle",
+    return new Ball({
+      zIndex: -1,
+      radius: this.radius,
+      vect: this.vector.clone(),
+      key: "ballparticle",
       angle,
-      (Math.random() * this.speed) / 2
-    );
+      speed: (Math.random() * this.speed) / 2,
+    });
   }
 
   public override draw() {

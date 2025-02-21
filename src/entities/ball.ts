@@ -1,13 +1,16 @@
 "use client";
-import MovingEntity from "../core/moving-entity";
+import MovingEntity, { IMovingEntity } from "../core/moving-entity";
 import Circle from "../core/shape/circle";
 import Vector from "../core/vector";
 
-interface IBall extends MovingEntity<Circle> {}
+export interface IBall extends Omit<IMovingEntity<Circle>, "shape"> {
+  vect: Vector;
+  radius: number;
+}
 
 class Ball extends MovingEntity<Circle> {
-  constructor({ zIndex, radius, vector: Vector, key: string, angle, speed }) {
-    const shape = new Circle(vector, radius);
+  constructor({ zIndex, key, angle, speed, vect, radius }: IBall) {
+    const shape = new Circle(vect, radius);
     super({ zIndex, shape, key, angle, speed });
   }
   public override update(): void {

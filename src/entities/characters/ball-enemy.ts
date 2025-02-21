@@ -1,19 +1,15 @@
 "use client";
+import Drawer from "@/src/core/drawer";
 import Canvas from "../../core/canvas";
-import Drawer from "../../core/drawer";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
-import Ball from "../ball";
+import Ball, { IBall } from "../ball";
+
+interface IBallEnemy extends Omit<IBall, "key"> {}
 
 class BallEnemy extends Ball {
-  constructor(
-    zIndex: number,
-    radius: number,
-    vector: Vector,
-    angle: number,
-    speed: number
-  ) {
-    super(zIndex, radius, vector, "ballenemy", angle, speed);
+  constructor(props: IBallEnemy) {
+    super({ ...props, key: "ballenemy" });
   }
 
   public static spawnAmount(amount: number, speedMultiplier: number): void {
@@ -27,9 +23,9 @@ class BallEnemy extends Ball {
     const constraint = Canvas.instance.get("constraint");
     if (!constraint || !(constraint.shape instanceof Circle)) return null;
 
-    const randomPoint = Canvas.instance.rect.randomPointFromBorder();
+    const vect = Canvas.instance.rect.randomPointFromBorder();
 
-    const [min, max] = constraint.shape.tangentsFromVector(randomPoint, 10);
+    const [min, max] = constraint.shape.tangentsFromVector(vect, 10);
 
     if (!min) return null;
 
@@ -37,10 +33,21 @@ class BallEnemy extends Ball {
     if (max) {
       angle = Math.random() * (max - min) + min;
     }
-    return new BallEnemy(0, 10, randomPoint, angle, 6 + speedMultiplier);
+
+    const props: IBallEnemy = {
+      vect,
+      angle,
+      radius: 10,
+      speed: 6 + speedMultiplier,
+    };
+
+    return new BallEnemy(props);
   }
 
   public override draw(): void {
+    {
+      this;
+    }
     Drawer.instance.with(() => this.shape.draw(), {
       fillStyle: "coral",
       strokeStyle: "coral",

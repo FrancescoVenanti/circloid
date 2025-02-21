@@ -1,17 +1,22 @@
-import Vector from "@/src/core/vector";
-import Ball from "../ball";
+import Ball, { IBall } from "../ball";
+
+export interface IDebris extends IBall {
+  angles: number;
+  variants: number;
+}
 
 class Debris extends Ball {
-  constructor(
-    vect: Vector,
-    radius: number,
-    public angles: number,
-    public variants: number
-  ) {
-    super(1, radius, vect, "debris", 0, 0);
+  public angles: number;
+  public variants: number;
+  constructor(props: IDebris) {
+    super(props);
+    this.angles = props.angles;
+    this.variants = props.variants;
   }
 
   public update(): void {}
 
   public draw(): void {}
 }
+
+export default Debris;

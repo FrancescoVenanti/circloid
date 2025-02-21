@@ -4,7 +4,7 @@ import Canvas from "./canvas";
 import type Shape from "./shape/shape";
 
 export interface IEntity<T extends Shape> {
-  zIndex: number;
+  zIndex?: number;
   shape: T;
   key: string;
 }
