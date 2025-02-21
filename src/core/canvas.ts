@@ -8,7 +8,7 @@ import Vector from "./vector";
 class Canvas {
   public static instance: Canvas = new Canvas();
 
-  private entities: Map<String, Entity<any>> = new Map();
+  private entities: Map<string, Entity<any>> = new Map();
   private canvas: HTMLCanvasElement | null = null;
 
   public rect: Rect = new Rect(new Vector(0, 0), 0, 0);
@@ -54,13 +54,12 @@ class Canvas {
   }
 
   public get<T extends Shape>(key: string): Entity<T> | undefined {
-    return this.entities.get(key);
+    return this.startsWith(key)[0];
   }
 
   public startsWith(key: string) {
     const entities: Entity<any>[] = [];
     this.entities.forEach((e) => {
-      console.log(e.key);
       if (e.key.toLowerCase().startsWith(key.toLowerCase())) {
         entities.push(e);
       }

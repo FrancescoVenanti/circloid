@@ -6,8 +6,7 @@ import type Vector from "../../core/vector";
 
 class Constraint extends Entity<Circle> {
   constructor(zIndex: number, vector: Vector, radius: number) {
-    super(zIndex, new Circle(vector, radius), "costraint");
-    this.key = "constraint";
+    super(zIndex, new Circle(vector, radius), "constraint");
     this.store();
   }
   public update() {}

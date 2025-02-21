@@ -29,11 +29,9 @@ class Player extends MovingEntity<Circle> {
       }
       if (e.key == "1") {
         this.upgradeSpeed();
-        console.log(this.speed);
       }
       if (e.key == "2") {
         this.upgradeConstraint();
-        console.log(this.speed);
       }
     });
     window.addEventListener("keyup", (e) => {

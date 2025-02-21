@@ -22,10 +22,12 @@ const fps = 60;
 export default function Home() {
   useEffect(() => {
     Canvas.instance.init();
+
     const highscore = new Highscore(1);
     highscore.store();
 
     window.player = new Player(1, Canvas.instance.rect.center, 0, 2, 3, 0, 0);
+
     new Constraint(1, Canvas.instance.rect.center, 120);
     loop(0);
   }, []);
@@ -33,7 +35,7 @@ export default function Home() {
 }
 
 function loop(delay: number) {
-  const player = Canvas.instance.get("player");
+  const player = window.player;
   if (!player || !(player instanceof Player)) return;
   if (counter === 0) {
     BallEnemy.spawnAmount(
