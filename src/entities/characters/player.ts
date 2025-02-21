@@ -1,7 +1,7 @@
 "use client";
 import Canvas from "../../core/canvas";
 import Drawer from "../../core/drawer";
-import MovingEntity from "../../core/moving-entity";
+import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import Explosion from "../effects/explosion";
@@ -9,7 +9,7 @@ import SpeedUpgrade from "../upgrades/speed-upgrade";
 import Upgrade from "../upgrades/upgrades";
 import Constraint from "./constraint";
 
-interface IPlayer extends Omit<MovingEntity<Circle>, "shape" | "key"> {
+interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   upgrades: Upgrade[];
   lives: number;
   points: number;

@@ -20,7 +20,19 @@ export default function Home() {
     const highscore = new Highscore(1);
     highscore.store();
 
-    GLOBAL("player", new Player(1, Canvas.instance.rect.center, 0, 3, 3, 0, 0));
+    GLOBAL(
+      "player",
+      new Player({
+        zIndex: 1,
+        vector: Canvas.instance.rect.center,
+        angle: 0,
+        speed: 3,
+        lives: 3,
+        points: 0,
+        credits: 0,
+        upgrades: [],
+      })
+    );
 
     new Constraint(1, Canvas.instance.rect.center, 120);
     loop(0);
