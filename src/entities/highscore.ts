@@ -8,15 +8,16 @@ import Vector from "../core/vector";
 class Highscore extends Entity<any> {
   private scores: any[] = [];
   constructor(zIndex: number) {
-    super(
-      zIndex,
-      new Rect(
-        Canvas.instance.rect.topLeft.clone().addX(60).addY(140),
-        120,
-        200
-      ),
-      "highscore"
+    const shape = new Rect(
+      Canvas.instance.rect.topLeft.clone().addX(60).addY(140),
+      120,
+      200
     );
+    super({
+      zIndex,
+      shape,
+      key: "highscore",
+    });
     this.loadScores();
   }
 
