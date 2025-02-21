@@ -5,20 +5,45 @@ import MovingEntity from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import Explosion from "../effects/explosion";
+import SpeedUpgrade from "../upgrades/speed-upgrade";
+import Upgrade from "../upgrades/upgrades";
 import Constraint from "./constraint";
 
+interface IPlayer extends Omit<MovingEntity<Circle>, "shape" | "key"> {
+  upgrades: Upgrade[];
+  lives: number;
+  points: number;
+  credits: number;
+  vector: Vector;
+}
 class Player extends MovingEntity<Circle> {
-  constructor(
-    zIndex: number,
-    vector: Vector,
-    angle: number,
-    speed: number,
-    private lives: number,
-    private points: number,
-    private credits: number
-  ) {
+  private upgrades: Upgrade[] = [
+    new SpeedUpgrade({
+      zIndex: 1,
+      vector: this.shape.vector,
+      level: 1,
+      maxLevel: 10,
+      cost: 10,
+      costMultiplier: 1,
+    }),
+  ];
+  private lives: number;
+  private points: number;
+  private credits: number;
+  constructor({
+    vector,
+    zIndex,
+    angle,
+    speed,
+    lives,
+    points,
+    credits,
+  }: IPlayer) {
     const shape = new Circle(vector, 35);
     super({ zIndex, shape, key: "player", angle, speed });
+    this.lives = lives;
+    this.points = points;
+    this.credits = credits;
     this.store();
     this.listenKeyboard();
   }
