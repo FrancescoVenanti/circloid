@@ -1,14 +1,25 @@
 import Entity from "../../core/entity";
 import type Vector from "../../core/vector";
-import Particles from "./particles";
+import DebrisParticles from "./debris-particles";
 
-class Explosion extends Entity<Particles> {
+class Explosion extends Entity<DebrisParticles> {
   constructor(vect: Vector) {
-    const shape = new Particles(vect, 10, 8, 10);
-    super({ zIndex: 1, shape, key: "explosion" });
+    const shape = new DebrisParticles({
+      vect,
+      amount: 10,
+      radius: 8,
+      speed: 10,
+
+      // decreasingSpeed: 0.2,
+    });
+    super({ shape, key: "explosion" });
   }
   public override update(): void {
-    if (this.shape.particles.length == 0) this.destroy();
+    if (
+      this.shape.particles.length == 0 ||
+      this.shape.particles.every((p) => !p.active)
+    )
+      this.destroy();
   }
 }
 

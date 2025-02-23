@@ -82,6 +82,7 @@ class Drawer {
     }
     this.setDefault();
   }
+
   public drawHeart({ x, y }: Vector, size: number) {
     const ctx = this.context!;
     ctx.beginPath();
@@ -99,6 +100,22 @@ class Drawer {
     ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + size / 4);
     ctx.closePath();
   }
+
+  public line(lines: Vector[]) {
+    if (!this.context) return;
+    if (lines.length < 2) return;
+    const ctx = this.context;
+    ctx.beginPath();
+
+    ctx.moveTo(lines[0].x, lines[0].y);
+    for (let i = 1; i < lines.length; i++) {
+      ctx.lineTo(lines[i].x, lines[i].y);
+    }
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+  }
+
   public drawExplosion({ x, y }: Vector, size: number) {
     const ctx = this.context!;
     ctx.beginPath();

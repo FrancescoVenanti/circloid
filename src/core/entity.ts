@@ -6,7 +6,7 @@ import type Shape from "./shape/shape";
 export interface IEntity<T extends Shape> {
   zIndex?: number;
   shape: T;
-  key: string;
+  key?: string;
 }
 
 abstract class Entity<T extends Shape> {
@@ -14,8 +14,12 @@ abstract class Entity<T extends Shape> {
   public zIndex: number;
   public shape: T;
 
+  public get active() {
+    return Canvas.instance.has(this);
+  }
+
   constructor({ key, zIndex = 1, shape }: IEntity<T>) {
-    this.key = generateKey(key);
+    this.key = generateKey(key || "entity");
     this.zIndex = zIndex;
     this.shape = shape;
   }

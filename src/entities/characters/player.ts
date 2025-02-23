@@ -5,7 +5,6 @@ import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import Explosion from "../effects/explosion";
-import SpeedUpgrade from "../upgrades/speed-upgrade";
 import Upgrade from "../upgrades/upgrades";
 import Constraint from "./constraint";
 
@@ -14,33 +13,25 @@ interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   lives: number;
   points: number;
   credits: number;
-  vector: Vector;
+  vect: Vector;
 }
 class Player extends MovingEntity<Circle> {
-  private upgrades: Upgrade[] = [
-    new SpeedUpgrade({
-      zIndex: 1,
-      vector: this.shape.vector,
-      level: 1,
-      maxLevel: 10,
-      cost: 10,
-      costMultiplier: 1,
-    }),
-  ];
+  // private upgrades: Upgrade[] = [
+  //   new SpeedUpgrade({
+  //     zIndex: 1,
+  //     vector: this.shape.vector,
+  //     level: 1,
+  //     maxLevel: 10,
+  //     cost: 10,
+  //     costMultiplier: 1,
+  //   }),
+  // ];
   private lives: number;
-  private points: number;
-  private credits: number;
-  constructor({
-    vector,
-    zIndex,
-    angle,
-    speed,
-    lives,
-    points,
-    credits,
-  }: IPlayer) {
-    const shape = new Circle(vector, 35);
-    super({ zIndex, shape, key: "player", angle, speed });
+  public points: number;
+  public credits: number;
+  constructor({ vect, angle, speed, lives, points, credits }: IPlayer) {
+    const shape = new Circle({ vect: vect, radius: 35 });
+    super({ shape, key: "player", angle, speed });
     this.lives = lives;
     this.points = points;
     this.credits = credits;
@@ -75,20 +66,12 @@ class Player extends MovingEntity<Circle> {
     this.speed = 3;
     this.shape.vector = Canvas.instance.rect.center.clone();
     Canvas.instance.get("constraint")?.destroy();
-    new Constraint(1, Canvas.instance.rect.center, 120);
+    new Constraint({ vect: Canvas.instance.rect.center, radius: 120 });
   }
 
   public setScore() {
     this.points++;
     this.credits++;
-  }
-
-  public getPoints(): number {
-    return this.points;
-  }
-
-  public getSpeed(): number {
-    return this.speed;
   }
 
   private move() {
@@ -156,7 +139,7 @@ class Player extends MovingEntity<Circle> {
       name: name,
       score: this.points,
     };
-    const res = await fetch("/score", {
+    await fetch("/score", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -187,10 +170,6 @@ class Player extends MovingEntity<Circle> {
       const maxDistance = ball.shape.radius + this.shape.radius;
       if (distance <= maxDistance) {
         ball.destroy();
-        // Drawer.instance.drawExplosion(
-        //   new Vector(this.shape.vector.x, this.shape.vector.y),
-        //   100
-        // );
         this.explode(ball.shape.vector);
         this.lives--;
       }

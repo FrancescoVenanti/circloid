@@ -12,7 +12,7 @@ export interface IUpgrade extends Omit<IEntity<Rect>, "shape"> {
 
 abstract class Upgrade extends Entity<Rect> {
   constructor(props: IUpgrade) {
-    const shape = new Rect(props.vector, 40, 40);
+    const shape = new Rect({ vect: props.vector, witdh: 40, height: 40 });
     super({ ...props, shape });
   }
 

@@ -1,13 +1,18 @@
 "use client";
+import Vector from "@/src/core/vector";
 import Drawer from "../../core/drawer";
-import Entity from "../../core/entity";
+import Entity, { IEntity } from "../../core/entity";
 import Circle from "../../core/shape/circle";
-import type Vector from "../../core/vector";
+
+interface IConstraint extends Omit<IEntity<Circle>, "shape"> {
+  vect: Vector;
+  radius: number;
+}
 
 class Constraint extends Entity<Circle> {
-  constructor(zIndex: number, vector: Vector, radius: number) {
-    const shape = new Circle(vector, radius);
-    super({ zIndex, shape, key: "constraint" });
+  constructor({ vect, radius, ...props }: IConstraint) {
+    const shape = new Circle({ vect, radius });
+    super({ ...props, shape, key: "constraint" });
     this.store();
   }
   public update() {}

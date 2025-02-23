@@ -34,14 +34,12 @@ class BallEnemy extends Ball {
       angle = Math.random() * (max - min) + min;
     }
 
-    const props: IBallEnemy = {
+    return new BallEnemy({
       vect,
       angle,
       radius: 10,
       speed: 6 + speedMultiplier,
-    };
-
-    return new BallEnemy(props);
+    });
   }
 
   public override draw(): void {
