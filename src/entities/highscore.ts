@@ -1,4 +1,5 @@
 "use client";
+import { getTopScores } from "@/actions";
 import Canvas from "../core/canvas";
 import Drawer from "../core/drawer";
 import Entity from "../core/entity";
@@ -22,8 +23,10 @@ class Highscore extends Entity<any> {
   }
 
   private async loadScores() {
-    const res = await fetch("/score", { method: "get" });
-    this.scores = (await res.json()).scores;
+    // const res = await fetch("/score", { method: "get" });
+    // this.scores = (await res.json()).scores;
+    const res = await getTopScores();
+    this.scores = res;
   }
 
   public draw(): void {
