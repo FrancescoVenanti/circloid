@@ -43,9 +43,6 @@ class BallEnemy extends Ball {
   }
 
   public override draw(): void {
-    {
-      this;
-    }
     Drawer.instance.with(() => this.shape.draw(), {
       fillStyle: "coral",
       strokeStyle: "coral",

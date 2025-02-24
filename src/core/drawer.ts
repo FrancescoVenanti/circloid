@@ -101,7 +101,7 @@ class Drawer {
     ctx.closePath();
   }
 
-  public line(lines: Vector[]) {
+  public polygon(lines: Vector[]) {
     if (!this.context) return;
     if (lines.length < 2) return;
     const ctx = this.context;
@@ -110,9 +110,12 @@ class Drawer {
     ctx.moveTo(lines[0].x, lines[0].y);
     for (let i = 1; i < lines.length; i++) {
       ctx.lineTo(lines[i].x, lines[i].y);
+      // console.log(lines[i].x, lines[i].y);
     }
-    ctx.lineWidth = 10;
+
+    ctx.lineWidth = 2;
     ctx.strokeStyle = "red";
+    ctx.closePath();
     ctx.stroke();
   }
 
@@ -126,7 +129,6 @@ class Drawer {
       const yOffset = Math.sin(angle) * r;
       ctx.lineTo(x + xOffset, y + yOffset);
     }
-    ctx.closePath();
     ctx.fillStyle = "orange";
     ctx.fill();
     ctx.strokeStyle = "red";
