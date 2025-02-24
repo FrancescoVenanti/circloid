@@ -1,4 +1,5 @@
 "use client";
+import { addScore } from "@/actions";
 import Canvas from "../../core/canvas";
 import Drawer from "../../core/drawer";
 import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
@@ -136,16 +137,10 @@ class Player extends MovingEntity<Circle> {
     this.keyMap.clear();
     const name = prompt("Insert your name: ");
     const body = {
-      name: name,
+      name: name || "Unknown",
       score: this.points,
     };
-    await fetch("/score", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    const res = await addScore(body);
   }
 
   public update(): void {
