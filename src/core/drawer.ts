@@ -110,12 +110,7 @@ class Drawer {
     ctx.moveTo(lines[0].x, lines[0].y);
     for (let i = 1; i < lines.length; i++) {
       ctx.lineTo(lines[i].x, lines[i].y);
-      // console.log(lines[i].x, lines[i].y);
     }
-
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "red";
-    ctx.closePath();
     ctx.stroke();
   }
 
@@ -160,15 +155,5 @@ class Drawer {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 }
-
-type Options = {
-  fillStyle?: string;
-  strokeStyle?: string;
-  lineWidth?: number;
-  globalAlpha?: number;
-  shadowColor?: string;
-  shadowBlur?: number;
-  fill?: boolean;
-};
 
 export default Drawer;

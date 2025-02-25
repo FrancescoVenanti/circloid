@@ -22,14 +22,10 @@ export default function Home() {
     GLOBAL(
       "player",
       new Player({
-        zIndex: 1,
         vect: Canvas.instance.rect.center,
         angle: 0,
         speed: 3,
         lives: 3,
-        points: 0,
-        credits: 0,
-        upgrades: [],
       })
     );
 

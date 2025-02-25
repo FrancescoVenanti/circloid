@@ -6,36 +6,38 @@ import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import Explosion from "../effects/explosion";
-import Upgrade from "../upgrades/upgrades";
+import LifeUpgrade from "../upgrades/life-upgrade";
+import SpeedUpgrade from "../upgrades/speed-upgrade";
 import Constraint from "./constraint";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
-  upgrades: Upgrade[];
   lives: number;
-  points: number;
-  credits: number;
+  points?: number;
+  credits?: number;
   vect: Vector;
 }
 class Player extends MovingEntity<Circle> {
-  // private upgrades: Upgrade[] = [
-  //   new SpeedUpgrade({
-  //     zIndex: 1,
-  //     vector: this.shape.vector,
-  //     level: 1,
-  //     maxLevel: 10,
-  //     cost: 10,
-  //     costMultiplier: 1,
-  //   }),
-  // ];
-  private lives: number;
+  private lives: LifeUpgrade;
+  private speedUpgrade: SpeedUpgrade;
   public points: number;
   public credits: number;
   constructor({ vect, angle, speed, lives, points, credits }: IPlayer) {
     const shape = new Circle({ vect: vect, radius: 35 });
     super({ shape, key: "player", angle, speed });
-    this.lives = lives;
-    this.points = points;
-    this.credits = credits;
+    this.lives = new LifeUpgrade({
+      maxLevel: 10,
+      cost: 10,
+      vector: Vector.zero,
+      initialValue: lives,
+    });
+    this.speedUpgrade = new SpeedUpgrade({
+      maxLevel: 10,
+      cost: 10,
+      vector: Vector.zero,
+      initialValue: speed,
+    });
+    this.points = points || 0;
+    this.credits = credits || 0;
     this.store();
     this.listenKeyboard();
   }
@@ -43,15 +45,9 @@ class Player extends MovingEntity<Circle> {
   private listenKeyboard() {
     window.addEventListener("keydown", (e) => {
       const keys = new Set(["w", "a", "s", "d"]);
-      if (keys.has(e.key)) {
-        this.keyMap.add(e.key);
-      }
-      if (e.key == "1") {
-        this.upgradeSpeed();
-      }
-      if (e.key == "2") {
-        this.upgradeConstraint();
-      }
+      if (keys.has(e.key)) this.keyMap.add(e.key);
+      if (e.key == "1") this.upgradeSpeed();
+      if (e.key == "2") this.upgradeConstraint();
     });
     window.addEventListener("keyup", (e) => {
       this.keyMap.delete(e.key);
@@ -62,9 +58,10 @@ class Player extends MovingEntity<Circle> {
 
   public reset() {
     this.points = 0;
-    this.lives = 3;
+    this.lives.valueOf = 3;
     this.credits = 0;
     this.speed = 3;
+    this.speedUpgrade.valueOf = 3;
     this.shape.vector = Canvas.instance.rect.center.clone();
     Canvas.instance.get("constraint")?.destroy();
     new Constraint({ vect: Canvas.instance.rect.center, radius: 120 });
@@ -76,29 +73,21 @@ class Player extends MovingEntity<Circle> {
   }
 
   private move() {
-    const x = ["a", "d"];
-    const y = ["w", "s"];
-    const newDirection = new Vector(0, 0);
-    if (this.keyMap.has(x[0])) {
-      newDirection.x = -1;
-    }
-    if (this.keyMap.has(x[1])) {
-      newDirection.x += 1;
-    }
-    if (this.keyMap.has(y[0])) {
-      newDirection.y = -1;
-    }
-    if (this.keyMap.has(y[1])) {
-      newDirection.y += 1;
-    }
+    const directions: Record<string, Vector> = {
+      a: new Vector(-1, 0),
+      d: new Vector(1, 0),
+      w: new Vector(0, -1),
+      s: new Vector(0, 1),
+    };
 
-    if (newDirection.y === 0 && newDirection.x === 0) return;
+    const newDirection = Object.keys(directions)
+      .filter((key) => this.keyMap.has(key))
+      .reduce((acc, key) => acc.add(directions[key]), new Vector(0, 0));
+
+    if (newDirection.isZero()) return;
 
     this.angle = newDirection.atan2();
-
-    const direction = Vector.fromAngle(this.angle).mulScalar(this.speed);
-
-    this.shape.vector.add(direction);
+    this.shape.vector.add(Vector.fromAngle(this.angle).mulScalar(this.speed));
 
     this.preventEscape(newDirection);
   }
@@ -141,18 +130,15 @@ class Player extends MovingEntity<Circle> {
       score: this.points,
     };
 
-    // const res = await fetch("/score", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(body),
-    // });
-    const res = await addScore(body);
+    try {
+      await addScore(body);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   public update(): void {
-    if (this.lives < 1) {
+    if (this.lives.valueOf < 1) {
       this.death();
     }
     this.move();
@@ -174,7 +160,7 @@ class Player extends MovingEntity<Circle> {
       if (distance <= maxDistance) {
         ball.destroy();
         this.explode(ball.shape.vector);
-        this.lives--;
+        this.lives.valueOf--;
       }
     }
   }
@@ -225,10 +211,8 @@ class Player extends MovingEntity<Circle> {
     );
   }
 
-  private drawMaxScore() {}
-
   private drawLives() {
-    for (let i = 0; i < this.lives; i++) {
+    for (let i = 0; i < this.lives.valueOf; i++) {
       Drawer.instance.with(
         () =>
           Drawer.instance.drawHeart(
@@ -286,16 +270,19 @@ class Player extends MovingEntity<Circle> {
 
   private upgradeSpeed(): void {
     if (this.credits >= 10) {
-      this.speed = this.speed + 1;
+      this.speedUpgrade.upgrade();
+      this.speed = this.speedUpgrade.valueOf;
       this.credits -= 10;
     }
   }
+
   private upgradeConstraint(): void {
     if (this.credits < 10) return;
     const constraint = Canvas.instance.get("constraint");
     if (!constraint) return;
     if (!(constraint.shape instanceof Circle)) return;
-    constraint.shape.radius += 5;
+    if (!(constraint instanceof Constraint)) return;
+    constraint.upgradeRadius();
     this.credits -= 10;
   }
 }

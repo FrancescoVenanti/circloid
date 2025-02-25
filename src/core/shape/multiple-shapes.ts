@@ -1,12 +1,12 @@
 import Shape, { IShape } from "@/src/core/shape/shape";
-import Ball from "../entities/ball";
+import Entity from "../entity";
 
 export interface IMultipleShapes extends IShape {
   amount: number;
   speed: number;
 }
 
-abstract class MultipleShapes<T extends Ball> extends Shape {
+abstract class MultipleShapes<T extends Entity<any>> extends Shape {
   public particles: T[] = [];
   protected speed: number;
   constructor({ amount, speed, ...props }: IMultipleShapes) {
@@ -23,11 +23,7 @@ abstract class MultipleShapes<T extends Ball> extends Shape {
     }
   }
 
-  public draw(): void {
-    this.particles.forEach(this.drawShape);
-  }
-
-  protected abstract drawShape(shape: T): void;
+  public draw(): void {}
 
   protected abstract generate(): T;
 }

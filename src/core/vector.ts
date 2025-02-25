@@ -13,6 +13,10 @@ class Vector {
     return new Vector(this.x, this.y);
   }
 
+  public isZero(): boolean {
+    return this.x === 0 && this.y === 0;
+  }
+
   public set(v: Vector) {
     this.x = v.x;
     this.y = v.y;

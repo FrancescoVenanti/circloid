@@ -1,5 +1,6 @@
-import Drawer from "@/src/core/drawer";
-import MultipleShapes, { IMultipleShapes } from "../../core/multiple-shapes";
+import MultipleShapes, {
+  IMultipleShapes,
+} from "../../core/shape/multiple-shapes";
 import Debris from "./debris";
 
 interface IDebrisParticles extends IMultipleShapes {
@@ -21,15 +22,15 @@ class DebrisParticles extends MultipleShapes<Debris> {
       vect: this.vector.clone(),
       angle,
       angles: 7,
+      rotation: Math.random() * 0.2 - 0.1,
       speed: (Math.random() * this.speed) / 2,
+      style: { fillStyle: "lightblue", fill: true, lineWidth: 0 },
     });
   }
-  protected drawShape(shape: Debris): void {
-    Drawer.instance.with(() => shape.draw(), {
-      fillStyle: "red",
-      fill: true,
-      strokeStyle: "coral",
-    });
+  private generateColor(): string {
+    const colors = ["lightblue", "coral"];
+    const index = Math.random() * colors.length;
+    return colors[Math.floor(index)];
   }
 }
 

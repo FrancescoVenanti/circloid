@@ -7,16 +7,14 @@ class Explosion extends Entity<DebrisParticles> {
     const shape = new DebrisParticles({
       vect,
       amount: 10,
-      radius: 8,
+      radius: 10,
       speed: 10,
-
-      // decreasingSpeed: 0.2,
     });
     super({ shape, key: "explosion" });
   }
   public override update(): void {
     if (
-      this.shape.particles.length == 0 ||
+      this.shape.particles.length === 0 ||
       this.shape.particles.every((p) => !p.active)
     )
       this.destroy();

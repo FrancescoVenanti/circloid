@@ -1,5 +1,5 @@
 import Drawer from "../../core/drawer";
-import MultipleShapes from "../../core/multiple-shapes";
+import MultipleShapes from "../../core/shape/multiple-shapes";
 import { IShape } from "../../core/shape/shape";
 import Ball from "../ball";
 
