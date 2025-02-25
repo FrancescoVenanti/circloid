@@ -261,10 +261,8 @@ class Player extends MovingEntity<Circle> {
   }
 
   private upgradeConstraint(): void {
-    console.log("upgrade Constraint");
     if (this.credits < 10) return;
     const constraint = Canvas.instance.getByConstructor(Constraint)[0];
-    console.log(constraint);
     if (!constraint) return;
     if (!(constraint.shape instanceof Circle)) return;
     if (!(constraint instanceof Constraint)) return;

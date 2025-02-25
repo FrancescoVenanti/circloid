@@ -30,7 +30,6 @@ class MutlipleBalls extends MultipleShapes<Ball> {
   }
 
   protected drawShape(shape: Ball) {
-    console.log("drawerin");
     Drawer.instance.with(() => shape.draw(), {
       fill: true,
       fillStyle: "coral",
