@@ -1,12 +1,13 @@
 import Drawer from "@/src/core/drawer";
 import Upgrade, { IUpgrade } from "./upgrades";
+import Canvas from "@/src/core/canvas";
 
 class SpeedUpgrade extends Upgrade<number> {
-  public get valueOf() {
-    return this.value;
+  public get value() {
+    return this._value;
   }
-  public set valueOf(newValue: number) {
-    this.value = newValue;
+  public set value(newValue: number) {
+    this._value = newValue;
   }
   constructor(props: Omit<IUpgrade<number>, "key">) {
     super({ ...props, key: "speedUpgrade" });
@@ -15,22 +16,32 @@ class SpeedUpgrade extends Upgrade<number> {
   public override update(): void {}
 
   public override upgrade(): void {
-    this.value++;
+    this._value++;
   }
 
   public draw(): void {
-    Drawer.instance.with(() => this.drawSpeed(), {
-      strokeStyle: "white",
-    });
+    Drawer.instance.with(
+      () =>
+        Drawer.instance.drawButton(
+          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(100),
+          40,
+          "1"
+        ),
+      {
+        fill: false,
+        fillStyle: "white",
+      }
+    );
+    Drawer.instance.text(
+      "Speed",
+      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(90)
+    );
   }
 
   public reset(): void {}
 
   private drawSpeed() {
     super.draw();
-    Drawer.instance.text("SPEED", this.shape.center, {
-      style: "white",
-    });
   }
 }
 
