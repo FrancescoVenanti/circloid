@@ -16,8 +16,9 @@ abstract class MovingEntity<T extends Shape> extends Entity<T> {
     key,
     angle = 0,
     speed = 0,
+    ...props
   }: IMovingEntity<T>) {
-    super({ zIndex, shape, key });
+    super({ zIndex, shape, key, ...props });
     this.angle = angle;
     this.speed = speed;
   }

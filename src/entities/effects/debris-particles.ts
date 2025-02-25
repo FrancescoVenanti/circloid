@@ -16,8 +16,6 @@ class DebrisParticles extends MultipleShapes<Debris> {
 
   protected generate(): Debris {
     const angle = Math.PI * 2 * Math.random();
-    const stile: Options = { fillStyle: "white", fill: true, lineWidth: 2 };
-    console.log("stile before " + stile.fillStyle);
     return new Debris({
       zIndex: -1,
       radius: this.radius,
@@ -26,7 +24,7 @@ class DebrisParticles extends MultipleShapes<Debris> {
       angles: 7,
       rotation: Math.random() * 0.2 - 0.1,
       speed: (Math.random() * this.speed) / 2,
-      style: stile,
+      style: { fillStyle: this.generateColor(), fill: true, lineWidth: 0 },
     });
   }
   private generateColor(): string {
