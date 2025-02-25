@@ -26,16 +26,18 @@ class Player extends MovingEntity<Circle> {
     super({ shape, key: "player", angle, speed });
     this.livesUpgrade = new LifeUpgrade({
       maxLevel: 10,
-      cost: 10,
+      cost: 5,
       vector: Vector.zero,
       initialValue: lives,
     });
+    this.livesUpgrade.store();
     this.speedUpgrade = new SpeedUpgrade({
       maxLevel: 10,
       cost: 10,
       vector: Vector.zero,
       initialValue: speed,
     });
+    this.speedUpgrade.store();
     this.points = points || 0;
     this.credits = credits || 0;
     this.store();
@@ -68,10 +70,10 @@ class Player extends MovingEntity<Circle> {
 
   public reset() {
     this.points = 0;
-    this.livesUpgrade.valueOf = 3;
+    this.livesUpgrade.value = 3;
     this.credits = 0;
     this.speed = 3;
-    this.speedUpgrade.valueOf = 3;
+    this.speedUpgrade.value = 3;
     this.shape.vector = Canvas.instance.rect.center.clone();
     Canvas.instance.get("constraint")?.destroy();
     new Constraint({ vect: Canvas.instance.rect.center, radius: 120 });
@@ -152,14 +154,11 @@ class Player extends MovingEntity<Circle> {
   }
 
   public update(): void {
-    if (this.livesUpgrade.valueOf < 1) {
+    if (this.livesUpgrade.value < 1) {
       this.death();
     }
     this.move();
     this.collisions();
-    this.increaseSpeedButton();
-    this.increaseConstraintButton();
-    this.increaseLivesButton();
     this.drawCredits();
     this.drawPoints();
     this.drawLives();
@@ -175,7 +174,7 @@ class Player extends MovingEntity<Circle> {
       if (distance <= maxDistance) {
         ball.destroy();
         this.explode(ball.shape.vector);
-        this.livesUpgrade.valueOf--;
+        this.livesUpgrade.value--;
       }
     }
   }
@@ -227,7 +226,7 @@ class Player extends MovingEntity<Circle> {
   }
 
   private drawLives() {
-    for (let i = 0; i < this.livesUpgrade.valueOf; i++) {
+    for (let i = 0; i < this.livesUpgrade.value; i++) {
       Drawer.instance.with(
         () =>
           Drawer.instance.drawHeart(
@@ -245,82 +244,27 @@ class Player extends MovingEntity<Circle> {
     }
   }
 
-  public increaseSpeedButton() {
-    Drawer.instance.with(
-      () =>
-        Drawer.instance.drawButton(
-          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(100),
-          40,
-          "1"
-        ),
-      {
-        fill: false,
-        fillStyle: "white",
-      }
-    );
-    Drawer.instance.text(
-      "Speed",
-      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(90)
-    );
-  }
-
-  public increaseLivesButton() {
-    Drawer.instance.with(
-      () =>
-        Drawer.instance.drawButton(
-          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(300),
-          40,
-          "3"
-        ),
-      {
-        fill: false,
-        fillStyle: "white",
-      }
-    );
-    Drawer.instance.text(
-      "Lives",
-      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(295)
-    );
-  }
-
-  public increaseConstraintButton() {
-    Drawer.instance.with(
-      () =>
-        Drawer.instance.drawButton(
-          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(200),
-          40,
-          "2"
-        ),
-      {
-        fill: false,
-        fillStyle: "white",
-      }
-    );
-    Drawer.instance.text(
-      "Constraint",
-      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(170)
-    );
-  }
-
   private upgradeSpeed(): void {
     if (this.credits >= 10) {
       this.speedUpgrade.upgrade();
-      this.speed = this.speedUpgrade.valueOf;
+      this.speed = this.speedUpgrade.value;
       this.credits -= 10;
     }
   }
 
   private upgradeLives(): void {
-    if (this.credits >= 5) {
+    if (this.credits >= this.livesUpgrade.cost) {
       this.livesUpgrade.upgrade();
-      this.speed = this.speedUpgrade.valueOf;
-      this.credits -= 5;
+      this.speed = this.speedUpgrade.value;
+      this.credits -= this.livesUpgrade.cost;
     }
   }
 
   private upgradeConstraint(): void {
+    console.log("upgrade Constraint");
     if (this.credits < 10) return;
-    const constraint = Canvas.instance.get("constraint");
+    const constraint = Canvas.instance.getByConstructor(Constraint)[0];
+    console.log(constraint);
     if (!constraint) return;
     if (!(constraint.shape instanceof Circle)) return;
     if (!(constraint instanceof Constraint)) return;
