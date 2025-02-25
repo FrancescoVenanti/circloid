@@ -26,7 +26,6 @@ abstract class Entity<T extends Shape> {
     this.zIndex = zIndex;
     this.shape = shape;
     this.style = style || {};
-    console.log(this.style);
   }
 
   public abstract update(): void;

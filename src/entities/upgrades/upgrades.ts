@@ -38,6 +38,8 @@ abstract class Upgrade<T> extends Entity<Rect> {
     this.costMultiplier = costMultiplier || 0;
   }
 
+  public abstract reset(): void;
+
   public override update() {}
 
   public abstract upgrade(): void;

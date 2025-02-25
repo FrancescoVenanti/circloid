@@ -17,14 +17,14 @@ interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   vect: Vector;
 }
 class Player extends MovingEntity<Circle> {
-  private lives: LifeUpgrade;
+  private livesUpgrade: LifeUpgrade;
   private speedUpgrade: SpeedUpgrade;
   public points: number;
   public credits: number;
   constructor({ vect, angle, speed, lives, points, credits }: IPlayer) {
     const shape = new Circle({ vect: vect, radius: 35 });
     super({ shape, key: "player", angle, speed });
-    this.lives = new LifeUpgrade({
+    this.livesUpgrade = new LifeUpgrade({
       maxLevel: 10,
       cost: 10,
       vector: Vector.zero,
@@ -57,6 +57,7 @@ class Player extends MovingEntity<Circle> {
       if (keys.has(e.key)) this.keyMap.add(e.key);
       if (e.key == "1") this.upgradeSpeed();
       if (e.key == "2") this.upgradeConstraint();
+      if (e.key == "3") this.upgradeLives();
     });
     window.addEventListener("keyup", (e) => {
       this.keyMap.delete(e.key);
@@ -67,7 +68,7 @@ class Player extends MovingEntity<Circle> {
 
   public reset() {
     this.points = 0;
-    this.lives.valueOf = 3;
+    this.livesUpgrade.valueOf = 3;
     this.credits = 0;
     this.speed = 3;
     this.speedUpgrade.valueOf = 3;
@@ -151,13 +152,14 @@ class Player extends MovingEntity<Circle> {
   }
 
   public update(): void {
-    if (this.lives.valueOf < 1) {
+    if (this.livesUpgrade.valueOf < 1) {
       this.death();
     }
     this.move();
     this.collisions();
     this.increaseSpeedButton();
     this.increaseConstraintButton();
+    this.increaseLivesButton();
     this.drawCredits();
     this.drawPoints();
     this.drawLives();
@@ -173,7 +175,7 @@ class Player extends MovingEntity<Circle> {
       if (distance <= maxDistance) {
         ball.destroy();
         this.explode(ball.shape.vector);
-        this.lives.valueOf--;
+        this.livesUpgrade.valueOf--;
       }
     }
   }
@@ -225,7 +227,7 @@ class Player extends MovingEntity<Circle> {
   }
 
   private drawLives() {
-    for (let i = 0; i < this.lives.valueOf; i++) {
+    for (let i = 0; i < this.livesUpgrade.valueOf; i++) {
       Drawer.instance.with(
         () =>
           Drawer.instance.drawHeart(
@@ -262,6 +264,25 @@ class Player extends MovingEntity<Circle> {
     );
   }
 
+  public increaseLivesButton() {
+    Drawer.instance.with(
+      () =>
+        Drawer.instance.drawButton(
+          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(300),
+          40,
+          "3"
+        ),
+      {
+        fill: false,
+        fillStyle: "white",
+      }
+    );
+    Drawer.instance.text(
+      "Lives",
+      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(295)
+    );
+  }
+
   public increaseConstraintButton() {
     Drawer.instance.with(
       () =>
@@ -286,6 +307,14 @@ class Player extends MovingEntity<Circle> {
       this.speedUpgrade.upgrade();
       this.speed = this.speedUpgrade.valueOf;
       this.credits -= 10;
+    }
+  }
+
+  private upgradeLives(): void {
+    if (this.credits >= 5) {
+      this.livesUpgrade.upgrade();
+      this.speed = this.speedUpgrade.valueOf;
+      this.credits -= 5;
     }
   }
 

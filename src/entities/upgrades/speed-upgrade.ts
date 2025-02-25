@@ -24,6 +24,8 @@ class SpeedUpgrade extends Upgrade<number> {
     });
   }
 
+  public reset(): void {}
+
   private drawSpeed() {
     super.draw();
     Drawer.instance.text("SPEED", this.shape.center, {

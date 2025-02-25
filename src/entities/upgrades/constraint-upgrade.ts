@@ -21,6 +21,8 @@ class ConstraintUpgrade extends Upgrade<number> {
     });
   }
 
+  public reset(): void {}
+
   private drawConstraint() {
     super.draw();
     Drawer.instance.text("CONSTRAINT", this.shape.center, {
