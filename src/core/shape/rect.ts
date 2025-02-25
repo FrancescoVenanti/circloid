@@ -1,8 +1,19 @@
 import Drawer from "../drawer";
 import Vector from "../vector";
-import Shape from "./shape";
+import Shape, { IShape } from "./shape";
+
+export interface IRect extends IShape {
+  witdh: number;
+  height: number;
+}
 
 class Rect extends Shape {
+  public width: number;
+  public height: number;
+
+  public static get zero() {
+    return new Rect({ vect: Vector.zero, witdh: 0, height: 0 });
+  }
   public get center(): Vector {
     return new Vector(
       this.vector.x + this.width / 2,
@@ -23,8 +34,10 @@ class Rect extends Shape {
     return new Vector(this.vector.x + this.width, this.vector.y + this.height);
   }
 
-  constructor(vector: Vector, public width: number, public height: number) {
-    super(vector);
+  constructor({ height, witdh, ...props }: IRect) {
+    super(props);
+    this.width = witdh;
+    this.height = height;
   }
 
   draw(): void {

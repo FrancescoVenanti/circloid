@@ -11,7 +11,7 @@ class Canvas {
   private entities: Map<string, Entity<any>> = new Map();
   private canvas: HTMLCanvasElement | null = null;
 
-  public rect: Rect = new Rect(new Vector(0, 0), 0, 0);
+  public rect: Rect = Rect.zero;
 
   private constructor() {}
 
@@ -40,11 +40,11 @@ class Canvas {
 
   public render(): void {
     Drawer.instance.fillRect(
-      new Rect(
-        new Vector(0, 0),
-        this.canvas?.width || 0,
-        this.canvas?.height || 0
-      ),
+      new Rect({
+        vect: new Vector(0, 0),
+        witdh: this.canvas?.width || 0,
+        height: this.canvas?.height || 0,
+      }),
       "black"
     );
     this.entities.forEach((e) => {
@@ -55,6 +55,18 @@ class Canvas {
 
   public get<T extends Shape>(key: string): Entity<T> | undefined {
     return this.startsWith(key)[0];
+  }
+
+  public getByConstructor<T extends Entity<any>>(
+    base: new (...args: any[]) => T
+  ): T[] {
+    return Array.from(this.entities.values()).filter(
+      (e): e is T => e instanceof base
+    );
+  }
+
+  public has(entity: Entity<any>) {
+    return this.entities.has(entity.key);
   }
 
   public startsWith(key: string) {
