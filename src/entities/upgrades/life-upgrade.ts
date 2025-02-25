@@ -14,13 +14,17 @@ class LifeUpgrade extends Upgrade<number> {
 
   public override update(): void {}
 
-  public override upgrade(): void {}
+  public override upgrade(): void {
+    this.value += 1;
+  }
 
   public draw(): void {
     Drawer.instance.with(() => this.drawLife(), {
       strokeStyle: "white",
     });
   }
+
+  public reset(): void {}
 
   private drawLife() {
     super.draw();

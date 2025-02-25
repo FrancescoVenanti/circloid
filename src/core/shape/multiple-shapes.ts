@@ -20,6 +20,7 @@ abstract class MultipleShapes<T extends Entity<any>> extends Shape {
       const shape = this.generate();
       shape.store();
       this.particles.push(shape);
+      console.log(this.particles[0].style);
     }
   }
 
