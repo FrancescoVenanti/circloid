@@ -44,7 +44,16 @@ class Player extends MovingEntity<Circle> {
 
   private listenKeyboard() {
     window.addEventListener("keydown", (e) => {
-      const keys = new Set(["w", "a", "s", "d"]);
+      const keys = new Set([
+        "w",
+        "a",
+        "s",
+        "d",
+        "ArrowRight",
+        "ArrowLeft",
+        "ArrowUp",
+        "ArrowDown",
+      ]);
       if (keys.has(e.key)) this.keyMap.add(e.key);
       if (e.key == "1") this.upgradeSpeed();
       if (e.key == "2") this.upgradeConstraint();
@@ -75,9 +84,13 @@ class Player extends MovingEntity<Circle> {
   private move() {
     const directions: Record<string, Vector> = {
       a: new Vector(-1, 0),
+      ArrowLeft: new Vector(-1, 0),
       d: new Vector(1, 0),
+      ArrowRight: new Vector(1, 0),
       w: new Vector(0, -1),
+      ArrowUp: new Vector(0, -1),
       s: new Vector(0, 1),
+      ArrowDown: new Vector(0, 1),
     };
 
     const newDirection = Object.keys(directions)
