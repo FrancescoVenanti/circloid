@@ -14,6 +14,7 @@ const fps = 60;
 
 export default function Home() {
   useEffect(() => {
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))
     Canvas.instance.init();
 
     const highscore = new Highscore(1);

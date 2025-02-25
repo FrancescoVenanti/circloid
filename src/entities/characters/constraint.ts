@@ -33,6 +33,10 @@ class Constraint extends Entity<Circle> {
     this.radiusUpgrade.upgrade();
     this.shape.radius = this.radiusUpgrade.value;
   }
+  public reset() {
+    this.radiusUpgrade.reset();
+    this.shape.radius = this.radiusUpgrade.value;
+  }
 
   public update() {}
 

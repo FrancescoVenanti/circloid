@@ -1,5 +1,6 @@
 "use client";
 import { addScore } from "@/actions";
+import { KeyboardMixin } from "@/src/mixins/keyboard";
 import Canvas from "../../core/canvas";
 import Drawer from "../../core/drawer";
 import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
@@ -16,7 +17,7 @@ interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   credits?: number;
   vect: Vector;
 }
-class Player extends MovingEntity<Circle> {
+class Player extends KeyboardMixin(MovingEntity<Circle>) {
   private livesUpgrade: LifeUpgrade;
   private speedUpgrade: SpeedUpgrade;
   public points: number;
@@ -70,13 +71,16 @@ class Player extends MovingEntity<Circle> {
 
   public reset() {
     this.points = 0;
-    this.livesUpgrade.value = 3;
+    this.livesUpgrade.reset();
     this.credits = 0;
     this.speed = 3;
-    this.speedUpgrade.value = 3;
+    this.speedUpgrade.reset();
     this.shape.vector = Canvas.instance.rect.center.clone();
-    Canvas.instance.get("constraint")?.destroy();
-    new Constraint({ vect: Canvas.instance.rect.center, radius: 120 });
+    const constraints = Canvas.instance.getByConstructor(Constraint);
+    if (constraints.length != 1) {
+      throw new Error(`Unexpected constraints in canvas ${constraints.length}`);
+    }
+    constraints[0].reset();
   }
 
   public setScore() {

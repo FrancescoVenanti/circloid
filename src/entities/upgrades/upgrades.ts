@@ -17,6 +17,7 @@ abstract class Upgrade<T> extends Entity<Rect> {
   protected _maxLevel: number;
   protected _cost: number;
   protected _costMultiplier: number;
+  protected initialValue: Upgrade<T>;
 
   public abstract get value();
   public abstract set value(newValue: T);
@@ -48,10 +49,20 @@ abstract class Upgrade<T> extends Entity<Rect> {
     this._maxLevel = maxLevel;
     this._cost = cost;
     this._costMultiplier = costMultiplier || 0;
-    // this.store();
+    this.initialValue = JSON.parse(JSON.stringify(this));
   }
 
-  public abstract reset(): void;
+  public reset(): void {
+    // Object.assign(this, this.initialValue);
+    const { _cost, _level, _maxLevel, _value, _costMultiplier } =
+      this.initialValue;
+    Object.assign(this, { _cost, _level, _maxLevel, _value, _costMultiplier });
+    // this._cost = this.initialValue._cost;
+    // this._level = this.initialValue._level;
+    // this._maxLevel = this.initialValue._maxLevel;
+    // this._value = this.initialValue._value;
+    // this._costMultiplier = this.initialValue._costMultiplier;
+  }
 
   public override update() {}
 

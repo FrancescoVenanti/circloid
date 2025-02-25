@@ -1,6 +1,6 @@
+import Canvas from "@/src/core/canvas";
 import Drawer from "@/src/core/drawer";
 import Upgrade, { IUpgrade } from "./upgrades";
-import Canvas from "@/src/core/canvas";
 
 class LifeUpgrade extends Upgrade<number> {
   public get value() {
@@ -36,12 +36,6 @@ class LifeUpgrade extends Upgrade<number> {
       "Lives",
       Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(295)
     );
-  }
-
-  public reset(): void {}
-
-  private drawLife() {
-    super.draw();
   }
 }
 
