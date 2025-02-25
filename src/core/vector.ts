@@ -3,11 +3,18 @@ class Vector {
   public static fromAngle(angle: number) {
     return new Vector(Math.cos(angle), Math.sin(angle));
   }
+  public static get zero() {
+    return new Vector(0, 0);
+  }
 
   constructor(public x: number, public y: number) {}
 
   public clone(): Vector {
     return new Vector(this.x, this.y);
+  }
+
+  public isZero(): boolean {
+    return this.x === 0 && this.y === 0;
   }
 
   public set(v: Vector) {

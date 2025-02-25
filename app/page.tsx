@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import styles from "./page.module.css";
-import Player from "@/src/entities/characters/player";
 import Canvas from "@/src/core/canvas";
-import Highscore from "@/src/entities/highscore";
-import Constraint from "@/src/entities/characters/constraint";
-import BallEnemy from "@/src/entities/characters/ball-enemy";
 import GLOBAL from "@/src/core/global";
+import BallEnemy from "@/src/entities/characters/ball-enemy";
+import Constraint from "@/src/entities/characters/constraint";
+import Player from "@/src/entities/characters/player";
+import Highscore from "@/src/entities/highscore";
+import { useEffect } from "react";
 
 let beforeDelay = 0;
 let counter = 0;
@@ -23,18 +22,14 @@ export default function Home() {
     GLOBAL(
       "player",
       new Player({
-        zIndex: 1,
-        vector: Canvas.instance.rect.center,
+        vect: Canvas.instance.rect.center,
         angle: 0,
         speed: 3,
         lives: 3,
-        points: 0,
-        credits: 0,
-        upgrades: [],
       })
     );
 
-    new Constraint(1, Canvas.instance.rect.center, 120);
+    new Constraint({ vect: Canvas.instance.rect.center, radius: 120 });
     loop(0);
   }, []);
   return <div id="app"></div>;
@@ -45,8 +40,8 @@ function loop(delay: number) {
   if (!player || !(player instanceof Player)) return;
   if (counter === 0) {
     BallEnemy.spawnAmount(
-      1 + Math.round(player.getPoints() / 30),
-      player.getPoints() / 20
+      1 + Math.round(player.points / 30),
+      player.points / 20
     );
     player.setScore();
   }

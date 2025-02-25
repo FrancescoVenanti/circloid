@@ -1,10 +1,16 @@
 import Drawer from "../drawer";
 import Vector from "../vector";
-import Shape from "./shape";
+import Shape, { IShape } from "./shape";
+
+export interface ICircle extends IShape {
+  radius: number;
+}
 
 class Circle extends Shape {
-  constructor(vector: Vector, public radius: number) {
-    super(vector);
+  public radius: number;
+  constructor({ radius, ...props }: ICircle) {
+    super(props);
+    this.radius = radius;
   }
 
   draw(): void {

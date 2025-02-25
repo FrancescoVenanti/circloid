@@ -1,29 +1,38 @@
 "use client";
 import { generateKey } from "../utils";
 import Canvas from "./canvas";
+import Drawer from "./drawer";
 import type Shape from "./shape/shape";
 
 export interface IEntity<T extends Shape> {
   zIndex?: number;
   shape: T;
-  key: string;
+  key?: string;
+  style?: Options;
 }
 
 abstract class Entity<T extends Shape> {
   public key: string;
   public zIndex: number;
   public shape: T;
+  public style: Options;
 
-  constructor({ key, zIndex = 1, shape }: IEntity<T>) {
-    this.key = generateKey(key);
+  public get active() {
+    return Canvas.instance.has(this);
+  }
+
+  constructor({ key, zIndex = 1, shape, style }: IEntity<T>) {
+    this.key = generateKey(key || "entity");
     this.zIndex = zIndex;
     this.shape = shape;
+    this.style = style || {};
+    console.log(this.style);
   }
 
   public abstract update(): void;
 
   public draw(): void {
-    this.shape.draw();
+    Drawer.instance.with(() => this.shape.draw(), this.style);
   }
 
   protected init(): void {

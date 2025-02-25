@@ -82,6 +82,7 @@ class Drawer {
     }
     this.setDefault();
   }
+
   public drawHeart({ x, y }: Vector, size: number) {
     const ctx = this.context!;
     ctx.beginPath();
@@ -99,6 +100,20 @@ class Drawer {
     ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + size / 4);
     ctx.closePath();
   }
+
+  public polygon(lines: Vector[]) {
+    if (!this.context) return;
+    if (lines.length < 2) return;
+    const ctx = this.context;
+    ctx.beginPath();
+
+    ctx.moveTo(lines[0].x, lines[0].y);
+    for (let i = 1; i < lines.length; i++) {
+      ctx.lineTo(lines[i].x, lines[i].y);
+    }
+    ctx.stroke();
+  }
+
   public drawExplosion({ x, y }: Vector, size: number) {
     const ctx = this.context!;
     ctx.beginPath();
@@ -109,7 +124,6 @@ class Drawer {
       const yOffset = Math.sin(angle) * r;
       ctx.lineTo(x + xOffset, y + yOffset);
     }
-    ctx.closePath();
     ctx.fillStyle = "orange";
     ctx.fill();
     ctx.strokeStyle = "red";
@@ -141,15 +155,5 @@ class Drawer {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 }
-
-type Options = {
-  fillStyle?: string;
-  strokeStyle?: string;
-  lineWidth?: number;
-  globalAlpha?: number;
-  shadowColor?: string;
-  shadowBlur?: number;
-  fill?: boolean;
-};
 
 export default Drawer;

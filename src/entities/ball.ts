@@ -9,8 +9,8 @@ export interface IBall extends Omit<IMovingEntity<Circle>, "shape"> {
 }
 
 class Ball extends MovingEntity<Circle> {
-  constructor({ zIndex, key, angle, speed, vect, radius }: IBall) {
-    const shape = new Circle(vect, radius);
+  constructor({ zIndex, key = "ball", angle, speed, vect, radius }: IBall) {
+    const shape = new Circle({ vect, radius });
     super({ zIndex, shape, key, angle, speed });
   }
   public override update(): void {

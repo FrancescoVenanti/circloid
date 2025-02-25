@@ -9,11 +9,11 @@ import Vector from "../core/vector";
 class Highscore extends Entity<any> {
   private scores: any[] = [];
   constructor(zIndex: number) {
-    const shape = new Rect(
-      Canvas.instance.rect.topLeft.clone().addX(60).addY(140),
-      120,
-      200
-    );
+    const shape = new Rect({
+      vect: Canvas.instance.rect.topLeft.clone().addX(60).addY(140),
+      witdh: 120,
+      height: 200,
+    });
     super({
       zIndex,
       shape,
@@ -23,8 +23,6 @@ class Highscore extends Entity<any> {
   }
 
   private async loadScores() {
-    // const res = await fetch("/score", { method: "get" });
-    // this.scores = (await res.json()).scores;
     const res = await getTopScores();
     this.scores = res;
   }

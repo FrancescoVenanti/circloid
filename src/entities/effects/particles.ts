@@ -1,23 +1,27 @@
 import Drawer from "../../core/drawer";
-import Shape from "../../core/shape/shape";
-import Vector from "../../core/vector";
+import Shape, { IShape } from "../../core/shape/shape";
 import Ball from "../ball";
+
+interface IParticles extends IShape {
+  amount: number;
+  radius: number;
+  speed: number;
+}
 
 class Particles extends Shape {
   public particles: Ball[] = [];
+  private radius: number;
+  private speed: number;
 
-  constructor(
-    vect: Vector,
-    public amount: number,
-    public radius: number,
-    public speed: number
-  ) {
-    super(vect);
-    this.initialize();
+  constructor({ vect, amount, radius, speed }: IParticles) {
+    super({ vect });
+    this.radius = radius;
+    this.speed = speed;
+    this.initialize(amount);
   }
 
-  private initialize() {
-    for (let i = 0; i < this.amount; i++) {
+  private initialize(amount: number) {
+    for (let i = 0; i < amount; i++) {
       this.particles.push(this.generate());
     }
   }

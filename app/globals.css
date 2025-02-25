@@ -13,6 +13,9 @@
 html,
 body {
   max-width: 100vw;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
   overflow-x: hidden;
 }
 
@@ -28,11 +31,17 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+canvas {
+  overflow: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
