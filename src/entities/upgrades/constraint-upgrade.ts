@@ -1,8 +1,9 @@
+import Canvas from "@/src/core/canvas";
 import Drawer from "@/src/core/drawer";
 import Upgrade, { IUpgrade } from "./upgrades";
-import Canvas from "@/src/core/canvas";
 
 class ConstraintUpgrade extends Upgrade<number> {
+  private initialValues: ConstraintUpgrade;
   public get value() {
     return this._value;
   }
@@ -11,6 +12,7 @@ class ConstraintUpgrade extends Upgrade<number> {
   }
   constructor(props: Omit<IUpgrade<number>, "key">) {
     super({ ...props, key: "constraintUpgrade" });
+    this.initialValues = JSON.parse(JSON.stringify(this));
   }
 
   public override update(): void {}
@@ -36,12 +38,6 @@ class ConstraintUpgrade extends Upgrade<number> {
       "Constraint",
       Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(170)
     );
-  }
-
-  public reset(): void {}
-
-  private drawConstraint() {
-    super.draw();
   }
 }
 

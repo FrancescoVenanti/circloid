@@ -1,6 +1,6 @@
+import Canvas from "@/src/core/canvas";
 import Drawer from "@/src/core/drawer";
 import Upgrade, { IUpgrade } from "./upgrades";
-import Canvas from "@/src/core/canvas";
 
 class SpeedUpgrade extends Upgrade<number> {
   public get value() {
@@ -36,12 +36,6 @@ class SpeedUpgrade extends Upgrade<number> {
       "Speed",
       Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(90)
     );
-  }
-
-  public reset(): void {}
-
-  private drawSpeed() {
-    super.draw();
   }
 }
 
