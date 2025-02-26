@@ -58,7 +58,7 @@ class Rect extends Shape {
       this.topLeft,
     ];
 
-    const randomSegment = Math.floor(Math.random() * 2) + 2;
+    const randomSegment = Math.floor(Math.random() * 4);
     console.log(randomSegment);
     return start[randomSegment]
       .clone()
