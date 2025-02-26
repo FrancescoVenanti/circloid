@@ -4,7 +4,7 @@ import { CommandPalette } from "./command-palette";
 import Canvas from "@/src/core/canvas";
 
 export default function ProxyComponent() {
-  const [isRunning, useIsRunning] = useState(Canvas.instance.isRunning);
+  const [isRunning, useIsRunning] = useState(false);
   new Proxy(Canvas.instance, {
     set(target, p, newValue, receiver) {
       console.log("fuomri");
