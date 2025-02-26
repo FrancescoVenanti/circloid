@@ -1,4 +1,5 @@
 import Drawer from "@/src/core/drawer";
+import GlobalMixin from "@/src/mixins/global";
 import Entity, { IEntity } from "../../core/entity";
 import Rect from "../../core/shape/rect";
 import Vector from "../../core/vector";
@@ -15,7 +16,7 @@ export interface IUpgrade<T> extends Omit<IEntity<Rect>, "shape"> {
   keyPress: string;
 }
 
-abstract class Upgrade<T> extends Entity<Rect> {
+abstract class Upgrade<T> extends GlobalMixin(Entity<Rect>) {
   protected _value: T;
   protected _level: number;
   protected _maxLevel: number;
@@ -38,6 +39,10 @@ abstract class Upgrade<T> extends Entity<Rect> {
   }
   public get maxLevel() {
     return this._maxLevel;
+  }
+
+  public get isMaxLevel() {
+    return this._level == this._maxLevel;
   }
 
   constructor({
@@ -119,12 +124,19 @@ abstract class Upgrade<T> extends Entity<Rect> {
   public override update() {}
 
   public upgrade(): boolean {
-    if (this._level >= this._maxLevel) return false;
+    if (!this.canUpgrade()) return false;
+
     const color = this.style.fillStyle ? [this.style.fillStyle] : [];
     this._level++;
     this._cost = Math.floor(this._cost * this._costMultiplier);
     new Explosion(this.shape.vector.clone().addX(120).addY(20), color);
     return true;
+  }
+
+  public canUpgrade(): boolean {
+    const player = this.global("player")!;
+
+    return player.credits >= this._cost && !this.isMaxLevel;
   }
 }
 

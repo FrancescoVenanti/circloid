@@ -1,5 +1,5 @@
 "use client";
-import { getTopScores } from "@/actions";
+import { getTopScores } from "@/lib/actions";
 import Canvas from "../core/canvas";
 import Drawer from "../core/drawer";
 import Entity from "../core/entity";

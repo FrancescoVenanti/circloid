@@ -1,13 +1,13 @@
 "use client";
+import GlobalMixin from "../mixins/global";
 import { KeyboardMixin } from "../mixins/keyboard";
 import Drawer from "./drawer";
 import Entity from "./entity";
-import GLOBAL from "./global";
 import Rect from "./shape/rect";
 import type Shape from "./shape/shape";
 import Vector from "./vector";
 
-class Canvas extends KeyboardMixin(class {}) {
+class Canvas extends KeyboardMixin(GlobalMixin(class {})) {
   public onPlay?: () => void;
   public onPause?: () => void;
   public onToggle?: (v: boolean) => void;
@@ -87,23 +87,21 @@ class Canvas extends KeyboardMixin(class {}) {
   }
 
   public play(): void {
-    GLOBAL("running", true);
+    this.global("running", true);
     if (!this.onPlay) return;
-    console.log("play");
+    this.onPlay();
   }
 
   public pause(): void {
-    GLOBAL("running", true);
+    this.global("running", true);
     if (!this.onPause) return;
     this.onPause();
-    console.log("pause");
   }
 
   public togglePause(): void {
-    GLOBAL("running", (prev) => !prev);
+    this.global("running", (prev) => !prev);
     if (!this.onToggle) return;
-    this.onToggle(GLOBAL("running"));
-    console.log("toggle");
+    this.onToggle(this.global("running"));
   }
 
   public override onKeyDown(e: KeyboardEvent): void {

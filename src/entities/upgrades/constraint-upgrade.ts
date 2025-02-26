@@ -1,5 +1,3 @@
-import Canvas from "@/src/core/canvas";
-import Drawer from "@/src/core/drawer";
 import Upgrade, { IUpgrade } from "./upgrades";
 
 class ConstraintUpgrade extends Upgrade<number> {
@@ -26,6 +24,12 @@ class ConstraintUpgrade extends Upgrade<number> {
     if (!super.upgrade()) return false;
     this._value += 5;
     return true;
+  }
+
+  public decreaseCredits() {
+    const player = this.global("player");
+    if (!player) return;
+    player.credits -= this._cost;
   }
 }
 

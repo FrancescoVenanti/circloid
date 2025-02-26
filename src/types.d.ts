@@ -11,4 +11,5 @@ type Options = {
   shadowBlur?: number;
   fill?: boolean;
   textAlign?: CanvasTextAlign;
+  // reset?: boolean;
 };
