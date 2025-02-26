@@ -32,7 +32,6 @@ class DebrisParticles extends MultipleShapes<Debris> {
     });
   }
   private generateColor(): string {
-    console.log(this.colors);
     const index = Math.random() * this.colors.length;
     return this.colors[Math.floor(index)];
   }

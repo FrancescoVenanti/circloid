@@ -2,8 +2,6 @@ import Drawer from "@/src/core/drawer";
 import Entity, { IEntity } from "../../core/entity";
 import Rect from "../../core/shape/rect";
 import Vector from "../../core/vector";
-import Canvas from "@/src/core/canvas";
-import { AlignCenter } from "lucide-react";
 import Explosion from "../effects/explosion";
 
 export interface IUpgrade<T> extends Omit<IEntity<Rect>, "shape"> {
@@ -65,19 +63,12 @@ abstract class Upgrade<T> extends Entity<Rect> {
   }
 
   public reset(): void {
-    // Object.assign(this, this.initialValue);
     const { _cost, _level, _maxLevel, _value, _costMultiplier } =
       this.initialValue;
     Object.assign(this, { _cost, _level, _maxLevel, _value, _costMultiplier });
-    // this._cost = this.initialValue._cost;
-    // this._level = this.initialValue._level;
-    // this._maxLevel = this.initialValue._maxLevel;
-    // this._value = this.initialValue._value;
-    // this._costMultiplier = this.initialValue._costMultiplier;
   }
 
   public override draw(): void {
-    console.log(this.shape.vector);
     this.drawRect();
     Drawer.instance.text(
       this.label,

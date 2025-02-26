@@ -27,7 +27,6 @@ class Circle extends Shape {
 
     const alpha = this.vector.delta(v).atan2();
     const angle = this.vector.angle(v);
-    console.log(Vector.zero.angleFromVect(angle));
     if (distance === radius) return [alpha, alpha];
     const theta = Math.asin(radius / distance);
     return [alpha - theta, alpha + theta];

@@ -2,16 +2,19 @@
 import { KeyboardMixin } from "../mixins/keyboard";
 import Drawer from "./drawer";
 import Entity from "./entity";
+import GLOBAL from "./global";
 import Rect from "./shape/rect";
 import type Shape from "./shape/shape";
 import Vector from "./vector";
 
 class Canvas extends KeyboardMixin(class {}) {
+  public onPlay?: () => void;
+  public onPause?: () => void;
+  public onToggle?: (v: boolean) => void;
   public static instance: Canvas = new Canvas();
 
   private entities: Map<string, Entity<any>> = new Map();
   private canvas: HTMLCanvasElement | null = null;
-  public isRunning: boolean = true;
 
   public rect: Rect = Rect.zero;
 
@@ -84,15 +87,23 @@ class Canvas extends KeyboardMixin(class {}) {
   }
 
   public play(): void {
-    this.isRunning = true;
+    GLOBAL("running", true);
+    if (!this.onPlay) return;
+    console.log("play");
   }
 
   public pause(): void {
-    this.isRunning = false;
+    GLOBAL("running", true);
+    if (!this.onPause) return;
+    this.onPause();
+    console.log("pause");
   }
 
   public togglePause(): void {
-    this.isRunning = !this.isRunning;
+    GLOBAL("running", (prev) => !prev);
+    if (!this.onToggle) return;
+    this.onToggle(GLOBAL("running"));
+    console.log("toggle");
   }
 
   public override onKeyDown(e: KeyboardEvent): void {
