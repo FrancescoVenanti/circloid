@@ -57,7 +57,7 @@ abstract class Upgrade<T> extends Entity<Rect> {
     this._level = level || 0;
     this._maxLevel = maxLevel;
     this._cost = cost;
-    this._costMultiplier = costMultiplier || 0;
+    this._costMultiplier = costMultiplier || 1;
     this.label = label;
     this.keyPress = keyPress;
     this.initialValue = JSON.parse(JSON.stringify(this));
