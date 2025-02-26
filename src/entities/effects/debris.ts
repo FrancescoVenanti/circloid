@@ -20,6 +20,7 @@ class Debris extends Ball {
 
   private generateRandomRadius(length: number): number[] {
     if (length < 3) throw new Error("angles must be greater than 3!");
+
     const randomRadius: number[] = [];
     for (let i = 0; i < length; i++) {
       randomRadius.push(Math.random() * 0.5);

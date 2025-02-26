@@ -6,8 +6,8 @@ class Explosion extends Entity<DebrisParticles> {
   constructor(vect: Vector) {
     const shape = new DebrisParticles({
       vect,
-      amount: 10,
-      radius: 10,
+      amount: 20,
+      radius: 50,
       speed: 10,
     });
     super({ shape, key: "explosion" });

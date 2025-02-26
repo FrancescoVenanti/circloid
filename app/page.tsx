@@ -1,5 +1,6 @@
 "use client";
 
+import ProxyComponent from "@/components/proxy-component";
 import Canvas from "@/src/core/canvas";
 import GLOBAL from "@/src/core/global";
 import BallEnemy from "@/src/entities/characters/ball-enemy";
@@ -14,6 +15,9 @@ const fps = 60;
 
 export default function Home() {
   useEffect(() => {
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "k", metaKey: true })
+    );
     Canvas.instance.init();
 
     const highscore = new Highscore(1);
@@ -32,12 +36,24 @@ export default function Home() {
     new Constraint({ vect: Canvas.instance.rect.center, radius: 120 });
     loop(0);
   }, []);
-  return <div id="app"></div>;
+  return (
+    <div id="app">
+      <ProxyComponent />
+    </div>
+  );
 }
 
 function loop(delay: number) {
+  if (!Canvas.instance.isRunning) {
+    requestAnimationFrame(loop);
+
+    return;
+  }
   const player = GLOBAL("player");
-  if (!player || !(player instanceof Player)) return;
+  if (!player || !(player instanceof Player)) {
+    requestAnimationFrame(loop);
+    return;
+  }
   if (counter === 0) {
     BallEnemy.spawnAmount(
       1 + Math.round(player.points / 30),

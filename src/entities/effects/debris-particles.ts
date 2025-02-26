@@ -24,7 +24,7 @@ class DebrisParticles extends MultipleShapes<Debris> {
       angles: 7,
       rotation: Math.random() * 0.2 - 0.1,
       speed: (Math.random() * this.speed) / 2,
-      style: { fillStyle: "lightblue", fill: true, lineWidth: 0 },
+      style: { fillStyle: this.generateColor(), fill: true, lineWidth: 0 },
     });
   }
   private generateColor(): string {

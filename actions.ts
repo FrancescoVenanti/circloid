@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "@/supabase";
+import { supabase } from "@/lib/supabase";
 
 export async function getTopScores() {
   const { data, error } = await supabase

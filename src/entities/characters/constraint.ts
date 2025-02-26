@@ -12,25 +12,30 @@ interface IConstraint extends Omit<IEntity<Circle>, "shape"> {
 }
 
 class Constraint extends Entity<Circle> {
-  private upgrade: ConstraintUpgrade;
+  private radiusUpgrade: ConstraintUpgrade;
   constructor({ vect, radius, ...props }: IConstraint) {
     const shape = new Circle({ vect, radius });
     super({ ...props, shape, key: "constraint" });
-    this.upgrade = new ConstraintUpgrade({
+    this.radiusUpgrade = new ConstraintUpgrade({
       level: 0,
       maxLevel: 10,
       cost: 10,
       costMultiplier: 0.5,
-      vector: Canvas.instance.rect.bottomLeft.moveTo(new Vector(100, -100)),
+      vector: Canvas.instance.rect.bottomLeft.clone().addX(100).addY(-100),
       initialValue: radius,
     });
-    this.shape.radius = this.upgrade.valueOf;
+    this.shape.radius = this.radiusUpgrade.value;
     this.store();
+    this.radiusUpgrade.store();
   }
 
   public upgradeRadius() {
-    this.upgrade.upgrade();
-    this.shape.radius = this.upgrade.valueOf;
+    this.radiusUpgrade.upgrade();
+    this.shape.radius = this.radiusUpgrade.value;
+  }
+  public reset() {
+    this.radiusUpgrade.reset();
+    this.shape.radius = this.radiusUpgrade.value;
   }
 
   public update() {}
