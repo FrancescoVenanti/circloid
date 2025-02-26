@@ -10,6 +10,7 @@ import Explosion from "../effects/explosion";
 import LifeUpgrade from "../upgrades/life-upgrade";
 import SpeedUpgrade from "../upgrades/speed-upgrade";
 import Constraint from "./constraint";
+import GLOBAL from "@/src/core/global";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   lives: number;
@@ -25,23 +26,29 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
   constructor({ vect, angle, speed, lives, points, credits }: IPlayer) {
     const shape = new Circle({ vect: vect, radius: 35 });
     super({ shape, key: "player", angle, speed });
-    this.livesUpgrade = new LifeUpgrade({
-      maxLevel: 10,
-      cost: 5,
-      vector: Vector.zero,
-      initialValue: lives,
-    });
-    this.livesUpgrade.store();
     this.speedUpgrade = new SpeedUpgrade({
       maxLevel: 10,
       cost: 10,
-      vector: Vector.zero,
+      vector: GLOBAL("buttonPosition").clone(),
       initialValue: speed,
+      label: "Speed",
+      keyPress: "1",
     });
-    this.speedUpgrade.store();
+
+    this.livesUpgrade = new LifeUpgrade({
+      maxLevel: 5,
+      cost: 5,
+      vector: GLOBAL("buttonPosition").clone().addX(200),
+      initialValue: lives,
+      label: "Life",
+      keyPress: "3",
+    });
+
     this.points = points || 0;
     this.credits = credits || 0;
     this.store();
+    this.speedUpgrade.store();
+    this.livesUpgrade.store();
     this.listenKeyboard();
   }
 
@@ -260,29 +267,27 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
   }
 
   private upgradeSpeed(): void {
-    if (this.credits >= 10) {
-      this.speedUpgrade.upgrade();
-      this.speed = this.speedUpgrade.value;
+    if (this.credits < this.speedUpgrade.cost) return;
+    if (this.speedUpgrade.upgrade()) {
       this.credits -= 10;
     }
+    this.speed = this.speedUpgrade.value;
   }
 
   private upgradeLives(): void {
-    if (this.credits >= this.livesUpgrade.cost) {
-      this.livesUpgrade.upgrade();
-      this.speed = this.speedUpgrade.value;
+    if (this.credits < this.livesUpgrade.cost) return;
+    if (this.livesUpgrade.upgrade()) {
       this.credits -= this.livesUpgrade.cost;
     }
+    this.speed = this.speedUpgrade.value;
   }
 
   private upgradeConstraint(): void {
-    if (this.credits < 10) return;
     const constraint = Canvas.instance.getByConstructor(Constraint)[0];
     if (!constraint) return;
+    if (this.credits < constraint.radiusUpgrade.cost) return;
     if (!(constraint.shape instanceof Circle)) return;
-    if (!(constraint instanceof Constraint)) return;
-    constraint.upgradeRadius();
-    this.credits -= 10;
+    if (constraint.upgradeRadius()) this.credits -= 10;
   }
 }
 

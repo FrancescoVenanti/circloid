@@ -5,6 +5,7 @@ import Drawer from "../../core/drawer";
 import Entity, { IEntity } from "../../core/entity";
 import Circle from "../../core/shape/circle";
 import ConstraintUpgrade from "../upgrades/constraint-upgrade";
+import GLOBAL from "@/src/core/global";
 
 interface IConstraint extends Omit<IEntity<Circle>, "shape"> {
   vect: Vector;
@@ -12,7 +13,7 @@ interface IConstraint extends Omit<IEntity<Circle>, "shape"> {
 }
 
 class Constraint extends Entity<Circle> {
-  private radiusUpgrade: ConstraintUpgrade;
+  public radiusUpgrade: ConstraintUpgrade;
   constructor({ vect, radius, ...props }: IConstraint) {
     const shape = new Circle({ vect, radius });
     super({ ...props, shape, key: "constraint" });
@@ -21,7 +22,9 @@ class Constraint extends Entity<Circle> {
       maxLevel: 10,
       cost: 10,
       costMultiplier: 0.5,
-      vector: Canvas.instance.rect.bottomLeft.clone().addX(100).addY(-100),
+      vector: GLOBAL("buttonPosition").clone().addX(100),
+      label: "Constraint",
+      keyPress: "2",
       initialValue: radius,
     });
     this.shape.radius = this.radiusUpgrade.value;
@@ -29,9 +32,10 @@ class Constraint extends Entity<Circle> {
     this.radiusUpgrade.store();
   }
 
-  public upgradeRadius() {
-    this.radiusUpgrade.upgrade();
+  public upgradeRadius(): boolean {
+    const upgrade = this.radiusUpgrade.upgrade();
     this.shape.radius = this.radiusUpgrade.value;
+    return upgrade;
   }
   public reset() {
     this.radiusUpgrade.reset();

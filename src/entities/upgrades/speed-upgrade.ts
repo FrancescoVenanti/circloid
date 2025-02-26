@@ -11,31 +11,19 @@ class SpeedUpgrade extends Upgrade<number> {
   }
   constructor(props: Omit<IUpgrade<number>, "key">) {
     super({ ...props, key: "speedUpgrade" });
+    this.style = {
+      fillStyle: "orange",
+      fill: true,
+      strokeStyle: "orange",
+    };
   }
 
   public override update(): void {}
 
-  public override upgrade(): void {
+  public override upgrade(): boolean {
+    if (!super.upgrade()) return false;
     this._value++;
-  }
-
-  public draw(): void {
-    Drawer.instance.with(
-      () =>
-        Drawer.instance.drawButton(
-          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(100),
-          40,
-          "1"
-        ),
-      {
-        fill: false,
-        fillStyle: "white",
-      }
-    );
-    Drawer.instance.text(
-      "Speed",
-      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(90)
-    );
+    return true;
   }
 }
 

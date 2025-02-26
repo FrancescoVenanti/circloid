@@ -11,7 +11,7 @@ class Highscore extends Entity<any> {
   constructor(zIndex: number) {
     const shape = new Rect({
       vect: Canvas.instance.rect.topLeft.clone().addX(60).addY(140),
-      witdh: 120,
+      width: 120,
       height: 200,
     });
     super({

@@ -10,4 +10,5 @@ type Options = {
   shadowColor?: string;
   shadowBlur?: number;
   fill?: boolean;
+  textAlign?: CanvasTextAlign;
 };

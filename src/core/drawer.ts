@@ -39,15 +39,17 @@ class Drawer {
   public text(
     label: string,
     vector: Vector,
-    options?: { style?: string; font?: string }
+    options?: { style?: string; font?: string; textAlign?: CanvasTextAlign }
   ) {
     if (!this.context) return;
     if (options) {
       if (options.font) this.context.font = options.font;
       if (options.style) this.context.fillStyle = options.style;
+      if (options.textAlign) this.context.textAlign = options.textAlign;
     }
     this.context.fillText(label, vector.x, vector.y);
     this.context.stroke();
+    this.setDefault();
   }
 
   public stroke(): void {
@@ -71,6 +73,8 @@ class Drawer {
       if (options.shadowColor) this.context.shadowColor = options.shadowColor;
       if (options.shadowBlur !== undefined)
         this.context.shadowBlur = options.shadowBlur;
+      if (options.textAlign !== undefined)
+        this.context.textAlign = options.textAlign;
     }
 
     callback(this.context);
@@ -138,32 +142,6 @@ class Drawer {
 
     ctx.closePath();
     ctx.stroke();
-  }
-
-  public drawExplosion({ x, y }: Vector, size: number) {
-    const ctx = this.context!;
-    ctx.beginPath();
-    for (let i = 0; i < 10; i++) {
-      const angle = (i / 10) * Math.PI * 2;
-      const r = size * (0.5 + Math.random() * 0.5);
-      const xOffset = Math.cos(angle) * r;
-      const yOffset = Math.sin(angle) * r;
-      ctx.lineTo(x + xOffset, y + yOffset);
-    }
-    ctx.fillStyle = "orange";
-    ctx.fill();
-    ctx.strokeStyle = "red";
-    ctx.stroke();
-  }
-  public drawButton({ x, y }: Vector, size: number, text: string) {
-    const ctx = this.context!;
-    ctx.fillRect(x, y, size, size);
-
-    ctx.fillStyle = "red";
-    ctx.font = "24px monospace";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(text, x + size / 2, y + size / 2);
   }
 
   private setDefault() {

@@ -46,7 +46,7 @@ class Canvas extends KeyboardMixin(class {}) {
     Drawer.instance.fillRect(
       new Rect({
         vect: new Vector(0, 0),
-        witdh: this.canvas?.width || 0,
+        width: this.canvas?.width || 0,
         height: this.canvas?.height || 0,
       }),
       "black"

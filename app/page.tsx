@@ -22,7 +22,10 @@ export default function Home() {
 
     const highscore = new Highscore(1);
     highscore.store();
-
+    GLOBAL(
+      "buttonPosition",
+      Canvas.instance.rect.bottomLeft.clone().addY(-100)
+    );
     GLOBAL(
       "player",
       new Player({

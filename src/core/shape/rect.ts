@@ -3,7 +3,7 @@ import Vector from "../vector";
 import Shape, { IShape } from "./shape";
 
 export interface IRect extends IShape {
-  witdh: number;
+  width: number;
   height: number;
 }
 
@@ -12,7 +12,7 @@ class Rect extends Shape {
   public height: number;
 
   public static get zero() {
-    return new Rect({ vect: Vector.zero, witdh: 0, height: 0 });
+    return new Rect({ vect: Vector.zero, width: 0, height: 0 });
   }
   public get center(): Vector {
     return new Vector(
@@ -34,7 +34,7 @@ class Rect extends Shape {
     return new Vector(this.vector.x + this.width, this.vector.y + this.height);
   }
 
-  constructor({ height, witdh, ...props }: IRect) {
+  constructor({ height, width: witdh, ...props }: IRect) {
     super(props);
     this.width = witdh;
     this.height = height;

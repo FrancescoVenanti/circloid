@@ -1,14 +1,17 @@
 import Player from "../entities/characters/player";
 import Canvas from "./canvas";
+import Vector from "./vector";
 
 interface Globals {
   player: Player | null;
   fps: number;
+  buttonPosition: Vector;
 }
 
 const globals: Globals = {
   player: null,
   fps: 60,
+  buttonPosition: Vector.zero,
 };
 
 function GLOBAL<T extends keyof typeof globals>(

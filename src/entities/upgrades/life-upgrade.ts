@@ -8,34 +8,25 @@ class LifeUpgrade extends Upgrade<number> {
   }
   public set value(newValue: number) {
     this._value = newValue;
+    this._level = newValue;
   }
+
   constructor(props: Omit<IUpgrade<number>, "key">) {
     super({ ...props, key: "lifeUpgrade" });
+    this._level = this._value;
+    this.style = {
+      fillStyle: "coral",
+      fill: true,
+      strokeStyle: "coral",
+    };
   }
 
   public override update(): void {}
 
-  public override upgrade(): void {
-    this._value += 1;
-  }
-
-  public draw(): void {
-    Drawer.instance.with(
-      () =>
-        Drawer.instance.drawButton(
-          Canvas.instance.rect.bottomLeft.clone().addY(-100).addX(300),
-          40,
-          "3"
-        ),
-      {
-        fill: false,
-        fillStyle: "white",
-      }
-    );
-    Drawer.instance.text(
-      "Lives",
-      Canvas.instance.rect.bottomLeft.clone().addY(-60).addX(295)
-    );
+  public override upgrade(): boolean {
+    if (!super.upgrade()) return false;
+    this._value++;
+    return true;
   }
 }
 
