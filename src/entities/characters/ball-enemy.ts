@@ -24,7 +24,7 @@ class BallEnemy extends Ball {
 
     const vect = Canvas.instance.rect.randomPointFromBorder();
 
-    const [min, max] = constraint.shape.tangentsFromVector(vect, 10);
+    const [min, max] = constraint.shape.tangentsFromVector(vect, 50);
 
     if (!min) return null;
 
