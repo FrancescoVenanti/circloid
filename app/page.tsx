@@ -47,7 +47,7 @@ export default function Home() {
 }
 
 function loop(delay: number) {
-  if (!Canvas.instance.isRunning) {
+  if (!GLOBAL('running')) {
     requestAnimationFrame(loop);
 
     return;
