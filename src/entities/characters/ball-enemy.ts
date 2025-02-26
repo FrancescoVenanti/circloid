@@ -1,9 +1,9 @@
 "use client";
 import Drawer from "@/src/core/drawer";
 import Canvas from "../../core/canvas";
-import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import Ball, { IBall } from "../ball";
+import Constraint from "./constraint";
 
 interface IBallEnemy extends Omit<IBall, "key"> {}
 
@@ -20,8 +20,7 @@ class BallEnemy extends Ball {
   }
 
   public static spawn(speedMultiplier: number): BallEnemy | null {
-    const constraint = Canvas.instance.get("constraint");
-    if (!constraint || !(constraint.shape instanceof Circle)) return null;
+    const constraint = Canvas.instance.getByConstructor(Constraint)[0];
 
     const vect = Canvas.instance.rect.randomPointFromBorder();
 

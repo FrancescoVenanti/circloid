@@ -113,6 +113,32 @@ class Drawer {
     }
     ctx.stroke();
   }
+  public sketchyCircle(
+    { x, y }: Vector,
+    radius: number,
+    roughness: number = 5,
+    points: number = 100
+  ) {
+    if (!this.context) return;
+    const ctx = this.context;
+    ctx.beginPath();
+
+    for (let i = 0; i <= points; i++) {
+      const angle = (i / points) * Math.PI * 2;
+      const offset = Math.random() * roughness - roughness / 2;
+      const px = x + (radius + offset) * Math.cos(angle);
+      const py = y + (radius + offset) * Math.sin(angle);
+
+      if (i === 0) {
+        ctx.moveTo(px, py);
+      } else {
+        ctx.lineTo(px, py);
+      }
+    }
+
+    ctx.closePath();
+    ctx.stroke();
+  }
 
   public drawExplosion({ x, y }: Vector, size: number) {
     const ctx = this.context!;

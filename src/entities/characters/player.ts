@@ -191,6 +191,17 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
     };
 
     Drawer.instance.with(() => this.shape.draw(), style);
+    // Drawer.instance.with(
+    //   () =>
+    //     Drawer.instance.sketchyCircle(
+    //       this.shape.vector,
+    //       this.shape.radius + 10
+    //     ),
+    //   {
+    //     strokeStyle: "skyblue",
+    //     lineWidth: 10,
+    //   }
+    // );
   }
 
   private drawPoints() {

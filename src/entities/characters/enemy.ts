@@ -7,6 +7,10 @@ class Enemy<T extends Shape> extends Entity<T> {
   constructor(props: IEnemy<T>) {
     super(props);
   }
+
+  static spawn() {}
+  static spawnAmount() {}
+
   public update(): void {}
 }
 

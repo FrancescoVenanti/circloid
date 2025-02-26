@@ -7,6 +7,10 @@ class Vector {
     return new Vector(0, 0);
   }
 
+  public get invert() {
+    return new Vector(-this.x, -this.y);
+  }
+
   constructor(public x: number, public y: number) {}
 
   public clone(): Vector {
