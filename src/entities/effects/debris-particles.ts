@@ -5,13 +5,17 @@ import Debris from "./debris";
 
 interface IDebrisParticles extends IMultipleShapes {
   radius: number;
+  colors: string[];
 }
 
 class DebrisParticles extends MultipleShapes<Debris> {
   private radius: number;
-  constructor({ radius, ...props }: IDebrisParticles) {
+  private colors: string[];
+  constructor({ radius, colors, ...props }: IDebrisParticles) {
     super(props);
     this.radius = radius;
+    this.colors = colors;
+    this.initialize(props.amount);
   }
 
   protected generate(): Debris {
@@ -28,9 +32,9 @@ class DebrisParticles extends MultipleShapes<Debris> {
     });
   }
   private generateColor(): string {
-    const colors = ["lightblue", "coral"];
-    const index = Math.random() * colors.length;
-    return colors[Math.floor(index)];
+    console.log(this.colors);
+    const index = Math.random() * this.colors.length;
+    return this.colors[Math.floor(index)];
   }
 }
 

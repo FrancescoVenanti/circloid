@@ -120,7 +120,7 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
   }
 
   private explode(vect: Vector) {
-    const explosion = new Explosion(vect.clone());
+    const explosion = new Explosion(vect.clone(), ["lightblue", "coral"]);
     explosion.store();
   }
 
@@ -269,7 +269,7 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
   private upgradeSpeed(): void {
     if (this.credits < this.speedUpgrade.cost) return;
     if (this.speedUpgrade.upgrade()) {
-      this.credits -= 10;
+      this.credits -= this.speedUpgrade.cost;
     }
     this.speed = this.speedUpgrade.value;
   }
@@ -287,7 +287,8 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
     if (!constraint) return;
     if (this.credits < constraint.radiusUpgrade.cost) return;
     if (!(constraint.shape instanceof Circle)) return;
-    if (constraint.upgradeRadius()) this.credits -= 10;
+    if (constraint.upgradeRadius())
+      this.credits -= constraint.radiusUpgrade.cost;
   }
 }
 

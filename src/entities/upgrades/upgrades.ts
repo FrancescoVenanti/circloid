@@ -4,6 +4,7 @@ import Rect from "../../core/shape/rect";
 import Vector from "../../core/vector";
 import Canvas from "@/src/core/canvas";
 import { AlignCenter } from "lucide-react";
+import Explosion from "../effects/explosion";
 
 export interface IUpgrade<T> extends Omit<IEntity<Rect>, "shape"> {
   level?: number;
@@ -128,8 +129,10 @@ abstract class Upgrade<T> extends Entity<Rect> {
 
   public upgrade(): boolean {
     if (this._level >= this._maxLevel) return false;
+    const color = this.style.fillStyle ? [this.style.fillStyle] : [];
     this._level++;
     this._cost = Math.floor(this._cost * this._costMultiplier);
+    new Explosion(this.shape.vector.clone().addX(120).addY(20), color);
     return true;
   }
 }

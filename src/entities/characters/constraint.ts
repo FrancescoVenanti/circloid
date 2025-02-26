@@ -21,7 +21,7 @@ class Constraint extends Entity<Circle> {
       level: 0,
       maxLevel: 10,
       cost: 10,
-      costMultiplier: 0.5,
+      costMultiplier: 1,
       vector: GLOBAL("buttonPosition").clone().addX(100),
       label: "Constraint",
       keyPress: "2",

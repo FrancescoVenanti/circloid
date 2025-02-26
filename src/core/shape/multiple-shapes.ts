@@ -12,10 +12,10 @@ abstract class MultipleShapes<T extends Entity<any>> extends Shape {
   constructor({ amount, speed, ...props }: IMultipleShapes) {
     super(props);
     this.speed = speed;
-    this.initialize(amount);
+    // this.initialize(amount);
   }
 
-  private initialize(amount: number) {
+  protected initialize(amount: number) {
     for (let i = 0; i < amount; i++) {
       const shape = this.generate();
       shape.store();
