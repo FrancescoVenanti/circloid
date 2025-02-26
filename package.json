@@ -13,7 +13,6 @@
     "@supabase/supabase-js": "^2.48.1",
     "@tailwindcss/postcss": "^4.0.9",
     "@vercel/analytics": "^1.5.0",
-    "circloid": ".",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
