@@ -34,10 +34,6 @@ abstract class Entity<T extends Shape> {
     Drawer.instance.with(() => this.shape.draw(), this.style);
   }
 
-  protected init(): void {
-    Canvas.instance.add(this);
-  }
-
   public destroy(): void {
     Canvas.instance.destroy(this);
   }

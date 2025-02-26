@@ -1,5 +1,4 @@
 "use client";
-import Entity from "../core/entity";
 
 export function KeyboardMixin<Base extends Constructor<any>>(base: Base) {
   return class extends base {

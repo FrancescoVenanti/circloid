@@ -60,9 +60,8 @@ class Rect extends Shape {
 
     const randomSegment = Math.floor(Math.random() * 4);
     console.log(randomSegment);
-    return start[randomSegment]
-      .clone()
-      .randomVectorFromSegment(end[randomSegment].clone());
+    return start[randomSegment].randomVectorFromSegment(end[randomSegment]);
+
   }
 
   public inBetween(num: number, min: number, max: number): boolean {

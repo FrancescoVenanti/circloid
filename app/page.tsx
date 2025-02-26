@@ -1,6 +1,7 @@
 "use client";
 
-import ProxyComponent from "@/components/proxy-component";
+import { CommandPalette } from "@/components/command-palette";
+// import ProxyComponent from "@/components/proxy-component";
 import Canvas from "@/src/core/canvas";
 import GLOBAL from "@/src/core/global";
 import BallEnemy from "@/src/entities/characters/ball-enemy";
@@ -36,12 +37,12 @@ export default function Home() {
       })
     );
 
-    new Constraint({ vect: Canvas.instance.rect.center, radius: 120 });
+    GLOBAL('constraint', new Constraint({ vect: Canvas.instance.rect.center, radius: 120 }));
     loop(0);
   }, []);
   return (
     <div id="app">
-      <ProxyComponent />
+      <CommandPalette />
     </div>
   );
 }
@@ -53,7 +54,7 @@ function loop(delay: number) {
     return;
   }
   const player = GLOBAL("player");
-  if (!player || !(player instanceof Player)) {
+  if (!player) {
     requestAnimationFrame(loop);
     return;
   }

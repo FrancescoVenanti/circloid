@@ -1,9 +1,9 @@
 "use client";
 import Drawer from "@/src/core/drawer";
+import GLOBAL from "@/src/core/global";
 import Canvas from "../../core/canvas";
 import Vector from "../../core/vector";
 import Ball, { IBall } from "../ball";
-import Constraint from "./constraint";
 
 interface IBallEnemy extends Omit<IBall, "key"> {}
 
@@ -20,7 +20,8 @@ class BallEnemy extends Ball {
   }
 
   public static spawn(speedMultiplier: number): BallEnemy | null {
-    const constraint = Canvas.instance.getByConstructor(Constraint)[0];
+    const constraint = GLOBAL("constraint");
+    if (!constraint) return null;
 
     const vect = Canvas.instance.rect.randomPointFromBorder();
 
@@ -32,7 +33,8 @@ class BallEnemy extends Ball {
     if (max) {
       angle = Math.random() * (max - min) + min;
     }
-
+    const vector = Vector.fromAngle(angle);
+    console.log(vector.x, vector.y);
     return new BallEnemy({
       vect,
       angle,

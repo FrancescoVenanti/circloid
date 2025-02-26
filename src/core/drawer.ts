@@ -5,6 +5,7 @@ import type Vector from "./vector";
 class Drawer {
   public static instance = new Drawer();
 
+  private reset: boolean = true;
   private context: CanvasRenderingContext2D | null = null;
 
   private constructor() {}
@@ -39,7 +40,12 @@ class Drawer {
   public text(
     label: string,
     vector: Vector,
-    options?: { style?: string; font?: string; textAlign?: CanvasTextAlign }
+    options?: {
+      style?: string;
+      font?: string;
+      textAlign?: CanvasTextAlign;
+      reset?: boolean;
+    }
   ) {
     if (!this.context) return;
     if (options) {
@@ -49,7 +55,8 @@ class Drawer {
     }
     this.context.fillText(label, vector.x, vector.y);
     this.context.stroke();
-    this.setDefault();
+
+    this.reset && this.setDefault();
   }
 
   public stroke(): void {
@@ -84,7 +91,7 @@ class Drawer {
     } else {
       this.context.stroke();
     }
-    this.setDefault();
+    this.reset && this.setDefault();
   }
 
   public drawHeart({ x, y }: Vector, size: number) {
@@ -157,6 +164,12 @@ class Drawer {
 
     // Reset transformations (if any)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+  }
+  public startReset() {
+    this.reset = true;
+  }
+  public stopReset() {
+    this.reset = false;
   }
 }
 
