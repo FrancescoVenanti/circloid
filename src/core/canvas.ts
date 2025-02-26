@@ -1,19 +1,23 @@
 "use client";
+import { KeyboardMixin } from "../mixins/keyboard";
 import Drawer from "./drawer";
 import Entity from "./entity";
 import Rect from "./shape/rect";
 import type Shape from "./shape/shape";
 import Vector from "./vector";
 
-class Canvas {
+class Canvas extends KeyboardMixin(class {}) {
   public static instance: Canvas = new Canvas();
 
   private entities: Map<string, Entity<any>> = new Map();
   private canvas: HTMLCanvasElement | null = null;
+  public isRunning: boolean = true;
 
   public rect: Rect = Rect.zero;
 
-  private constructor() {}
+  private constructor() {
+    super();
+  }
 
   public init() {
     this.canvas = document.createElement("canvas");
@@ -77,6 +81,24 @@ class Canvas {
       }
     });
     return entities;
+  }
+
+  public play(): void {
+    this.isRunning = true;
+  }
+
+  public pause(): void {
+    this.isRunning = false;
+  }
+
+  public togglePause(): void {
+    this.isRunning = !this.isRunning;
+  }
+
+  public override onKeyDown(e: KeyboardEvent): void {
+    if (e.key == "Escape") {
+      this.togglePause();
+    }
   }
 }
 
