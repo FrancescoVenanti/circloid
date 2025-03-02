@@ -1,18 +1,22 @@
 "use client";
 import Vector from "@/src/core/vector";
 import GlobalMixin from "@/src/mixins/global";
-import Drawer from "../../core/drawer";
+import RotatingMixin from "@/src/mixins/rotating";
+import { Drawable } from "roughjs/bin/core";
 import Entity, { IEntity } from "../../core/entity";
 import Circle from "../../core/shape/circle";
 import ConstraintUpgrade from "../upgrades/constraint-upgrade";
+import ConstraintWall from "../upgrades/constraint-wall";
 
 interface IConstraint extends Omit<IEntity<Circle>, "shape"> {
   vect: Vector;
   radius: number;
 }
 
-class Constraint extends GlobalMixin(Entity<Circle>) {
+class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
   public radiusUpgrade: ConstraintUpgrade;
+  public wall: ConstraintWall;
+  private drawable: Drawable;
   constructor({ vect, radius, ...props }: IConstraint) {
     const shape = new Circle({ vect, radius });
     super({ ...props, shape, key: "constraint" });
@@ -25,11 +29,33 @@ class Constraint extends GlobalMixin(Entity<Circle>) {
       label: "Constraint",
       keyPress: "2",
       initialValue: radius,
+      color: "green",
+    });
+    this.drawable = this.drawer.sketchy.circle(
+      this.shape.vector,
+      this.shape.radius,
+      { preserveVertices: true }
+    );
+    this.wall = new ConstraintWall({
+      label: "Wall",
+      keyPress: "4",
+      cost: 10,
+      vector: this.global("buttonPosition").clone().addX(300),
+      initialValue: 0,
+      maxLevel: 10,
+      color: "blue",
     });
     this.shape.radius = this.radiusUpgrade.value;
     this.store();
     this.radiusUpgrade.store();
+    this.wall.store();
+    // this.listenResize();
   }
+  // private listenResize() {
+  //   this.addEventListener("resize", () => {
+  //     this.shape.vector = this.canvasShape.center;
+  //   });
+  // }
 
   public upgradeRadius(): boolean {
     const upgrade = this.radiusUpgrade.upgrade();
@@ -39,15 +65,17 @@ class Constraint extends GlobalMixin(Entity<Circle>) {
 
   public reset() {
     this.radiusUpgrade.reset();
+    this.wall.reset();
     this.shape.radius = this.radiusUpgrade.value;
   }
 
-  public update() {}
-
+  public update() {
+    // this.rotation++;
+  }
   public override draw() {
-    Drawer.instance.with(() => this.shape.draw(), {
-      fillStyle: "palegreen",
-      lineWidth: 5,
+    this.with(() => this.drawer.sketchy.draw(this.drawable), {
+      ...this.style,
+      lineWidth: 2,
       strokeStyle: "palegreen",
     });
   }

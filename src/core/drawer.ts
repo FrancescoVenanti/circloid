@@ -1,24 +1,38 @@
 "use client";
 import type Rect from "./shape/rect";
-import type Vector from "./vector";
+import Sketchy from "./sketchy";
+import Vector from "./vector";
 
 class Drawer {
   public static instance = new Drawer();
 
   private reset: boolean = true;
   private context: CanvasRenderingContext2D | null = null;
+  public sketchy: Sketchy = Sketchy.instance;
 
   private constructor() {}
-  public init(context: CanvasRenderingContext2D) {
-    this.context = context;
+  public init(canvas: HTMLCanvasElement) {
+    this.context = canvas.getContext("2d");
+    this.sketchy.init(canvas);
   }
 
-  public circle(vect: Vector, radius: number) {
+  public arc(
+    vect: Vector,
+    radius: number,
+    size?: { start?: number; end?: number }
+  ) {
     if (!this.context) return;
     this.context.beginPath();
-    this.context.arc(vect.x, vect.y, radius, 0, 2 * Math.PI);
+    this.context.arc(
+      vect.x,
+      vect.y,
+      radius,
+      size?.start || 0,
+      size?.end || Math.PI * 2
+    );
     this.context.stroke();
   }
+
   public rect(r: Rect, style?: string) {
     if (!this.context) return;
     if (style) this.context.fillStyle = style;
@@ -37,16 +51,7 @@ class Drawer {
     this.context?.clearRect(0, 0, window.innerWidth, window.innerHeight);
   }
 
-  public text(
-    label: string,
-    vector: Vector,
-    options?: {
-      style?: string;
-      font?: string;
-      textAlign?: CanvasTextAlign;
-      reset?: boolean;
-    }
-  ) {
+  public text(label: string, vector: Vector, options?: TextOptions) {
     if (!this.context) return;
     if (options) {
       if (options.font) this.context.font = options.font;
@@ -122,32 +127,6 @@ class Drawer {
     for (let i = 1; i < lines.length; i++) {
       ctx.lineTo(lines[i].x, lines[i].y);
     }
-    ctx.stroke();
-  }
-  public sketchyCircle(
-    { x, y }: Vector,
-    radius: number,
-    roughness: number = 5,
-    points: number = 100
-  ) {
-    if (!this.context) return;
-    const ctx = this.context;
-    ctx.beginPath();
-
-    for (let i = 0; i <= points; i++) {
-      const angle = (i / points) * Math.PI * 2;
-      const offset = Math.random() * roughness - roughness / 2;
-      const px = x + (radius + offset) * Math.cos(angle);
-      const py = y + (radius + offset) * Math.sin(angle);
-
-      if (i === 0) {
-        ctx.moveTo(px, py);
-      } else {
-        ctx.lineTo(px, py);
-      }
-    }
-
-    ctx.closePath();
     ctx.stroke();
   }
 

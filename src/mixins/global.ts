@@ -9,13 +9,7 @@ export default function GlobalMixin<T extends Constructor<any>>(base: T) {
       provider: T,
       newValue?: Globals[T] | ((oldValue: Globals[T]) => Globals[T])
     ): Globals[T] {
-      if (!newValue) return GLOBAL(provider);
-      if (typeof newValue === "function") {
-        GLOBAL(provider, newValue);
-      } else {
-        GLOBAL(provider, newValue);
-      }
-      return GLOBAL(provider);
+      return GLOBAL(provider, newValue);
     }
   };
 }

@@ -23,13 +23,11 @@ class ConstraintUpgrade extends Upgrade<number> {
   public override upgrade(): boolean {
     if (!super.upgrade()) return false;
     this._value += 5;
+    const constraint = this.global("constraint");
+    if (!constraint) return false;
+    constraint.shape.radius = this._value;
+    this.decreaseCredits();
     return true;
-  }
-
-  public decreaseCredits() {
-    const player = this.global("player");
-    if (!player) return;
-    player.credits -= this._cost;
   }
 }
 

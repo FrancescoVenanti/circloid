@@ -1,5 +1,3 @@
-import Canvas from "@/src/core/canvas";
-import Drawer from "@/src/core/drawer";
 import Upgrade, { IUpgrade } from "./upgrades";
 
 class SpeedUpgrade extends Upgrade<number> {
@@ -22,7 +20,15 @@ class SpeedUpgrade extends Upgrade<number> {
 
   public override upgrade(): boolean {
     if (!super.upgrade()) return false;
+
+    const player = this.global("player");
+    if (!player) return false;
+
     this._value++;
+    player.speed = this._value;
+
+    this.decreaseCredits();
+
     return true;
   }
 }

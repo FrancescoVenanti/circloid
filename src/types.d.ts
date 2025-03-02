@@ -13,3 +13,10 @@ type Options = {
   textAlign?: CanvasTextAlign;
   // reset?: boolean;
 };
+
+type TextOptions = {
+  style?: string;
+  font?: string;
+  textAlign?: CanvasTextAlign;
+  reset?: boolean;
+};

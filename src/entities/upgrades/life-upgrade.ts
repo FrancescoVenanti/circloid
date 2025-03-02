@@ -1,5 +1,3 @@
-import Canvas from "@/src/core/canvas";
-import Drawer from "@/src/core/drawer";
 import Upgrade, { IUpgrade } from "./upgrades";
 
 class LifeUpgrade extends Upgrade<number> {
@@ -26,6 +24,7 @@ class LifeUpgrade extends Upgrade<number> {
   public override upgrade(): boolean {
     if (!super.upgrade()) return false;
     this._value++;
+    this.decreaseCredits();
     return true;
   }
 }

@@ -1,4 +1,3 @@
-import Drawer from "@/src/core/drawer";
 import Vector from "@/src/core/vector";
 import Ball, { IBall } from "../ball";
 
@@ -57,7 +56,7 @@ class Debris extends Ball {
 
     if (lines.length > 0) lines.push(lines[0].clone());
 
-    Drawer.instance.with(() => Drawer.instance.polygon(lines), this.style);
+    this.with(() => this.polygon(lines), this.style);
   }
 }
 

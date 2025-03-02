@@ -25,19 +25,19 @@ export default function Home() {
     highscore.store();
     GLOBAL(
       "buttonPosition",
-      Canvas.instance.rect.bottomLeft.clone().addY(-100)
+      Canvas.instance.shape.bottomLeft.clone().addY(-100)
     );
     GLOBAL(
       "player",
       new Player({
-        vect: Canvas.instance.rect.center,
+        vect: Canvas.instance.shape.center,
         angle: 0,
         speed: 3,
         lives: 3,
       })
     );
 
-    GLOBAL('constraint', new Constraint({ vect: Canvas.instance.rect.center, radius: 120 }));
+    GLOBAL('constraint', new Constraint({ vect: Canvas.instance.shape.center, radius: 120 }));
     loop(0);
   }, []);
   return (
