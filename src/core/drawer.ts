@@ -1,23 +1,38 @@
 "use client";
 import type Rect from "./shape/rect";
-import type Vector from "./vector";
+import Sketchy from "./sketchy";
+import Vector from "./vector";
 
 class Drawer {
   public static instance = new Drawer();
 
+  private reset: boolean = true;
   private context: CanvasRenderingContext2D | null = null;
+  public sketchy: Sketchy = Sketchy.instance;
 
   private constructor() {}
-  public init(context: CanvasRenderingContext2D) {
-    this.context = context;
+  public init(canvas: HTMLCanvasElement) {
+    this.context = canvas.getContext("2d");
+    this.sketchy.init(canvas);
   }
 
-  public circle(vect: Vector, radius: number) {
+  public arc(
+    vect: Vector,
+    radius: number,
+    size?: { start?: number; end?: number }
+  ) {
     if (!this.context) return;
     this.context.beginPath();
-    this.context.arc(vect.x, vect.y, radius, 0, 2 * Math.PI);
+    this.context.arc(
+      vect.x,
+      vect.y,
+      radius,
+      size?.start || 0,
+      size?.end || Math.PI * 2
+    );
     this.context.stroke();
   }
+
   public rect(r: Rect, style?: string) {
     if (!this.context) return;
     if (style) this.context.fillStyle = style;
@@ -36,18 +51,17 @@ class Drawer {
     this.context?.clearRect(0, 0, window.innerWidth, window.innerHeight);
   }
 
-  public text(
-    label: string,
-    vector: Vector,
-    options?: { style?: string; font?: string }
-  ) {
+  public text(label: string, vector: Vector, options?: TextOptions) {
     if (!this.context) return;
     if (options) {
       if (options.font) this.context.font = options.font;
       if (options.style) this.context.fillStyle = options.style;
+      if (options.textAlign) this.context.textAlign = options.textAlign;
     }
     this.context.fillText(label, vector.x, vector.y);
     this.context.stroke();
+
+    this.reset && this.setDefault();
   }
 
   public stroke(): void {
@@ -71,6 +85,8 @@ class Drawer {
       if (options.shadowColor) this.context.shadowColor = options.shadowColor;
       if (options.shadowBlur !== undefined)
         this.context.shadowBlur = options.shadowBlur;
+      if (options.textAlign !== undefined)
+        this.context.textAlign = options.textAlign;
     }
 
     callback(this.context);
@@ -80,7 +96,7 @@ class Drawer {
     } else {
       this.context.stroke();
     }
-    this.setDefault();
+    this.reset && this.setDefault();
   }
 
   public drawHeart({ x, y }: Vector, size: number) {
@@ -114,32 +130,6 @@ class Drawer {
     ctx.stroke();
   }
 
-  public drawExplosion({ x, y }: Vector, size: number) {
-    const ctx = this.context!;
-    ctx.beginPath();
-    for (let i = 0; i < 10; i++) {
-      const angle = (i / 10) * Math.PI * 2;
-      const r = size * (0.5 + Math.random() * 0.5);
-      const xOffset = Math.cos(angle) * r;
-      const yOffset = Math.sin(angle) * r;
-      ctx.lineTo(x + xOffset, y + yOffset);
-    }
-    ctx.fillStyle = "orange";
-    ctx.fill();
-    ctx.strokeStyle = "red";
-    ctx.stroke();
-  }
-  public drawButton({ x, y }: Vector, size: number, text: string) {
-    const ctx = this.context!;
-    ctx.fillRect(x, y, size, size);
-
-    ctx.fillStyle = "red";
-    ctx.font = "24px monospace";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(text, x + size / 2, y + size / 2);
-  }
-
   private setDefault() {
     const ctx = this.context!;
     ctx.fillStyle = "white";
@@ -153,6 +143,12 @@ class Drawer {
 
     // Reset transformations (if any)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+  }
+  public startReset() {
+    this.reset = true;
+  }
+  public stopReset() {
+    this.reset = false;
   }
 }
 

@@ -1,22 +1,27 @@
+import Constraint from "../entities/characters/constraint";
 import Player from "../entities/characters/player";
-import Canvas from "./canvas";
+import Vector from "./vector";
 
-interface Globals {
+export interface Globals {
   player: Player | null;
+  constraint: Constraint | null;
   fps: number;
+  buttonPosition: Vector;
+  running: boolean;
 }
 
 const globals: Globals = {
   player: null,
   fps: 60,
+  constraint: null,
+  buttonPosition: Vector.zero,
+  running: true,
 };
 
 function GLOBAL<T extends keyof typeof globals>(
   provider: T,
-  newValue?:
-    | (typeof globals)[T]
-    | ((oldValue: (typeof globals)[T]) => (typeof globals)[T])
-): (typeof globals)[T] {
+  newValue?: Globals[T] | ((oldValue: Globals[T]) => Globals[T])
+): Globals[T] {
   if (!newValue) return globals[provider];
   if (typeof newValue === "function") {
     globals[provider] = newValue(globals[provider]);

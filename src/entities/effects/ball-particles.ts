@@ -1,4 +1,3 @@
-import Drawer from "../../core/drawer";
 import MultipleShapes from "../../core/shape/multiple-shapes";
 import { IShape } from "../../core/shape/shape";
 import Ball from "../ball";
@@ -30,7 +29,7 @@ class MutlipleBalls extends MultipleShapes<Ball> {
   }
 
   protected drawShape(shape: Ball) {
-    Drawer.instance.with(() => shape.draw(), {
+    this.with(() => shape.draw(), {
       fill: true,
       fillStyle: "coral",
     });

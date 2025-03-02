@@ -1,4 +1,3 @@
-import Drawer from "../drawer";
 import Vector from "../vector";
 import Shape, { IShape } from "./shape";
 
@@ -14,7 +13,7 @@ class Circle extends Shape {
   }
 
   draw(): void {
-    Drawer.instance.circle(this.vector, this.radius);
+    this.arc(this.vector, this.radius);
   }
 
   public tangentsFromVector(
@@ -25,16 +24,22 @@ class Circle extends Shape {
     const radius = this.radius - (padding || 0);
     if (distance < radius) return [null, null];
 
-    const alpha = v.delta(this.vector).atan2();
-
-    if (distance === radius) return [alpha + Math.PI, alpha + Math.PI];
+    const alpha = this.vector.delta(v).atan2();
+    const angle = this.vector.angle(v);
+    if (distance === radius) return [alpha, alpha];
     const theta = Math.asin(radius / distance);
-    return [alpha - theta + Math.PI, alpha + theta + Math.PI];
+    return [alpha - theta, alpha + theta];
   }
 
   public randomPointFromBorder(): Vector {
     const randomAngle = Math.random() * Math.PI * 2;
     return Vector.fromAngle(randomAngle).mulScalar(this.radius);
+  }
+
+  public collide(other: Circle) {
+    const distance = this.vector.distance(other.vector);
+    const maxDistance = this.radius + other.radius;
+    return distance < maxDistance;
   }
 }
 

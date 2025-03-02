@@ -1,15 +1,13 @@
 "use client";
-import { addScore } from "@/actions";
+import { addScore } from "@/lib/actions";
+import GlobalMixin from "@/src/mixins/global";
 import { KeyboardMixin } from "@/src/mixins/keyboard";
-import Canvas from "../../core/canvas";
-import Drawer from "../../core/drawer";
 import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
-import Explosion from "../effects/explosion";
 import LifeUpgrade from "../upgrades/life-upgrade";
+import ShieldUpgrade from "../upgrades/shield-upgrade";
 import SpeedUpgrade from "../upgrades/speed-upgrade";
-import Constraint from "./constraint";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   lives: number;
@@ -17,57 +15,54 @@ interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   credits?: number;
   vect: Vector;
 }
-class Player extends KeyboardMixin(MovingEntity<Circle>) {
+class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
   private livesUpgrade: LifeUpgrade;
   private speedUpgrade: SpeedUpgrade;
+  public shield: ShieldUpgrade;
   public points: number;
   public credits: number;
   constructor({ vect, angle, speed, lives, points, credits }: IPlayer) {
     const shape = new Circle({ vect: vect, radius: 35 });
     super({ shape, key: "player", angle, speed });
-    this.livesUpgrade = new LifeUpgrade({
-      maxLevel: 10,
-      cost: 5,
-      vector: Vector.zero,
-      initialValue: lives,
-    });
-    this.livesUpgrade.store();
     this.speedUpgrade = new SpeedUpgrade({
       maxLevel: 10,
       cost: 10,
-      vector: Vector.zero,
+      vector: this.global("buttonPosition").clone(),
       initialValue: speed,
+      label: "Speed",
+      keyPress: "1",
+      color: "yellow",
     });
-    this.speedUpgrade.store();
+
+    this.livesUpgrade = new LifeUpgrade({
+      maxLevel: 5,
+      cost: 5,
+      vector: this.global("buttonPosition").clone().addX(200),
+      initialValue: lives,
+      label: "Life",
+      keyPress: "3",
+      color: "red",
+    });
+    this.shield = new ShieldUpgrade({
+      maxLevel: 6,
+      cost: 10,
+      vector: this.global("buttonPosition").clone().addX(400),
+      initialValue: 0,
+      label: "Shield",
+      keyPress: "5",
+      rotationSpeed: 5,
+      radius: 10,
+      padding: 10,
+      color: "violet",
+    });
+
     this.points = points || 0;
     this.credits = credits || 0;
     this.store();
-    this.listenKeyboard();
+    this.speedUpgrade.store();
+    this.livesUpgrade.store();
+    this.shield.store();
   }
-
-  private listenKeyboard() {
-    window.addEventListener("keydown", (e) => {
-      const keys = new Set([
-        "w",
-        "a",
-        "s",
-        "d",
-        "ArrowRight",
-        "ArrowLeft",
-        "ArrowUp",
-        "ArrowDown",
-      ]);
-      if (keys.has(e.key)) this.keyMap.add(e.key);
-      if (e.key == "1") this.upgradeSpeed();
-      if (e.key == "2") this.upgradeConstraint();
-      if (e.key == "3") this.upgradeLives();
-    });
-    window.addEventListener("keyup", (e) => {
-      this.keyMap.delete(e.key);
-    });
-  }
-
-  private keyMap: Set<String> = new Set();
 
   public reset() {
     this.points = 0;
@@ -75,12 +70,12 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
     this.credits = 0;
     this.speed = 3;
     this.speedUpgrade.reset();
-    this.shape.vector = Canvas.instance.rect.center.clone();
-    const constraints = Canvas.instance.getByConstructor(Constraint);
-    if (constraints.length != 1) {
-      throw new Error(`Unexpected constraints in canvas ${constraints.length}`);
-    }
-    constraints[0].reset();
+    this.shield.reset();
+    this.shape.vector = this.canvasShape.center.clone();
+
+    const constraints = this.global("constraint")!;
+
+    constraints.reset();
   }
 
   public setScore() {
@@ -101,7 +96,7 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
     };
 
     const newDirection = Object.keys(directions)
-      .filter((key) => this.keyMap.has(key))
+      .filter((key) => this.keyPressed.has(key))
       .reduce((acc, key) => acc.add(directions[key]), new Vector(0, 0));
 
     if (newDirection.isZero()) return;
@@ -112,29 +107,25 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
     this.preventEscape(newDirection);
   }
 
-  private explode(vect: Vector) {
-    const explosion = new Explosion(vect.clone());
-    explosion.store();
-  }
-
   private preventEscape(direction: Vector) {
-    const constraint = Canvas.instance.get<Circle>("constraint");
+    const constraint = this.global("constraint");
     if (!constraint) return;
     const center = constraint.shape.vector;
     const distance = center.distance(this.shape.vector);
     const maxDistance = constraint.shape.radius - this.shape.radius;
 
-    if (distance + direction.distance(new Vector(0, 0)) > maxDistance) {
-      const vector = center.angle(this.shape.vector);
-
-      const newPosition = center.clone();
-
-      newPosition.add(vector.mulScalar(maxDistance));
-
-      this.shape.vector.set(newPosition);
-      return true;
+    if (distance + direction.distance(new Vector(0, 0)) <= maxDistance) {
+      return false;
     }
-    return false;
+
+    const vector = center.angle(this.shape.vector);
+
+    const newPosition = center.clone();
+
+    newPosition.add(vector.mulScalar(maxDistance));
+
+    this.shape.vector.set(newPosition);
+    return true;
   }
 
   private death() {
@@ -143,7 +134,7 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
   }
 
   public async postResults() {
-    this.keyMap.clear();
+    this.keyPressed.clear();
     const name = prompt("Insert your name: ");
     const body = {
       name: name || "Unknown",
@@ -162,35 +153,23 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
       this.death();
     }
     this.move();
-    this.collisions();
-    this.drawCredits();
-    this.drawPoints();
-    this.drawLives();
   }
 
-  public collisions() {
-    const balls = Canvas.instance.startsWith("ballenemy");
-    for (const ball of balls) {
-      if (!(ball.shape instanceof Circle) || !(this.shape instanceof Circle))
-        continue;
-      const distance = ball.shape.vector.distance(this.shape.vector);
-      const maxDistance = ball.shape.radius + this.shape.radius;
-      if (distance <= maxDistance) {
-        ball.destroy();
-        this.explode(ball.shape.vector);
-        this.livesUpgrade.value--;
-      }
-    }
+  public decreaseLife() {
+    this.livesUpgrade.value--;
   }
 
   public override draw(): void {
     const style = {
+      ...this.style,
       fillStyle: "lightblue",
       fill: true,
-      strokeStyle: "lightblue",
     };
 
-    Drawer.instance.with(() => this.shape.draw(), style);
+    this.with(() => this.shape.draw(), style);
+    this.drawCredits();
+    this.drawPoints();
+    this.drawLives();
   }
 
   private drawPoints() {
@@ -199,11 +178,11 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
       fill: true,
     };
 
-    Drawer.instance.with(
+    this.with(
       () =>
-        Drawer.instance.text(
+        this.text(
           "POINTS: " + this.points.toString(),
-          Canvas.instance.rect.topLeft.clone().addScalar(60),
+          this.canvasShape.topLeft.clone().addScalar(60),
           {
             font: "50px monospace",
           }
@@ -213,11 +192,11 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
   }
 
   private drawCredits() {
-    Drawer.instance.with(
+    this.with(
       () =>
-        Drawer.instance.text(
+        this.text(
           "CREDITS: " + this.credits.toString(),
-          Canvas.instance.rect.topLeft.clone().addScalar(120).addX(-60),
+          this.canvasShape.topLeft.clone().addScalar(120).addX(-60),
           {
             font: "50px monospace",
           }
@@ -231,47 +210,30 @@ class Player extends KeyboardMixin(MovingEntity<Circle>) {
 
   private drawLives() {
     for (let i = 0; i < this.livesUpgrade.value; i++) {
-      Drawer.instance.with(
-        () =>
-          Drawer.instance.drawHeart(
-            Canvas.instance.rect.topRight
-              .clone()
-              .addX(-60 - 60 * i)
-              .addY(60),
-            30
-          ),
-        {
-          fill: true,
-          fillStyle: "red",
-        }
-      );
+      this.with(() => this.drawLife(i), {
+        fill: true,
+        fillStyle: "red",
+      });
     }
+  }
+  private drawLife(index: number) {
+    this.drawer.drawHeart(
+      this.canvasShape.topRight
+        .clone()
+        .addX(-60 * (index + 1))
+        .addY(60),
+      30
+    );
   }
 
   private upgradeSpeed(): void {
-    if (this.credits >= 10) {
-      this.speedUpgrade.upgrade();
-      this.speed = this.speedUpgrade.value;
-      this.credits -= 10;
-    }
-  }
-
-  private upgradeLives(): void {
-    if (this.credits >= this.livesUpgrade.cost) {
-      this.livesUpgrade.upgrade();
-      this.speed = this.speedUpgrade.value;
-      this.credits -= this.livesUpgrade.cost;
-    }
+    this.speedUpgrade.upgrade();
+    this.speed = this.speedUpgrade.value;
   }
 
   private upgradeConstraint(): void {
-    if (this.credits < 10) return;
-    const constraint = Canvas.instance.getByConstructor(Constraint)[0];
-    if (!constraint) return;
-    if (!(constraint.shape instanceof Circle)) return;
-    if (!(constraint instanceof Constraint)) return;
+    const constraint = this.global("constraint")!;
     constraint.upgradeRadius();
-    this.credits -= 10;
   }
 }
 

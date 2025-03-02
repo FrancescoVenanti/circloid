@@ -1,5 +1,4 @@
 "use client";
-import Entity from "../core/entity";
 
 export function KeyboardMixin<Base extends Constructor<any>>(base: Base) {
   return class extends base {
@@ -25,7 +24,7 @@ export function KeyboardMixin<Base extends Constructor<any>>(base: Base) {
       this.keyPressed.delete(e.key);
     }
 
-    public destroy() {
+    public destroyListeners() {
       if (typeof window !== "undefined") {
         window.removeEventListener("keydown", this.onKeyDownBound);
         window.removeEventListener("keyup", this.onKeyUpBound);

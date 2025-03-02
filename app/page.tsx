@@ -1,6 +1,7 @@
 "use client";
 
-import ProxyComponent from "@/components/proxy-component";
+import { CommandPalette } from "@/components/command-palette";
+// import ProxyComponent from "@/components/proxy-component";
 import Canvas from "@/src/core/canvas";
 import GLOBAL from "@/src/core/global";
 import BallEnemy from "@/src/entities/characters/ball-enemy";
@@ -22,35 +23,38 @@ export default function Home() {
 
     const highscore = new Highscore(1);
     highscore.store();
-
+    GLOBAL(
+      "buttonPosition",
+      Canvas.instance.shape.bottomLeft.clone().addY(-100)
+    );
     GLOBAL(
       "player",
       new Player({
-        vect: Canvas.instance.rect.center,
+        vect: Canvas.instance.shape.center,
         angle: 0,
         speed: 3,
         lives: 3,
       })
     );
 
-    new Constraint({ vect: Canvas.instance.rect.center, radius: 120 });
+    GLOBAL('constraint', new Constraint({ vect: Canvas.instance.shape.center, radius: 120 }));
     loop(0);
   }, []);
   return (
     <div id="app">
-      <ProxyComponent />
+      <CommandPalette />
     </div>
   );
 }
 
 function loop(delay: number) {
-  if (!Canvas.instance.isRunning) {
+  if (!GLOBAL('running')) {
     requestAnimationFrame(loop);
 
     return;
   }
   const player = GLOBAL("player");
-  if (!player || !(player instanceof Player)) {
+  if (!player) {
     requestAnimationFrame(loop);
     return;
   }

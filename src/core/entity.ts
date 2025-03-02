@@ -1,7 +1,7 @@
 "use client";
+import CanvasMixin from "../mixins/canvas";
+import DrawerMixin from "../mixins/drawer";
 import { generateKey } from "../utils";
-import Canvas from "./canvas";
-import Drawer from "./drawer";
 import type Shape from "./shape/shape";
 
 export interface IEntity<T extends Shape> {
@@ -11,17 +11,20 @@ export interface IEntity<T extends Shape> {
   style?: Options;
 }
 
-abstract class Entity<T extends Shape> {
+abstract class Entity<T extends Shape> extends CanvasMixin(
+  DrawerMixin(class {})
+) {
   public key: string;
   public zIndex: number;
   public shape: T;
   public style: Options;
 
   public get active() {
-    return Canvas.instance.has(this);
+    return this.canvas.has(this);
   }
 
   constructor({ key, zIndex = 1, shape, style }: IEntity<T>) {
+    super();
     this.key = generateKey(key || "entity");
     this.zIndex = zIndex;
     this.shape = shape;
@@ -31,19 +34,15 @@ abstract class Entity<T extends Shape> {
   public abstract update(): void;
 
   public draw(): void {
-    Drawer.instance.with(() => this.shape.draw(), this.style);
-  }
-
-  protected init(): void {
-    Canvas.instance.add(this);
+    this.with(() => this.shape.draw(), this.style);
   }
 
   public destroy(): void {
-    Canvas.instance.destroy(this);
+    this.canvas.destroy(this);
   }
 
   public store(): void {
-    Canvas.instance.add(this);
+    this.canvas.add(this);
   }
 }
 

@@ -1,13 +1,15 @@
 "use client";
-import Drawer from "@/src/core/drawer";
+import GLOBAL from "@/src/core/global";
+import GlobalMixin from "@/src/mixins/global";
+import { inBetween } from "@/src/utils";
 import Canvas from "../../core/canvas";
-import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import Ball, { IBall } from "../ball";
+import Explosion from "../effects/explosion";
 
 interface IBallEnemy extends Omit<IBall, "key"> {}
 
-class BallEnemy extends Ball {
+class BallEnemy extends GlobalMixin(Ball) {
   constructor(props: IBallEnemy) {
     super({ ...props, key: "ballenemy" });
   }
@@ -20,12 +22,12 @@ class BallEnemy extends Ball {
   }
 
   public static spawn(speedMultiplier: number): BallEnemy | null {
-    const constraint = Canvas.instance.get("constraint");
-    if (!constraint || !(constraint.shape instanceof Circle)) return null;
+    const constraint = GLOBAL("constraint");
+    if (!constraint) return null;
 
-    const vect = Canvas.instance.rect.randomPointFromBorder();
+    const vect = Canvas.instance.shape.randomPointFromBorder();
 
-    const [min, max] = constraint.shape.tangentsFromVector(vect, 10);
+    const [min, max] = constraint.shape.tangentsFromVector(vect, 50);
 
     if (!min) return null;
 
@@ -33,7 +35,8 @@ class BallEnemy extends Ball {
     if (max) {
       angle = Math.random() * (max - min) + min;
     }
-
+    const vector = Vector.fromAngle(angle);
+    // console.log(vector.x, vector.y);
     return new BallEnemy({
       vect,
       angle,
@@ -43,7 +46,7 @@ class BallEnemy extends Ball {
   }
 
   public override draw(): void {
-    Drawer.instance.with(() => this.shape.draw(), {
+    this.with(() => this.shape.draw(), {
       fillStyle: "coral",
       strokeStyle: "coral",
       fill: true,
@@ -51,13 +54,60 @@ class BallEnemy extends Ball {
   }
 
   public override update(): void {
-    if (!Canvas.instance.rect.containsVector(this.shape.vector, -10))
+    if (!this.canvasShape.containsVector(this.shape.vector, -10))
       return this.destroy();
+
     const direction = Vector.fromAngle(this.angle);
 
     direction.mulScalar(this.speed);
 
     this.shape.vector.add(direction);
+    this.checkPlayerCollision();
+    this.checkConstraintCollision();
+    this.checkShieldCollisions();
+  }
+
+  private checkPlayerCollision() {
+    const player = this.global("player");
+    if (!player) return;
+    const distance = player.shape.vector.distance(this.shape.vector);
+    const maxDistance = player.shape.radius + this.shape.radius;
+    if (distance < maxDistance) {
+      this.destroy();
+      player.decreaseLife();
+      this.explode("lightblue");
+    }
+  }
+  private checkConstraintCollision() {
+    const constraint = this.global("constraint");
+    if (!constraint) return;
+    let angle = constraint.shape.vector.angleFromVect(this.shape.vector);
+    if (angle < 0) angle += Math.PI * 2;
+    const distance = constraint.shape.vector.distance(this.shape.vector);
+    const maxDistance = constraint.shape.radius + this.shape.radius;
+    const [start, end] = [constraint.wall.start, constraint.wall.end];
+
+    if (
+      inBetween(angle, start, end) &&
+      Math.abs(distance - maxDistance) <= this.speed
+    ) {
+      this.destroy();
+      this.explode("blue");
+    }
+  }
+  private checkShieldCollisions() {
+    const player = this.global("player");
+    if (!player) return;
+    const shields = player.shield.getShields();
+    for (const shield of shields) {
+      if (shield.collide(this.shape)) {
+        this.destroy();
+        this.explode(player.shield.color);
+      }
+    }
+  }
+  public explode(...extraColors: string[]) {
+    new Explosion(this.shape.vector, ["coral", ...extraColors]).store();
   }
 }
 

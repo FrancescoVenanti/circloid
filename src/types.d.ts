@@ -10,4 +10,13 @@ type Options = {
   shadowColor?: string;
   shadowBlur?: number;
   fill?: boolean;
+  textAlign?: CanvasTextAlign;
+  // reset?: boolean;
+};
+
+type TextOptions = {
+  style?: string;
+  font?: string;
+  textAlign?: CanvasTextAlign;
+  reset?: boolean;
 };
