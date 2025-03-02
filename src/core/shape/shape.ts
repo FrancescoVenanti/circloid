@@ -1,12 +1,14 @@
+import DrawerMixin from "@/src/mixins/drawer";
 import type Vector from "../vector";
 
 export interface IShape {
   vect: Vector;
 }
 
-abstract class Shape {
+abstract class Shape extends DrawerMixin(class {}) {
   public vector: Vector;
   constructor({ vect }: IShape) {
+    super();
     this.vector = vect;
   }
 

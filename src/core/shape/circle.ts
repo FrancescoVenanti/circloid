@@ -1,4 +1,3 @@
-import Drawer from "../drawer";
 import Vector from "../vector";
 import Shape, { IShape } from "./shape";
 
@@ -14,7 +13,7 @@ class Circle extends Shape {
   }
 
   draw(): void {
-    Drawer.instance.circle(this.vector, this.radius);
+    this.arc(this.vector, this.radius);
   }
 
   public tangentsFromVector(

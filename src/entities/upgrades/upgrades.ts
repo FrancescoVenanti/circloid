@@ -1,5 +1,6 @@
-import Drawer from "@/src/core/drawer";
 import GlobalMixin from "@/src/mixins/global";
+import { KeyboardMixin } from "@/src/mixins/keyboard";
+import { Drawable } from "roughjs/bin/core";
 import Entity, { IEntity } from "../../core/entity";
 import Rect from "../../core/shape/rect";
 import Vector from "../../core/vector";
@@ -16,7 +17,7 @@ export interface IUpgrade<T> extends Omit<IEntity<Rect>, "shape"> {
   keyPress: string;
 }
 
-abstract class Upgrade<T> extends GlobalMixin(Entity<Rect>) {
+abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
   protected _value: T;
   protected _level: number;
   protected _maxLevel: number;
@@ -25,6 +26,7 @@ abstract class Upgrade<T> extends GlobalMixin(Entity<Rect>) {
   protected initialValue: Upgrade<T>;
   protected label: string;
   protected keyPress: string;
+  private drawable: Drawable;
 
   public abstract get value();
   public abstract set value(newValue: T);
@@ -65,6 +67,17 @@ abstract class Upgrade<T> extends GlobalMixin(Entity<Rect>) {
     this.label = label;
     this.keyPress = keyPress;
     this.initialValue = JSON.parse(JSON.stringify(this));
+    this.drawable = this.drawer.sketchy.rect(
+      new Rect({
+        vect: this.shape.vector.clone().addX(100),
+        height: 40,
+        width: 40,
+      }),
+      {
+        fillStyle: "dashed",
+        // fillWeight: 900,
+      }
+    );
   }
 
   public reset(): void {
@@ -73,37 +86,33 @@ abstract class Upgrade<T> extends GlobalMixin(Entity<Rect>) {
     Object.assign(this, { _cost, _level, _maxLevel, _value, _costMultiplier });
   }
 
+  public decreaseCredits() {
+    const player = this.global("player");
+    if (!player) return;
+    player.credits -= this.cost;
+  }
+
   public override draw(): void {
     this.drawRect();
-    Drawer.instance.text(
-      this.label,
-      this.shape.vector.clone().addY(60).addX(120),
-      {
-        textAlign: "center",
-      }
-    );
+    this.text(this.label, this.shape.vector.clone().addY(60).addX(120), {
+      textAlign: "center",
+    });
+  }
+
+  public override onKeyDown(e: KeyboardEvent): void {
+    if (e.key !== this.keyPress) return;
+    this.upgrade();
   }
 
   protected drawRect(): void {
     const vect = this.shape.vector.clone().addX(100);
-
-    Drawer.instance.with(
+    this.with(() => this.drawer.sketchy.draw(this.drawable), {
+      ...this.style,
+      fill: false,
+    });
+    this.with(
       () =>
-        Drawer.instance.rect(
-          new Rect({
-            vect,
-            height: 40,
-            width: 40,
-          })
-        ),
-      {
-        ...this.style,
-        fill: false,
-      }
-    );
-    Drawer.instance.with(
-      () =>
-        Drawer.instance.fillRect(
+        this.fillRect(
           new Rect({
             vect,
             height: 40,
@@ -115,7 +124,7 @@ abstract class Upgrade<T> extends GlobalMixin(Entity<Rect>) {
         fill: true,
       }
     );
-    Drawer.instance.text(this.keyPress, vect.addX(20).addY(5), {
+    this.text(this.keyPress, vect.addX(20).addY(5), {
       textAlign: "center",
       font: "40px monospace",
     });

@@ -1,4 +1,3 @@
-import Drawer from "../../core/drawer";
 import Shape, { IShape } from "../../core/shape/shape";
 import Ball from "../ball";
 
@@ -49,7 +48,7 @@ class Particles extends Shape {
   }
 
   private drawParticle(ball: Ball) {
-    Drawer.instance.with(() => ball.draw(), {
+    this.with(() => ball.draw(), {
       fill: true,
       fillStyle: "coral",
     });

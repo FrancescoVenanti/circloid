@@ -1,4 +1,4 @@
-import Drawer from "../drawer";
+import { inBetween } from "@/src/utils";
 import Vector from "../vector";
 import Shape, { IShape } from "./shape";
 
@@ -41,7 +41,7 @@ class Rect extends Shape {
   }
 
   draw(): void {
-    Drawer.instance.rect(this);
+    this.rect(this);
   }
 
   public randomPointFromBorder() {
@@ -59,27 +59,18 @@ class Rect extends Shape {
     ];
 
     const randomSegment = Math.floor(Math.random() * 4);
-    console.log(randomSegment);
+    // console.log(randomSegment);
     return start[randomSegment].randomVectorFromSegment(end[randomSegment]);
-
-  }
-
-  public inBetween(num: number, min: number, max: number): boolean {
-    return num >= min && num <= max;
   }
 
   public containsVector(vect: Vector, padding: number = 0): boolean {
     return (
-      this.inBetween(
+      inBetween(
         vect.x,
         this.vector.x + padding,
         this.bottomRight.x - padding
       ) &&
-      this.inBetween(
-        vect.y,
-        this.vector.y + padding,
-        this.bottomRight.y - padding
-      )
+      inBetween(vect.y, this.vector.y + padding, this.bottomRight.y - padding)
     );
   }
 }

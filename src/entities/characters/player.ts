@@ -2,16 +2,11 @@
 import { addScore } from "@/lib/actions";
 import GlobalMixin from "@/src/mixins/global";
 import { KeyboardMixin } from "@/src/mixins/keyboard";
-import Canvas from "../../core/canvas";
-import Drawer from "../../core/drawer";
 import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
-import Explosion from "../effects/explosion";
 import LifeUpgrade from "../upgrades/life-upgrade";
 import SpeedUpgrade from "../upgrades/speed-upgrade";
-import Upgrade from "../upgrades/upgrades";
-import BallEnemy from "./ball-enemy";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   lives: number;
@@ -51,12 +46,6 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.speedUpgrade.store();
     this.livesUpgrade.store();
   }
-  public override onKeyDown(e: KeyboardEvent): void {
-    super.onKeyDown(e);
-    if (e.key == "1") this.upgradeSpeed();
-    if (e.key == "2") this.upgradeConstraint();
-    if (e.key == "3") this.powerup(this.livesUpgrade);
-  }
 
   public reset() {
     this.points = 0;
@@ -64,7 +53,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.credits = 0;
     this.speed = 3;
     this.speedUpgrade.reset();
-    this.shape.vector = Canvas.instance.rect.center.clone();
+    this.shape.vector = this.canvasShape.center.clone();
 
     const constraints = this.global("constraint")!;
 
@@ -98,11 +87,6 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.shape.vector.add(Vector.fromAngle(this.angle).mulScalar(this.speed));
 
     this.preventEscape(newDirection);
-  }
-
-  private explode(vect: Vector) {
-    const explosion = new Explosion(vect.clone(), ["lightblue", "coral"]);
-    explosion.store();
   }
 
   private preventEscape(direction: Vector) {
@@ -151,29 +135,20 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       this.death();
     }
     this.move();
-    this.collisions();
   }
 
-  public collisions() {
-    const balls = Canvas.instance.getByConstructor(BallEnemy);
-    for (const ball of balls) {
-      const distance = ball.shape.vector.distance(this.shape.vector);
-      const maxDistance = ball.shape.radius + this.shape.radius;
-      if (distance <= maxDistance) {
-        ball.destroy();
-        this.explode(ball.shape.vector);
-        this.livesUpgrade.value--;
-      }
-    }
+  public decreaseLife() {
+    this.livesUpgrade.value--;
   }
 
   public override draw(): void {
     const style = {
+      ...this.style,
       fillStyle: "lightblue",
       fill: true,
     };
 
-    Drawer.instance.with(() => this.shape.draw(), style);
+    this.with(() => this.shape.draw(), style);
     this.drawCredits();
     this.drawPoints();
     this.drawLives();
@@ -185,11 +160,11 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       fill: true,
     };
 
-    Drawer.instance.with(
+    this.with(
       () =>
-        Drawer.instance.text(
+        this.text(
           "POINTS: " + this.points.toString(),
-          Canvas.instance.rect.topLeft.clone().addScalar(60),
+          this.canvasShape.topLeft.clone().addScalar(60),
           {
             font: "50px monospace",
           }
@@ -199,11 +174,11 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
   }
 
   private drawCredits() {
-    Drawer.instance.with(
+    this.with(
       () =>
-        Drawer.instance.text(
+        this.text(
           "CREDITS: " + this.credits.toString(),
-          Canvas.instance.rect.topLeft.clone().addScalar(120).addX(-60),
+          this.canvasShape.topLeft.clone().addScalar(120).addX(-60),
           {
             font: "50px monospace",
           }
@@ -217,15 +192,15 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
 
   private drawLives() {
     for (let i = 0; i < this.livesUpgrade.value; i++) {
-      Drawer.instance.with(() => this.drawLife(i), {
+      this.with(() => this.drawLife(i), {
         fill: true,
         fillStyle: "red",
       });
     }
   }
   private drawLife(index: number) {
-    Drawer.instance.drawHeart(
-      Canvas.instance.rect.topRight
+    this.drawer.drawHeart(
+      this.canvasShape.topRight
         .clone()
         .addX(-60 * (index + 1))
         .addY(60),
@@ -234,25 +209,13 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
   }
 
   private upgradeSpeed(): void {
-    this.powerup(this.speedUpgrade);
+    this.speedUpgrade.upgrade();
     this.speed = this.speedUpgrade.value;
   }
 
   private upgradeConstraint(): void {
     const constraint = this.global("constraint")!;
-    if (constraint.upgradeRadius()) {
-      this.decreaseCredits(constraint.radiusUpgrade);
-    }
-  }
-
-  private powerup(upgrade: Upgrade<any>) {
-    if (upgrade.upgrade()) {
-      this.decreaseCredits(upgrade);
-    }
-  }
-  private decreaseCredits(upgrade: Upgrade<any>) {
-    if (this.credits < upgrade.cost) return;
-    this.credits -= upgrade.cost;
+    constraint.upgradeRadius();
   }
 }
 
