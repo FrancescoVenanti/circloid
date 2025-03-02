@@ -35,6 +35,12 @@ class Circle extends Shape {
     const randomAngle = Math.random() * Math.PI * 2;
     return Vector.fromAngle(randomAngle).mulScalar(this.radius);
   }
+
+  public collide(other: Circle) {
+    const distance = this.vector.distance(other.vector);
+    const maxDistance = this.radius + other.radius;
+    return distance < maxDistance;
+  }
 }
 
 export default Circle;

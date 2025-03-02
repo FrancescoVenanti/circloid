@@ -19,11 +19,17 @@ class Drawer {
   public arc(
     vect: Vector,
     radius: number,
-    { start = 0, end = Math.PI * 2 }: { start?: number; end?: number }
+    size?: { start?: number; end?: number }
   ) {
     if (!this.context) return;
     this.context.beginPath();
-    this.context.arc(vect.x, vect.y, radius, start, end);
+    this.context.arc(
+      vect.x,
+      vect.y,
+      radius,
+      size?.start || 0,
+      size?.end || Math.PI * 2
+    );
     this.context.stroke();
   }
 

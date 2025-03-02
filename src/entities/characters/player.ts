@@ -6,6 +6,7 @@ import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import LifeUpgrade from "../upgrades/life-upgrade";
+import ShieldUpgrade from "../upgrades/shield-upgrade";
 import SpeedUpgrade from "../upgrades/speed-upgrade";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
@@ -17,6 +18,7 @@ interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
 class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
   private livesUpgrade: LifeUpgrade;
   private speedUpgrade: SpeedUpgrade;
+  public shield: ShieldUpgrade;
   public points: number;
   public credits: number;
   constructor({ vect, angle, speed, lives, points, credits }: IPlayer) {
@@ -29,6 +31,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       initialValue: speed,
       label: "Speed",
       keyPress: "1",
+      color: "yellow",
     });
 
     this.livesUpgrade = new LifeUpgrade({
@@ -38,6 +41,19 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       initialValue: lives,
       label: "Life",
       keyPress: "3",
+      color: "red",
+    });
+    this.shield = new ShieldUpgrade({
+      maxLevel: 6,
+      cost: 10,
+      vector: this.global("buttonPosition").clone().addX(400),
+      initialValue: 0,
+      label: "Shield",
+      keyPress: "5",
+      rotationSpeed: 5,
+      radius: 10,
+      padding: 10,
+      color: "violet",
     });
 
     this.points = points || 0;
@@ -45,6 +61,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.store();
     this.speedUpgrade.store();
     this.livesUpgrade.store();
+    this.shield.store();
   }
 
   public reset() {
@@ -53,6 +70,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.credits = 0;
     this.speed = 3;
     this.speedUpgrade.reset();
+    this.shield.reset();
     this.shape.vector = this.canvasShape.center.clone();
 
     const constraints = this.global("constraint")!;

@@ -15,6 +15,7 @@ export interface IUpgrade<T> extends Omit<IEntity<Rect>, "shape"> {
   initialValue: T;
   label: string;
   keyPress: string;
+  color: string;
 }
 
 abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
@@ -24,6 +25,7 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
   protected _cost: number;
   protected _costMultiplier: number;
   protected initialValue: Upgrade<T>;
+  protected _color: string;
   protected label: string;
   protected keyPress: string;
   private drawable: Drawable;
@@ -46,6 +48,9 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
   public get isMaxLevel() {
     return this._level == this._maxLevel;
   }
+  public get color() {
+    return this._color;
+  }
 
   constructor({
     initialValue,
@@ -55,6 +60,7 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
     costMultiplier,
     label,
     keyPress,
+    color,
     ...props
   }: IUpgrade<T>) {
     const shape = new Rect({ vect: props.vector, width: 40, height: 40 });
@@ -66,17 +72,14 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
     this._costMultiplier = costMultiplier || 1;
     this.label = label;
     this.keyPress = keyPress;
+    this._color = color;
     this.initialValue = JSON.parse(JSON.stringify(this));
     this.drawable = this.drawer.sketchy.rect(
       new Rect({
         vect: this.shape.vector.clone().addX(100),
         height: 40,
         width: 40,
-      }),
-      {
-        fillStyle: "dashed",
-        // fillWeight: 900,
-      }
+      })
     );
   }
 
@@ -107,8 +110,8 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
   protected drawRect(): void {
     const vect = this.shape.vector.clone().addX(100);
     this.with(() => this.drawer.sketchy.draw(this.drawable), {
-      ...this.style,
       fill: false,
+      strokeStyle: this.color,
     });
     this.with(
       () =>
@@ -120,8 +123,8 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
           })
         ),
       {
-        ...this.style,
         fill: true,
+        fillStyle: this.color,
       }
     );
     this.text(this.keyPress, vect.addX(20).addY(5), {

@@ -64,6 +64,7 @@ class BallEnemy extends GlobalMixin(Ball) {
     this.shape.vector.add(direction);
     this.checkPlayerCollision();
     this.checkConstraintCollision();
+    this.checkShieldCollisions();
   }
 
   private checkPlayerCollision() {
@@ -85,7 +86,6 @@ class BallEnemy extends GlobalMixin(Ball) {
     const distance = constraint.shape.vector.distance(this.shape.vector);
     const maxDistance = constraint.shape.radius + this.shape.radius;
     const [start, end] = [constraint.wall.start, constraint.wall.end];
-    console.log(inBetween(angle, start, end));
 
     if (
       inBetween(angle, start, end) &&
@@ -93,6 +93,17 @@ class BallEnemy extends GlobalMixin(Ball) {
     ) {
       this.destroy();
       this.explode("blue");
+    }
+  }
+  private checkShieldCollisions() {
+    const player = this.global("player");
+    if (!player) return;
+    const shields = player.shield.getShields();
+    for (const shield of shields) {
+      if (shield.collide(this.shape)) {
+        this.destroy();
+        this.explode(player.shield.color);
+      }
     }
   }
   public explode(...extraColors: string[]) {

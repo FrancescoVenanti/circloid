@@ -29,6 +29,7 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
       label: "Constraint",
       keyPress: "2",
       initialValue: radius,
+      color: "green",
     });
     this.drawable = this.drawer.sketchy.circle(
       this.shape.vector,
@@ -42,7 +43,7 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
       vector: this.global("buttonPosition").clone().addX(300),
       initialValue: 0,
       maxLevel: 10,
-      style: { strokeStyle: "blue", fillStyle: "blue" },
+      color: "blue",
     });
     this.shape.radius = this.radiusUpgrade.value;
     this.store();
@@ -64,6 +65,7 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
 
   public reset() {
     this.radiusUpgrade.reset();
+    this.wall.reset();
     this.shape.radius = this.radiusUpgrade.value;
   }
 
