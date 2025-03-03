@@ -45,22 +45,27 @@ class Rect extends Shape {
   }
 
   public randomPointFromBorder() {
-    const start = [
-      this.topLeft,
-      this.topRight,
-      this.bottomRight,
-      this.bottomLeft,
-    ];
-    const end = [
-      this.topRight,
-      this.bottomRight,
-      this.bottomLeft,
-      this.topLeft,
+    const segments = [
+      [this.topLeft, this.topRight],
+      [this.topRight, this.bottomRight],
+      [this.bottomRight, this.bottomLeft],
+      [this.bottomLeft, this.topLeft],
     ];
 
     const randomSegment = Math.floor(Math.random() * 4);
-    // console.log(randomSegment);
-    return start[randomSegment].randomVectorFromSegment(end[randomSegment]);
+    const [s, e] = segments[randomSegment];
+    const t = Math.random();
+    switch (randomSegment) {
+      case 0:
+        return new Vector(this.width * t, 0);
+      case 1:
+        return new Vector(this.width, this.height * t);
+      case 2:
+        return new Vector(this.width * t, this.height);
+      case 3:
+        return new Vector(0, this.height * t);
+    }
+    return Vector.zero;
   }
 
   public containsVector(vect: Vector, padding: number = 0): boolean {

@@ -53,7 +53,7 @@ class ShieldUpgrade extends GlobalMixin(Upgrade<number>) {
     let vect = Vector.zero;
     for (let i = 0; i < this._value; i++) {
       vect = Vector.fromAngle(angle * i + this.angle)
-        .mulScalar(radius)
+        .mulScalar(radius + this.padding)
         .add(vector);
       result.push(new Circle({ radius: this.radius, vect }));
     }
