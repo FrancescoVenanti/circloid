@@ -24,9 +24,8 @@ class Circle extends Shape {
     const radius = this.radius - (padding || 0);
     if (distance < radius) return [null, null];
 
-    const alpha = this.vector.delta(v).atan2();
-    const angle = this.vector.angle(v);
-    if (distance === radius) return [alpha, alpha];
+    const alpha = v.angleFromVect(this.vector);
+    
     const theta = Math.asin(radius / distance);
     return [alpha - theta, alpha + theta];
   }

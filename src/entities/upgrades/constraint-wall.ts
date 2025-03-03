@@ -23,7 +23,7 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
   }
   public upgrade(): boolean {
     if (!super.upgrade()) return false;
-    this._value += (Math.PI / 180) * 5;
+    this._value += (Math.PI / 180) * 27;
     this.decreaseCredits();
     return true;
   }

@@ -138,10 +138,9 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
   public upgrade(): boolean {
     if (!this.canUpgrade()) return false;
 
-    const color = this.style.fillStyle ? [this.style.fillStyle] : [];
     this._level++;
     this._cost = Math.floor(this._cost * this._costMultiplier);
-    new Explosion(this.shape.vector.clone().addX(120).addY(20), color);
+    new Explosion(this.shape.vector.clone().addX(120).addY(20), [this._color]);
     return true;
   }
 

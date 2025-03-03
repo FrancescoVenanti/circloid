@@ -28,13 +28,8 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
       label: "Constraint",
       keyPress: "2",
       initialValue: radius,
-      color: "green",
+      color: "palegreen",
     });
-    // this.drawable = this.drawer.sketchy.circle(
-    //   this.shape.vector,
-    //   this.shape.radius,
-    //   { preserveVertices: true }
-    // );
     this.wall = new ConstraintWall({
       label: "Wall",
       keyPress: "4",

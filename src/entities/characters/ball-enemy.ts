@@ -26,7 +26,6 @@ class BallEnemy extends GlobalMixin(Ball) {
     if (!constraint) return null;
 
     const vect = Canvas.instance.shape.randomPointFromBorder();
-
     const [min, max] = constraint.shape.tangentsFromVector(vect, 50);
 
     if (!min) return null;
@@ -35,8 +34,7 @@ class BallEnemy extends GlobalMixin(Ball) {
     if (max) {
       angle = Math.random() * (max - min) + min;
     }
-    const vector = Vector.fromAngle(angle);
-    // console.log(vector.x, vector.y);
+    console.log(vect.x, vect.y);
     return new BallEnemy({
       vect,
       angle,
@@ -62,6 +60,7 @@ class BallEnemy extends GlobalMixin(Ball) {
     direction.mulScalar(this.speed);
 
     this.shape.vector.add(direction);
+
     this.checkPlayerCollision();
     this.checkConstraintCollision();
     this.checkShieldCollisions();
