@@ -3,6 +3,10 @@ class Vector {
   public static fromAngle(angle: number) {
     return new Vector(Math.cos(angle), Math.sin(angle));
   }
+  public static scalar(s: number) {
+    return new Vector(s, s);
+  }
+
   public static get zero() {
     return new Vector(0, 0);
   }
@@ -62,9 +66,7 @@ class Vector {
   }
 
   public mulScalar(scalar: number) {
-    this.x *= scalar;
-    this.y *= scalar;
-    return this;
+    return this.mul(new Vector(scalar, scalar));
   }
 
   public moveTo(vector: Vector): Vector {
@@ -89,6 +91,12 @@ class Vector {
 
   public angleFromVect(vect: Vector) {
     return Math.atan2(vect.y - this.y, vect.x - this.x);
+  }
+
+  public abs(): Vector {
+    this.x = Math.abs(this.x);
+    this.y = Math.abs(this.y);
+    return this;
   }
 
   public angle(v: Vector) {

@@ -2,7 +2,6 @@
 import Vector from "@/src/core/vector";
 import GlobalMixin from "@/src/mixins/global";
 import RotatingMixin from "@/src/mixins/rotating";
-import { Drawable } from "roughjs/bin/core";
 import Entity, { IEntity } from "../../core/entity";
 import Circle from "../../core/shape/circle";
 import ConstraintUpgrade from "../upgrades/constraint-upgrade";
@@ -16,7 +15,7 @@ interface IConstraint extends Omit<IEntity<Circle>, "shape"> {
 class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
   public radiusUpgrade: ConstraintUpgrade;
   public wall: ConstraintWall;
-  private drawable: Drawable;
+  // private drawable: Drawable;
   constructor({ vect, radius, ...props }: IConstraint) {
     const shape = new Circle({ vect, radius });
     super({ ...props, shape, key: "constraint" });
@@ -29,13 +28,8 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
       label: "Constraint",
       keyPress: "2",
       initialValue: radius,
-      color: "green",
+      color: "palegreen",
     });
-    this.drawable = this.drawer.sketchy.circle(
-      this.shape.vector,
-      this.shape.radius,
-      { preserveVertices: true }
-    );
     this.wall = new ConstraintWall({
       label: "Wall",
       keyPress: "4",
@@ -73,7 +67,7 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
     // this.rotation++;
   }
   public override draw() {
-    this.with(() => this.drawer.sketchy.draw(this.drawable), {
+    this.with(() => this.shape.draw(), {
       ...this.style,
       lineWidth: 2,
       strokeStyle: "palegreen",
