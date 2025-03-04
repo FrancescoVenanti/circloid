@@ -63,7 +63,7 @@ function loop(delay: number) {
   }
   if (counter === 0) {
     BallEnemy.spawnAmount(
-      1 + Math.round(player.points / 50),
+      1 + Math.floor(player.points / 50),
       player.points / 20
     );
     player.setScore();
