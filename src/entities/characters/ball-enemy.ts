@@ -39,7 +39,7 @@ class BallEnemy extends GlobalMixin(Ball) {
       vect,
       angle,
       radius: 10,
-      speed: 6 + speedMultiplier,
+      speed: 4 + speedMultiplier,
     });
   }
 

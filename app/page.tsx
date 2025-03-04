@@ -37,7 +37,10 @@ export default function Home() {
       })
     );
 
-    GLOBAL('constraint', new Constraint({ vect: Canvas.instance.shape.center, radius: 120 }));
+    GLOBAL(
+      "constraint",
+      new Constraint({ vect: Canvas.instance.shape.center, radius: 120 })
+    );
     loop(0);
   }, []);
   return (
@@ -48,7 +51,7 @@ export default function Home() {
 }
 
 function loop(delay: number) {
-  if (!GLOBAL('running')) {
+  if (!GLOBAL("running")) {
     requestAnimationFrame(loop);
 
     return;
@@ -60,7 +63,7 @@ function loop(delay: number) {
   }
   if (counter === 0) {
     BallEnemy.spawnAmount(
-      1 + Math.round(player.points / 30),
+      1 + Math.round(player.points / 50),
       player.points / 20
     );
     player.setScore();
