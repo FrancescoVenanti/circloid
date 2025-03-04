@@ -31,7 +31,6 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       initialValue: speed,
       label: "Speed",
       keyPress: "1",
-      color: "yellow",
     });
 
     this.livesUpgrade = new LifeUpgrade({
@@ -41,7 +40,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       initialValue: lives,
       label: "Life",
       keyPress: "3",
-      color: "red",
+      // color: "red",
     });
     this.shield = new ShieldUpgrade({
       maxLevel: 6,
@@ -53,7 +52,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       rotationSpeed: 5,
       radius: 10,
       padding: 25,
-      color: "violet",
+      // color: "violet",
     });
 
     this.points = points || 0;
@@ -160,13 +159,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
   }
 
   public override draw(): void {
-    const style = {
-      ...this.style,
-      fillStyle: "lightblue",
-      fill: true,
-    };
-
-    this.with(() => this.shape.draw(), style);
+    this.with(() => this.shape.draw(), this.style);
     this.drawCredits();
     this.drawPoints();
     this.drawLives();

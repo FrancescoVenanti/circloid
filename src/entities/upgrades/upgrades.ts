@@ -15,7 +15,7 @@ export interface IUpgrade<T> extends Omit<IEntity<Rect>, "shape"> {
   initialValue: T;
   label: string;
   keyPress: string;
-  color: string;
+  color?: string;
 }
 
 abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
@@ -72,7 +72,8 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
     this._costMultiplier = costMultiplier || 1;
     this.label = label;
     this.keyPress = keyPress;
-    this._color = color;
+    this._color = this.getCurrentStyle()["color"];
+    color && (this._color = color);
     this.initialValue = JSON.parse(JSON.stringify(this));
     this.drawable = this.drawer.sketchy.rect(
       new Rect({

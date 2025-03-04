@@ -9,11 +9,6 @@ class SpeedUpgrade extends Upgrade<number> {
   }
   constructor(props: Omit<IUpgrade<number>, "key">) {
     super({ ...props, key: "speedUpgrade" });
-    this.style = {
-      fillStyle: "orange",
-      fill: true,
-      strokeStyle: "orange",
-    };
   }
 
   public override update(): void {}

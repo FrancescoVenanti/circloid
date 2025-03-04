@@ -2,6 +2,7 @@
 import DrawerMixin from "../mixins/drawer";
 import GlobalMixin from "../mixins/global";
 import { KeyboardMixin } from "../mixins/keyboard";
+import { currentStyle } from "../utils";
 import Entity from "./entity";
 import Rect from "./shape/rect";
 import type Shape from "./shape/shape";
@@ -52,7 +53,7 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
         width: this.canvas?.width || 0,
         height: this.canvas?.height || 0,
       }),
-      "black"
+      currentStyle().canvas.fillStyle
     );
     this.entities.forEach((e) => {
       e.update();

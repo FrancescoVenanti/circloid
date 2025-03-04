@@ -12,11 +12,6 @@ class LifeUpgrade extends Upgrade<number> {
   constructor(props: Omit<IUpgrade<number>, "key">) {
     super({ ...props, key: "lifeUpgrade" });
     this._level = this._value;
-    this.style = {
-      fillStyle: "coral",
-      fill: true,
-      strokeStyle: "coral",
-    };
   }
 
   public override update(): void {}

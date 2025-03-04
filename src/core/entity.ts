@@ -1,6 +1,8 @@
 "use client";
 import CanvasMixin from "../mixins/canvas";
 import DrawerMixin from "../mixins/drawer";
+import GlobalMixin from "../mixins/global";
+import { Style, styles } from "../style";
 import { generateKey } from "../utils";
 import type Shape from "./shape/shape";
 
@@ -12,7 +14,7 @@ export interface IEntity<T extends Shape> {
 }
 
 abstract class Entity<T extends Shape> extends CanvasMixin(
-  DrawerMixin(class {})
+  GlobalMixin(DrawerMixin(class {}))
 ) {
   public key: string;
   public zIndex: number;
@@ -23,12 +25,25 @@ abstract class Entity<T extends Shape> extends CanvasMixin(
     return this.canvas.has(this);
   }
 
+  public get options() {
+    return styles[this.global("style")];
+  }
+
   constructor({ key, zIndex = 1, shape, style }: IEntity<T>) {
     super();
     this.key = generateKey(key || "entity");
     this.zIndex = zIndex;
     this.shape = shape;
     this.style = style || {};
+    this.style = { ...this.getCurrentStyle(), ...this.style };
+  }
+
+  protected getCurrentStyle(): Style[string] {
+    const key = this.key.split("-")[0];
+    if (key in this.options) {
+      return this.options[key as keyof Style];
+    }
+    return {};
   }
 
   public abstract update(): void;

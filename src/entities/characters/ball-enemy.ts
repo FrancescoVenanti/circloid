@@ -34,7 +34,6 @@ class BallEnemy extends GlobalMixin(Ball) {
     if (max) {
       angle = Math.random() * (max - min) + min;
     }
-    console.log(vect.x, vect.y);
     return new BallEnemy({
       vect,
       angle,
@@ -44,11 +43,7 @@ class BallEnemy extends GlobalMixin(Ball) {
   }
 
   public override draw(): void {
-    this.with(() => this.shape.draw(), {
-      fillStyle: "coral",
-      strokeStyle: "coral",
-      fill: true,
-    });
+    this.with(() => this.shape.draw(), this.style);
   }
 
   public override update(): void {
@@ -106,7 +101,10 @@ class BallEnemy extends GlobalMixin(Ball) {
     }
   }
   public explode(...extraColors: string[]) {
-    new Explosion(this.shape.vector, ["coral", ...extraColors]).store();
+    new Explosion(this.shape.vector, [
+      this.style.fillStyle || "",
+      ...extraColors,
+    ]).store();
   }
 }
 

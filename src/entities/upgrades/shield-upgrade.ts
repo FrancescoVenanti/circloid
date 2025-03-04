@@ -18,7 +18,7 @@ class ShieldUpgrade extends GlobalMixin(Upgrade<number>) {
     return this._value;
   }
   constructor({ rotationSpeed, padding, radius, ...props }: IShieldUpgrade) {
-    super(props);
+    super({ ...props, key: "shieldUpgrade" });
     this.angle = 0;
     this.rotationSpeed = (Math.PI / 180) * (rotationSpeed || 1);
     this.radius = radius || 5;

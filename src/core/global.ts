@@ -8,6 +8,7 @@ export interface Globals {
   fps: number;
   buttonPosition: Vector;
   running: boolean;
+  style: number;
 }
 
 const globals: Globals = {
@@ -16,6 +17,7 @@ const globals: Globals = {
   constraint: null,
   buttonPosition: Vector.zero,
   running: true,
+  style: 0,
 };
 
 function GLOBAL<T extends keyof typeof globals>(
