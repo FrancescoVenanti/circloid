@@ -10,11 +10,6 @@ class ConstraintUpgrade extends Upgrade<number> {
   }
   constructor(props: Omit<IUpgrade<number>, "key">) {
     super({ ...props, key: "constraintUpgrade" });
-    this.style = {
-      fillStyle: "lightblue",
-      fill: true,
-      strokeStyle: "lightblue",
-    };
     this.initialValues = JSON.parse(JSON.stringify(this));
   }
 

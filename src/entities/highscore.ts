@@ -1,6 +1,6 @@
 "use client";
 import { getTopScores } from "@/lib/actions";
-import Canvas from "../core/canvas";
+import canvas from "../core/canvas";
 import Entity from "../core/entity";
 import Rect from "../core/shape/rect";
 import Vector from "../core/vector";
@@ -9,7 +9,7 @@ class Highscore extends Entity<any> {
   private scores: any[] = [];
   constructor(zIndex: number) {
     const shape = new Rect({
-      vect: Canvas.instance.shape.topLeft.clone().addX(60).addY(140),
+      vect: canvas.shape.topLeft.clone().addX(60).addY(140),
       width: 120,
       height: 200,
     });

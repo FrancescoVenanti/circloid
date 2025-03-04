@@ -1,4 +1,4 @@
-import GLOBAL from "./core/global";
+import global from "./core/global";
 import { styles } from "./style";
 
 export function generateKey(name?: string): string {
@@ -9,5 +9,5 @@ export function inBetween(value: number, min: number, max: number) {
 }
 
 export function currentStyle() {
-  return styles[GLOBAL("style")];
+  return styles[global.use("style")];
 }

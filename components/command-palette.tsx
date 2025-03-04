@@ -32,8 +32,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 import {
   Dialog,
@@ -41,22 +39,22 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
-import Canvas from "@/src/core/canvas";
+import canvas from "@/src/core/canvas";
 import { styles } from "@/src/style";
-import GLOBAL from "@/src/core/global";
+import global from "@/src/core/global";
 
 export function CommandPalette() {
   const [open, setOpen] = React.useState(false);
-  const [theme, setTheme] = React.useState(GLOBAL("style"));
+  const [_, setTheme] = React.useState(global.use("style"));
 
   React.useEffect(() => {
-    Canvas.instance.onPause = () => setOpen(true);
-    Canvas.instance.onPause = () => setOpen(false);
-    Canvas.instance.onToggle = (v) => setOpen(!v);
+    canvas.onPause = () => setOpen(true);
+    canvas.onPause = () => setOpen(false);
+    canvas.onToggle = (v) => setOpen(!v);
   }, []);
 
   function changeTheme(index: number) {
-    GLOBAL("style", index);
+    global.use("style", index);
     setTheme(index);
   }
 
@@ -76,7 +74,9 @@ export function CommandPalette() {
               {styles.map((_, i) => (
                 <CommandItem key={i} onSelect={() => changeTheme(i)}>
                   <Palette className="mr-2 h-4 w-4" />
-                  <span className={i === GLOBAL("style") ? "font-bold" : ""}>
+                  <span
+                    className={i === global.use("style") ? "font-bold" : ""}
+                  >
                     {themes[i]?.label || "No name"}
                   </span>
                 </CommandItem>

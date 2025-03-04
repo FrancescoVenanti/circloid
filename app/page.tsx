@@ -2,8 +2,8 @@
 
 import { CommandPalette } from "@/components/command-palette";
 // import ProxyComponent from "@/components/proxy-component";
-import Canvas from "@/src/core/canvas";
-import GLOBAL from "@/src/core/global";
+import canvas from "@/src/core/canvas";
+import global from "@/src/core/global";
 import BallEnemy from "@/src/entities/characters/ball-enemy";
 import Constraint from "@/src/entities/characters/constraint";
 import Player from "@/src/entities/characters/player";
@@ -19,27 +19,24 @@ export default function Home() {
     document.dispatchEvent(
       new KeyboardEvent("keydown", { key: "k", metaKey: true })
     );
-    Canvas.instance.init();
+    canvas.init();
 
     const highscore = new Highscore(1);
     highscore.store();
-    GLOBAL(
-      "buttonPosition",
-      Canvas.instance.shape.bottomLeft.clone().addY(-100)
-    );
-    GLOBAL(
+    global.use("buttonPosition", canvas.shape.bottomLeft.clone().addY(-100));
+    global.use(
       "player",
       new Player({
-        vect: Canvas.instance.shape.center,
+        vect: canvas.shape.center,
         angle: 0,
         speed: 3,
         lives: 3,
       })
     );
 
-    GLOBAL(
+    global.use(
       "constraint",
-      new Constraint({ vect: Canvas.instance.shape.center, radius: 120 })
+      new Constraint({ vect: canvas.shape.center, radius: 120 })
     );
     loop(0);
   }, []);
@@ -51,12 +48,12 @@ export default function Home() {
 }
 
 function loop(delay: number) {
-  if (!GLOBAL("running")) {
+  if (!global.use("running")) {
     requestAnimationFrame(loop);
 
     return;
   }
-  const player = GLOBAL("player");
+  const player = global.use("player");
   if (!player) {
     requestAnimationFrame(loop);
     return;
@@ -68,9 +65,9 @@ function loop(delay: number) {
     );
     player.setScore();
   }
-  GLOBAL("fps", 1000 / (delay - beforeDelay));
+  global.use("fps", 1000 / (delay - beforeDelay));
   beforeDelay = delay;
-  Canvas.instance.render();
+  canvas.render();
   counter = (counter + 1) % fps;
 
   requestAnimationFrame(loop);

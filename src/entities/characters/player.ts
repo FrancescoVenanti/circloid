@@ -8,6 +8,7 @@ import Vector from "../../core/vector";
 import LifeUpgrade from "../upgrades/life-upgrade";
 import ShieldUpgrade from "../upgrades/shield-upgrade";
 import SpeedUpgrade from "../upgrades/speed-upgrade";
+import { Drawable } from "roughjs/bin/core";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   lives: number;
@@ -102,7 +103,6 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
 
     this.angle = newDirection.atan2();
     this.shape.vector.add(Vector.fromAngle(this.angle).mulScalar(this.speed));
-
     this.preventEscape(newDirection);
   }
 
@@ -160,6 +160,10 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
 
   public override draw(): void {
     this.with(() => this.shape.draw(), this.style);
+    this.with(
+      () => this.drawer.sketchy.circle(this.shape.vector, this.shape.radius),
+      this.style
+    );
     this.drawCredits();
     this.drawPoints();
     this.drawLives();
@@ -217,16 +221,6 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
         .addY(60),
       30
     );
-  }
-
-  private upgradeSpeed(): void {
-    this.speedUpgrade.upgrade();
-    this.speed = this.speedUpgrade.value;
-  }
-
-  private upgradeConstraint(): void {
-    const constraint = this.global("constraint")!;
-    constraint.upgradeRadius();
   }
 }
 

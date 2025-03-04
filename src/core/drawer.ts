@@ -152,4 +152,4 @@ class Drawer {
   }
 }
 
-export default Drawer;
+export default Drawer.instance;

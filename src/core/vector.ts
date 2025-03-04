@@ -105,8 +105,9 @@ class Vector {
 
   public randomVectorFromSegment(v: Vector) {
     const distance = this.distance(v);
+    const angle = this.angleFromVect(v);
     const random = Math.random() * distance;
-    return this.angle(v).mulScalar(random);
+    return this.clone().add(Vector.fromAngle(angle).mulScalar(random));
   }
 }
 

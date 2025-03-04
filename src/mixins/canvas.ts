@@ -1,4 +1,4 @@
-import Canvas from "../core/canvas";
+import canvas from "../core/canvas";
 import Entity from "../core/entity";
 
 export default function CanvasMixin<T extends Constructor<any>>(base: T) {
@@ -7,7 +7,7 @@ export default function CanvasMixin<T extends Constructor<any>>(base: T) {
       super(args);
     }
     protected get canvas() {
-      return Canvas.instance;
+      return canvas;
     }
     protected get canvasShape() {
       return this.canvas.shape;

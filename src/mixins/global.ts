@@ -1,4 +1,4 @@
-import GLOBAL, { Globals } from "../core/global";
+import global, { Globals } from "../core/global";
 
 export default function GlobalMixin<T extends Constructor<any>>(base: T) {
   return class extends base {
@@ -9,7 +9,7 @@ export default function GlobalMixin<T extends Constructor<any>>(base: T) {
       provider: T,
       newValue?: Globals[T] | ((oldValue: Globals[T]) => Globals[T])
     ): Globals[T] {
-      return GLOBAL(provider, newValue);
+      return global.use(provider, newValue);
     }
   };
 }

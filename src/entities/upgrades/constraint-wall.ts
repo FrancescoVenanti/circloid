@@ -14,7 +14,7 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
     return this._value;
   }
   constructor({ ...props }: IConstraintWall) {
-    super(props);
+    super({ ...props, key: "wallUpgrade" });
     this._angle = 0;
   }
 
@@ -50,7 +50,7 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
     const start = this._angle - this._value / 2;
     const end = this._angle + this._value / 2;
     this.drawer.with(() => this.drawer.arc(vector, radius, { start, end }), {
-      strokeStyle: "blue",
+      strokeStyle: this.color,
       lineWidth: 10,
     });
   }

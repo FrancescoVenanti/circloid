@@ -26,6 +26,13 @@ class Sketchy {
       false
     );
   }
+  public moveTo(sketch: Drawable, { x, y }: Vector) {
+    for (const s of sketch.sets) {
+      if (s.size) {
+        s.size = [x, y];
+      }
+    }
+  }
   public circle({ x, y }: Vector, radius: number, opt?: ROptions): Drawable {
     return this.r!.circle(x, y, radius * 2, opt);
   }

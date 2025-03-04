@@ -11,26 +11,43 @@ export interface Globals {
   style: number;
 }
 
-const globals: Globals = {
-  player: null,
-  fps: 60,
-  constraint: null,
-  buttonPosition: Vector.zero,
-  running: true,
-  style: 0,
-};
+class Global {
+  public static instance = new Global();
 
-function GLOBAL<T extends keyof typeof globals>(
-  provider: T,
-  newValue?: Globals[T] | ((oldValue: Globals[T]) => Globals[T])
-): Globals[T] {
-  if (!newValue) return globals[provider];
-  if (typeof newValue === "function") {
-    globals[provider] = newValue(globals[provider]);
-  } else {
-    globals[provider] = newValue;
+  private persistentValues: Set<keyof Globals>;
+  private globals: Globals;
+
+  private constructor() {
+    this.globals = {
+      player: null,
+      fps: 60,
+      constraint: null,
+      buttonPosition: Vector.zero,
+      running: true,
+      style: this.getInitialStyle(),
+    };
+    this.persistentValues = new Set(["style"]);
   }
-  return globals[provider];
+  public use<T extends keyof Globals>(
+    provider: T,
+    newValue?: Globals[T] | ((oldValue: Globals[T]) => Globals[T])
+  ): Globals[T] {
+    if (!newValue) return this.globals[provider];
+    if (typeof newValue === "function") {
+      this.globals[provider] = newValue(this.globals[provider]);
+    } else {
+      this.globals[provider] = newValue;
+    }
+    if (this.persistentValues.has(provider)) {
+      localStorage.setItem(provider, this.globals[provider]!.toString());
+    }
+    return this.globals[provider];
+  }
+  private getInitialStyle() {
+    const style = localStorage.getItem("style");
+    if (!style) return 0;
+    return parseInt(style);
+  }
 }
 
-export default GLOBAL;
+export default Global.instance;

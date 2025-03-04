@@ -1,8 +1,8 @@
 "use client";
-import GLOBAL from "@/src/core/global";
+import global from "@/src/core/global";
 import GlobalMixin from "@/src/mixins/global";
 import { inBetween } from "@/src/utils";
-import Canvas from "../../core/canvas";
+import canvas from "../../core/canvas";
 import Vector from "../../core/vector";
 import Ball, { IBall } from "../ball";
 import Explosion from "../effects/explosion";
@@ -22,10 +22,10 @@ class BallEnemy extends GlobalMixin(Ball) {
   }
 
   public static spawn(speedMultiplier: number): BallEnemy | null {
-    const constraint = GLOBAL("constraint");
+    const constraint = global.use("constraint");
     if (!constraint) return null;
 
-    const vect = Canvas.instance.shape.randomPointFromBorder();
+    const vect = canvas.shape.randomPointFromBorder();
     const [min, max] = constraint.shape.tangentsFromVector(vect, 50);
 
     if (!min) return null;
@@ -69,7 +69,7 @@ class BallEnemy extends GlobalMixin(Ball) {
     if (distance < maxDistance) {
       this.destroy();
       player.decreaseLife();
-      this.explode("lightblue");
+      this.explode(player.style.fillStyle || "");
     }
   }
   private checkConstraintCollision() {
@@ -86,7 +86,7 @@ class BallEnemy extends GlobalMixin(Ball) {
       Math.abs(distance - maxDistance) <= this.speed
     ) {
       this.destroy();
-      this.explode("blue");
+      this.explode(constraint.wall.color);
     }
   }
   private checkShieldCollisions() {

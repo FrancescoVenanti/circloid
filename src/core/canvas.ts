@@ -110,4 +110,4 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
   }
 }
 
-export default Canvas;
+export default Canvas.instance;

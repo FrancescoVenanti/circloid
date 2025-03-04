@@ -8,7 +8,7 @@ export default function DrawerMixin<T extends Constructor<any>>(base: T) {
       super(args);
     }
     protected get drawer() {
-      return Drawer.instance;
+      return Drawer;
     }
     protected with(
       callback: (ctx: CanvasRenderingContext2D) => void,
