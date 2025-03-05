@@ -6,6 +6,7 @@ import canvas from "@/src/core/canvas";
 import global from "@/src/core/global";
 import BallEnemy from "@/src/entities/characters/ball-enemy";
 import Constraint from "@/src/entities/characters/constraint";
+import Enemy from "@/src/entities/characters/enemy";
 import Player from "@/src/entities/characters/player";
 import Highscore from "@/src/entities/highscore";
 import { useEffect } from "react";
@@ -36,7 +37,7 @@ export default function Home() {
 
     global.use(
       "constraint",
-      new Constraint({ vect: canvas.shape.center, radius: 120 })
+      new Constraint({ vect: canvas.shape.center, radius: 140 })
     );
     loop(0);
   }, []);
@@ -59,10 +60,8 @@ function loop(delay: number) {
     return;
   }
   if (counter === 0) {
-    BallEnemy.spawnAmount(
-      1 + Math.floor(player.points / 50),
-      player.points / 20
-    );
+    Enemy.spawn(player.points / 20);
+
     player.setScore();
   }
   global.use("fps", 1000 / (delay - beforeDelay));

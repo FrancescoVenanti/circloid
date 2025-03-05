@@ -37,13 +37,16 @@ class BallEnemy extends GlobalMixin(Ball) {
     return new BallEnemy({
       vect,
       angle,
-      radius: 10,
+      radius: 8,
       speed: 4 + speedMultiplier,
     });
   }
 
   public override draw(): void {
     this.with(() => this.shape.draw(), this.style);
+    // this.with(() => {
+    //   this.drawer.sketchy.circle(this.shape.vector, this.shape.radius);
+    // }, this.style);
   }
 
   public override update(): void {

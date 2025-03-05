@@ -44,6 +44,7 @@ class Global {
     return this.globals[provider];
   }
   private getInitialStyle() {
+    if (typeof window === "undefined") return 0;
     const style = localStorage.getItem("style");
     if (!style) return 0;
     return parseInt(style);

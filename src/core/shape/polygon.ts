@@ -3,6 +3,7 @@ import Circle, { ICircle } from "./circle";
 
 interface IPolygon extends ICircle {
   angles: number;
+  variance?: number;
 }
 
 class Polygon extends Circle {
@@ -10,12 +11,12 @@ class Polygon extends Circle {
   public rotationAngle: number = 0;
   constructor(props: IPolygon) {
     super(props);
-    this.points = this.generateRadius(props.angles);
+    this.points = this.generateRadius(props.angles, props.variance || 0);
   }
-  private generateRadius(angles: number): number[] {
+  private generateRadius(angles: number, variance: number): number[] {
     const result: number[] = [];
     for (let i = 0; i < angles; i++) {
-      result.push(Math.random() * this.radius);
+      result.push(this.radius - Math.random() * variance * this.radius);
     }
     return result;
   }
@@ -28,7 +29,7 @@ class Polygon extends Circle {
     const angle = (Math.PI * 2) / this.points.length;
     for (let i = 0; i < this.points.length; i++) {
       vect = Vector.fromAngle(angle * i + this.rotationAngle);
-      result.push(vect.mulScalar(this.points[i]));
+      result.push(vect.mulScalar(this.points[i]).add(this.vector));
     }
     return result;
   }

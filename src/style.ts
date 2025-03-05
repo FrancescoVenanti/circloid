@@ -12,6 +12,7 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "violet" },
     ballenemy: { fill: true, fillStyle: "coral" },
     constraint: { fill: false, strokeStyle: "palegreen" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
   {
     // Dark Neon Theme
@@ -29,6 +30,7 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "deeppink" },
     ballenemy: { fill: true, fillStyle: "orangered" },
     constraint: { fill: false, strokeStyle: "deepskyblue" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
   {
     // Pastel Dream Theme
@@ -46,6 +48,7 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "plum" },
     ballenemy: { fill: true, fillStyle: "peachpuff" },
     constraint: { fill: false, strokeStyle: "thistle" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
   {
     // Retro Arcade Theme
@@ -63,6 +66,7 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "pink" },
     ballenemy: { fill: true, fillStyle: "red" },
     constraint: { fill: false, strokeStyle: "white" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
   {
     // Cyberpunk Theme
@@ -80,6 +84,7 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "cyan" },
     ballenemy: { fill: true, fillStyle: "neonred" },
     constraint: { fill: false, strokeStyle: "brightyellow" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
   {
     // Fire & Ice Theme
@@ -97,6 +102,7 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "crimson" },
     ballenemy: { fill: true, fillStyle: "orangered" },
     constraint: { fill: false, strokeStyle: "powderblue" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
   {
     // Soft Creamy Light Theme
@@ -114,6 +120,7 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "#a892d4" },
     ballenemy: { fill: true, fillStyle: "#c1a183" },
     constraint: { fill: false, strokeStyle: "#b1a99e" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
   {
     // Gruvbox Theme
@@ -131,6 +138,7 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "#d79921" },
     ballenemy: { fill: true, fillStyle: "#fb4934" },
     constraint: { fill: false, strokeStyle: "#d5c4a1" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
   {
     // Monokai Theme (VSCode-like)
@@ -148,5 +156,6 @@ export const styles: Style[] = [
     shieldUpgrade: { color: "#ae81ff" },
     ballenemy: { fill: true, fillStyle: "#f92672" },
     constraint: { fill: false, strokeStyle: "#f8f8f2" },
+    squareEnemy: { fill: true, fillStyle: "coral" },
   },
 ];

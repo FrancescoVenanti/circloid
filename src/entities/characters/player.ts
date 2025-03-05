@@ -160,10 +160,10 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
 
   public override draw(): void {
     this.with(() => this.shape.draw(), this.style);
-    this.with(
-      () => this.drawer.sketchy.circle(this.shape.vector, this.shape.radius),
-      this.style
-    );
+    // this.with(
+    //   () => this.drawer.sketchy.circle(this.shape.vector, this.shape.radius),
+    //   this.style
+    // );
     this.drawCredits();
     this.drawPoints();
     this.drawLives();
