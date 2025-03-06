@@ -1,41 +1,12 @@
 import MovingEntity, { IMovingEntity } from "@/src/core/moving-entity";
-import global from "@/src/core/global";
 import sound from "@/src/core/sound";
-import Polygon from "@/src/core/shape/polygon";
-import canvas from "../../core/canvas";
 import Vector from "@/src/core/vector";
 import { inBetween } from "@/src/utils";
-import Explosion from "../effects/explosion";
+import Explosion from "../../effects/explosion";
 
-class SquareEnemy extends MovingEntity<Polygon> {
-  constructor(props: IMovingEntity<Polygon>) {
-    super({ ...props, key: "squareEnemy" });
-  }
-  public draw(): void {
-    this.with(() => this.shape.draw(), this.style);
-  }
-  public static spawn(speedMultiplier: number) {
-    const constraint = global.use("constraint");
-    if (!constraint) return null;
-
-    const vect = canvas.shape.randomPointFromBorder();
-    const [min, max] = constraint.shape.tangentsFromVector(vect, 50);
-
-    if (!min) return null;
-
-    let angle = min;
-    if (max) {
-      angle = Math.random() * (max - min) + min;
-    }
-    return new SquareEnemy({
-      angle,
-      speed: 2,
-      shape: new Polygon({
-        angles: 4,
-        radius: 20 + speedMultiplier * 2,
-        vect,
-      }),
-    });
+class Enemy extends MovingEntity<any> {
+  constructor(props: IMovingEntity<any>) {
+    super(props);
   }
 
   public update(): void {
@@ -51,11 +22,9 @@ class SquareEnemy extends MovingEntity<Polygon> {
     this.checkPlayerCollision();
     this.checkConstraintCollision();
     this.checkShieldCollisions();
-    this.shape.rotationAngle += Math.PI / 360;
-    this.shape.rotationAngle %= Math.PI * 2;
   }
 
-  private checkPlayerCollision() {
+  protected checkPlayerCollision() {
     const player = this.global("player");
     if (!player) return;
     const distance = player.shape.vector.distance(this.shape.vector);
@@ -64,10 +33,10 @@ class SquareEnemy extends MovingEntity<Polygon> {
       sound.play("hit").play();
       this.destroy();
       player.decreaseLife();
-      this.explode(player.style.fillStyle || "");
+      this.explode(this.shape.vector, player.style.fillStyle || "");
     }
   }
-  private checkConstraintCollision() {
+  protected checkConstraintCollision() {
     const constraint = this.global("constraint");
     if (!constraint) return;
     let angle = constraint.shape.vector.angleFromVect(this.shape.vector);
@@ -81,25 +50,26 @@ class SquareEnemy extends MovingEntity<Polygon> {
       Math.abs(distance - maxDistance) <= this.speed
     ) {
       this.destroy();
-      this.explode(constraint.wall.color);
+      this.explode(this.shape.vector, constraint.wall.color);
     }
   }
-  private checkShieldCollisions() {
+  protected checkShieldCollisions() {
     const player = this.global("player");
     if (!player) return;
     const shields = player.shield.getShields();
     for (const shield of shields) {
       if (shield.collide(this.shape)) {
         this.destroy();
-        this.explode(player.shield.color);
+        this.explode(this.shape.vector, player.shield.color);
       }
     }
   }
-  public explode(...extraColors: string[]) {
+  public explode(vect: Vector, ...extraColors: string[]) {
     new Explosion(this.shape.vector, [
       this.style.fillStyle || "",
       ...extraColors,
     ]).store();
   }
 }
-export default SquareEnemy;
+
+export default Enemy;

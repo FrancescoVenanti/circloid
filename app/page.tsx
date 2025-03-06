@@ -3,11 +3,9 @@
 import { CommandPalette } from "@/components/command-palette";
 // import ProxyComponent from "@/components/proxy-component";
 import canvas from "@/src/core/canvas";
-import sound from "@/src/core/sound";
 import global from "@/src/core/global";
-import BallEnemy from "@/src/entities/characters/ball-enemy";
 import Constraint from "@/src/entities/characters/constraint";
-import Enemy from "@/src/entities/characters/enemy";
+import spawner from "@/src/entities/characters/enemy/enemy-spawner";
 import Player from "@/src/entities/characters/player";
 import Highscore from "@/src/entities/highscore";
 import { useEffect } from "react";
@@ -50,7 +48,6 @@ export default function Home() {
 function loop(delay: number) {
   if (!global.use("running")) {
     requestAnimationFrame(loop);
-
     return;
   }
   const player = global.use("player");
@@ -58,7 +55,7 @@ function loop(delay: number) {
     requestAnimationFrame(loop);
     return;
   }
-  Enemy.spawn(player.points / 20);
+  spawner.spawn(player.points / 20);
   if (global.use("counter") === 0) {
     player.setScore();
   }

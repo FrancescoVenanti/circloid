@@ -1,3 +1,4 @@
+import sound from "@/src/core/sound";
 import Upgrade, { IUpgrade } from "./upgrades";
 
 class ConstraintUpgrade extends Upgrade<number> {
@@ -22,6 +23,7 @@ class ConstraintUpgrade extends Upgrade<number> {
     if (!constraint) return false;
     constraint.shape.radius = this._value;
     this.decreaseCredits();
+    sound.play("upgrade").play();
     return true;
   }
 }

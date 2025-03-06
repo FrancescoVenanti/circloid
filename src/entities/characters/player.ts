@@ -1,7 +1,7 @@
 "use client";
 import { addScore } from "@/lib/actions";
-import GlobalMixin from "@/src/mixins/global";
 import sound from "@/src/core/sound";
+import GlobalMixin from "@/src/mixins/global";
 import { KeyboardMixin } from "@/src/mixins/keyboard";
 import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
@@ -9,7 +9,6 @@ import Vector from "../../core/vector";
 import LifeUpgrade from "../upgrades/life-upgrade";
 import ShieldUpgrade from "../upgrades/shield-upgrade";
 import SpeedUpgrade from "../upgrades/speed-upgrade";
-import { Drawable } from "roughjs/bin/core";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   lives: number;

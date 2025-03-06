@@ -61,6 +61,10 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
     });
   }
 
+  public reset() {
+    this.entities.clear();
+  }
+
   public get<T extends Shape>(key: string): Entity<T> | undefined {
     return this.startsWith(key)[0];
   }
