@@ -4,11 +4,12 @@ import Shape from "@/src/core/shape/shape";
 import BallEnemy from "./ball-enemy";
 import GlobalMixin from "@/src/mixins/global";
 import SquareEnemy from "./square-enemy";
-import GLOBAL from "@/src/core/global";
+import global from "@/src/core/global";
 
 export interface IEnemy<T extends Shape> extends IEntity<T> {}
 
 class Enemy extends GlobalMixin(class {}) {
+  private static counter = 0;
   private static enemies: ((
     speedMultiplier: number
   ) => MovingEntity<any> | null)[] = [BallEnemy.spawn, SquareEnemy.spawn];
@@ -17,14 +18,22 @@ class Enemy extends GlobalMixin(class {}) {
   }
 
   static spawn(speedMultiplier: number) {
+    this.counter++;
     // this.addEnemies();
+    const amount = Math.ceil(global.use("player")!.points / 20);
+    const fps = global.use("fps");
+    console.log("counter :  " + this.counter);
+    console.log("amount :   " + amount);
+    console.log("fps  :   " + fps);
+
+    if (parseInt((fps / amount).toString()) - this.counter > 1) return;
     const rand = Math.floor(Math.random() * this.enemies.length);
-    const entity = this.enemies[rand](speedMultiplier);
+    let entity = this.enemies[rand](speedMultiplier);
 
     console.log(entity);
     if (entity != null) entity.store();
+    this.counter = 0;
   }
-  static spawnAmount() {}
 
   // static addEnemies() {
   //   const player = GLOBAL.use("player");

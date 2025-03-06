@@ -1,5 +1,6 @@
 import MovingEntity, { IMovingEntity } from "@/src/core/moving-entity";
 import global from "@/src/core/global";
+import sound from "@/src/core/sound";
 import Polygon from "@/src/core/shape/polygon";
 import canvas from "../../core/canvas";
 import Vector from "@/src/core/vector";
@@ -28,10 +29,10 @@ class SquareEnemy extends MovingEntity<Polygon> {
     }
     return new SquareEnemy({
       angle,
-      speed: 2 + speedMultiplier,
+      speed: 2,
       shape: new Polygon({
         angles: 4,
-        radius: 20,
+        radius: 20 + speedMultiplier * 2,
         vect,
       }),
     });
@@ -60,6 +61,7 @@ class SquareEnemy extends MovingEntity<Polygon> {
     const distance = player.shape.vector.distance(this.shape.vector);
     const maxDistance = player.shape.radius + this.shape.radius;
     if (distance < maxDistance) {
+      sound.play("hit").play();
       this.destroy();
       player.decreaseLife();
       this.explode(player.style.fillStyle || "");

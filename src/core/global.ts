@@ -9,6 +9,7 @@ export interface Globals {
   buttonPosition: Vector;
   running: boolean;
   style: number;
+  counter: number;
 }
 
 class Global {
@@ -21,6 +22,7 @@ class Global {
     this.globals = {
       player: null,
       fps: 60,
+      counter: 0,
       constraint: null,
       buttonPosition: Vector.zero,
       running: true,

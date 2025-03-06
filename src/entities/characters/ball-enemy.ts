@@ -1,5 +1,6 @@
 "use client";
 import global from "@/src/core/global";
+import sound from "@/src/core/sound";
 import GlobalMixin from "@/src/mixins/global";
 import { inBetween } from "@/src/utils";
 import canvas from "../../core/canvas";
@@ -70,6 +71,7 @@ class BallEnemy extends GlobalMixin(Ball) {
     const distance = player.shape.vector.distance(this.shape.vector);
     const maxDistance = player.shape.radius + this.shape.radius;
     if (distance < maxDistance) {
+      sound.play("hit").play();
       this.destroy();
       player.decreaseLife();
       this.explode(player.style.fillStyle || "");

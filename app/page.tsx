@@ -3,6 +3,7 @@
 import { CommandPalette } from "@/components/command-palette";
 // import ProxyComponent from "@/components/proxy-component";
 import canvas from "@/src/core/canvas";
+import sound from "@/src/core/sound";
 import global from "@/src/core/global";
 import BallEnemy from "@/src/entities/characters/ball-enemy";
 import Constraint from "@/src/entities/characters/constraint";
@@ -12,7 +13,6 @@ import Highscore from "@/src/entities/highscore";
 import { useEffect } from "react";
 
 let beforeDelay = 0;
-let counter = 0;
 const fps = 60;
 
 export default function Home() {
@@ -34,7 +34,6 @@ export default function Home() {
         lives: 3,
       })
     );
-
     global.use(
       "constraint",
       new Constraint({ vect: canvas.shape.center, radius: 140 })
@@ -59,15 +58,14 @@ function loop(delay: number) {
     requestAnimationFrame(loop);
     return;
   }
-  if (counter === 0) {
-    Enemy.spawn(player.points / 20);
-
+  Enemy.spawn(player.points / 20);
+  if (global.use("counter") === 0) {
     player.setScore();
   }
   global.use("fps", 1000 / (delay - beforeDelay));
   beforeDelay = delay;
   canvas.render();
-  counter = (counter + 1) % fps;
+  global.use("counter", (prev) => (prev + 1) % fps);
 
   requestAnimationFrame(loop);
 }
