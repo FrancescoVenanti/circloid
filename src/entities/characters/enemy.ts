@@ -11,13 +11,13 @@ export interface IEnemy<T extends Shape> extends IEntity<T> {}
 class Enemy extends GlobalMixin(class {}) {
   private static enemies: ((
     speedMultiplier: number
-  ) => MovingEntity<any> | null)[] = [BallEnemy.spawn];
+  ) => MovingEntity<any> | null)[] = [BallEnemy.spawn, SquareEnemy.spawn];
   constructor() {
     super();
   }
 
   static spawn(speedMultiplier: number) {
-    this.addEnemies();
+    // this.addEnemies();
     const rand = Math.floor(Math.random() * this.enemies.length);
     const entity = this.enemies[rand](speedMultiplier);
 
@@ -26,13 +26,15 @@ class Enemy extends GlobalMixin(class {}) {
   }
   static spawnAmount() {}
 
-  static addEnemies() {
-    const player = GLOBAL.use("player");
-    if (!player) return;
-    if (player.points > 50) {
-      this.enemies.push(SquareEnemy.spawn);
-    }
-  }
+  // static addEnemies() {
+  //   const player = GLOBAL.use("player");
+  //   if (!player) return;
+
+  //   if (player.points > 51) return;
+  //   if (player.points > 50) {
+  //     this.enemies.push(SquareEnemy.spawn);
+  //   }
+  // }
 
   static update(): void {}
 }
