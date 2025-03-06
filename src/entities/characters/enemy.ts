@@ -20,7 +20,7 @@ class Enemy extends GlobalMixin(class {}) {
   static spawn(speedMultiplier: number) {
     this.counter++;
     // this.addEnemies();
-    const amount = Math.ceil(global.use("player")!.points / 30);
+    const amount = Math.ceil(global.use("player")!.points / 50);
     const fps = global.use("fps");
 
     if (parseInt((fps / amount).toString()) - this.counter > 1) return;
