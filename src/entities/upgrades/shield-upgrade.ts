@@ -61,6 +61,10 @@ class ShieldUpgrade extends GlobalMixin(Upgrade<number>) {
     }
     return result;
   }
+  public downgrade() {
+    this._level--;
+    this._value--;
+  }
 }
 
 export default ShieldUpgrade;
