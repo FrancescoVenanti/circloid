@@ -103,7 +103,7 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
     });
     this.text(
       this.cost.toString(),
-      this.shape.vector.clone().addY(60).addX(140),
+      this.shape.vector.clone().addY(80).addX(120),
       {
         textAlign: "center",
       }
