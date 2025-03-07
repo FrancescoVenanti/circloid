@@ -4,36 +4,30 @@ import Upgrade, { IUpgrade } from "./upgrades";
 
 interface IConstraintWall extends IUpgrade<number> {
   // angle: number;
+  radiant: number;
 }
 
 class ConstraintWall extends GlobalMixin(Upgrade<number>) {
   private _angle: number;
+  private _radiant: number;
   public get angle() {
     return this._angle;
   }
   public get value() {
     return this._value;
   }
-  constructor({ ...props }: IConstraintWall) {
+  constructor({ radiant, ...props }: IConstraintWall) {
     super({ ...props, key: "wallUpgrade" });
     this._angle = 0;
+    this._radiant = (Math.PI / 180) * radiant;
   }
 
   public update(): void {
     this._angle = (this._angle + Math.PI / 360) % (Math.PI * 2);
   }
-  /*************  ✨ Codeium Command ⭐  *************/
-  /**
-   * Upgrades the constraint wall by increasing its value, which affects the angle.
-   * It checks if the upgrade can be performed by calling the superclass's upgrade method.
-   * Upon successful upgrade, it increases the value by a fixed angle increment,
-   * decreases credits, and plays an upgrade sound.
-   */
-
-  /******  d23895b2-98cf-451b-b05d-e37a7c58262f  *******/
   public upgrade(): boolean {
     if (!super.upgrade()) return false;
-    this._value += (Math.PI / 180) * 18;
+    this._value += this._radiant;
     this.decreaseCredits();
     sound.play("upgrade").play();
     return true;
@@ -64,6 +58,11 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
       strokeStyle: this.color,
       lineWidth: 10,
     });
+  }
+  public downgrade(): void {
+    if (this._level <= 0) return;
+    this._level--;
+    this._value -= this._radiant;
   }
 }
 
