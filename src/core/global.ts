@@ -41,10 +41,22 @@ class Global {
       this.globals[provider] = newValue;
     }
     if (this.persistentValues.has(provider)) {
-      localStorage.setItem(provider, this.globals[provider]!.toString());
+      this.storeKey(provider);
     }
     return this.globals[provider];
   }
+
+  private storeKey(key: keyof Globals) {
+    const value = this.globals[key];
+    let str: string = "";
+    if (typeof value === "object") {
+      str = JSON.stringify(value);
+    } else {
+      str = value.toString();
+    }
+    localStorage.setItem(key, str);
+  }
+
   private getInitialStyle() {
     if (typeof window === "undefined") return 0;
     const style = localStorage.getItem("style");

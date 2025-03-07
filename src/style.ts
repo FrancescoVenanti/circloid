@@ -13,7 +13,16 @@ export const styles: Style[] = [
     ballenemy: { fill: true, fillStyle: "coral" },
     constraint: { fill: false, strokeStyle: "palegreen" },
     squareEnemy: { fill: true, fillStyle: "coral" },
-    laserEnemy: { fill: false, lineWidth: 5, strokeStyle: "white" },
+    laserEnemy: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 255, 255, 0.5)",
+    },
+    arrowEnemy: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 0, 0, 0.6)",
+    },
   },
   {
     // Dark Neon Theme

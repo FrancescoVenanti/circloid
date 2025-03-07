@@ -34,6 +34,10 @@ class Rect extends Shape {
     return new Vector(this.vector.x + this.width, this.vector.y + this.height);
   }
 
+  public get diagonal(): number {
+    return this.bottomLeft.distance(this.topRight)
+  }
+
   constructor({ height, width: witdh, ...props }: IRect) {
     super(props);
     this.width = witdh;

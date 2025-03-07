@@ -1,5 +1,4 @@
 import MovingEntity, { IMovingEntity } from "@/src/core/moving-entity";
-import sound from "@/src/core/sound";
 import Vector from "@/src/core/vector";
 import { inBetween } from "@/src/utils";
 import Explosion from "../../effects/explosion";
@@ -10,8 +9,9 @@ class Enemy extends MovingEntity<any> {
   }
 
   public update(): void {
-    if (!this.canvasShape.containsVector(this.shape.vector, -10))
+    if (!this.canvasShape.containsVector(this.shape.vector, -10)) {
       return this.destroy();
+    }
 
     const direction = Vector.fromAngle(this.angle);
 
@@ -19,6 +19,10 @@ class Enemy extends MovingEntity<any> {
 
     this.shape.vector.add(direction);
 
+    this.checkCollisions();
+  }
+
+  protected checkCollisions() {
     this.checkPlayerCollision();
     this.checkConstraintCollision();
     this.checkShieldCollisions();
@@ -30,7 +34,7 @@ class Enemy extends MovingEntity<any> {
     const distance = player.shape.vector.distance(this.shape.vector);
     const maxDistance = player.shape.radius + this.shape.radius;
     if (distance < maxDistance) {
-      sound.play("hit").play();
+      this.sound.play("hit");
       this.destroy();
       player.decreaseLife();
       this.explode(this.shape.vector, player.style.fillStyle || "");
@@ -50,7 +54,7 @@ class Enemy extends MovingEntity<any> {
       Math.abs(distance - maxDistance) <= this.speed
     ) {
       this.destroy();
-      // constraint.wall.downgrade();
+      this.sound.play("hitShield");
       this.explode(this.shape.vector, constraint.wall.color);
     }
   }
@@ -61,7 +65,7 @@ class Enemy extends MovingEntity<any> {
     for (const shield of shields) {
       if (shield.collide(this.shape)) {
         this.destroy();
-        // player.shield.downgrade();
+        this.sound.play("hitShield");
         this.explode(this.shape.vector, player.shield.color);
       }
     }

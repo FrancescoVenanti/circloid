@@ -1,4 +1,5 @@
 import Vector from "../vector";
+import Circle from "./circle";
 import Shape, { IShape } from "./shape";
 
 export interface ILine extends IShape {
@@ -52,6 +53,25 @@ class Line extends Shape {
     if (d2 > length) return false;
 
     return true;
+  }
+
+  public collide({ vector, radius: maxDistance }: Circle) {
+    if (this.vector.distance(vector) < maxDistance) {
+      return true;
+    }
+    if (this.end.distance(vector) < maxDistance) {
+      return true;
+    }
+    const angle = -1 / Math.tan(this.angle);
+    const end = Vector.fromAngle(angle).add(vector).mulScalar(2);
+    const intersection = this.intersection(new Line({ vect: vector, end }));
+    if (!intersection) return false;
+    if (!this.contains(intersection)) {
+      return false;
+    }
+    if (intersection.distance(vector) < maxDistance) {
+      return true;
+    }
   }
 }
 

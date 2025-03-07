@@ -1,4 +1,3 @@
-import sound from "@/src/core/sound";
 import GlobalMixin from "@/src/mixins/global";
 import Upgrade, { IUpgrade } from "./upgrades";
 
@@ -29,7 +28,7 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
     if (!super.upgrade()) return false;
     this._value += this._radiant;
     this.decreaseCredits();
-    sound.play("upgrade").play();
+    this.sound.play("upgrade");
     return true;
   }
 
