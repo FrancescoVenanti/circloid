@@ -32,12 +32,12 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
     this.wall = new ConstraintWall({
       label: "Wall",
       keyPress: "4",
-      cost: 10,
+      cost: 5,
       vector: this.global("buttonPosition").clone().addX(300),
       costMultiplier: 2,
       initialValue: 0,
       maxLevel: 10,
-      radiant: 36,
+      radiant: 18,
     });
     this.shape.radius = this.radiusUpgrade.value;
     this.store();

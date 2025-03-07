@@ -102,7 +102,7 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
       textAlign: "center",
     });
     this.text(
-      this.cost.toString(),
+      "Cost: " + this.cost.toString(),
       this.shape.vector.clone().addY(80).addX(120),
       {
         textAlign: "center",
@@ -155,9 +155,7 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
   public canUpgrade(): boolean {
     const player = this.global("player")!;
 
-    return (
-      player.credits >= this._cost * this._costMultiplier && !this.isMaxLevel
-    );
+    return player.credits >= this._cost && !this.isMaxLevel;
   }
 }
 
