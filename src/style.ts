@@ -13,6 +13,7 @@ export const styles: Style[] = [
     ballenemy: { fill: true, fillStyle: "coral" },
     constraint: { fill: false, strokeStyle: "palegreen" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    laserEnemy: { fill: false, lineWidth: 5, strokeStyle: "white" },
   },
   {
     // Dark Neon Theme
@@ -31,6 +32,7 @@ export const styles: Style[] = [
     ballenemy: { fill: true, fillStyle: "orangered" },
     constraint: { fill: false, strokeStyle: "deepskyblue" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    laserEnemy: { fill: false, lineWidth: 5, strokeStyle: "white" },
   },
   {
     // Pastel Dream Theme
@@ -49,6 +51,7 @@ export const styles: Style[] = [
     ballenemy: { fill: true, fillStyle: "peachpuff" },
     constraint: { fill: false, strokeStyle: "thistle" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    laserEnemy: { fill: false, lineWidth: 5, strokeStyle: "white" },
   },
   {
     // Retro Arcade Theme

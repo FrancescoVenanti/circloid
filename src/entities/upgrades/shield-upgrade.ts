@@ -1,4 +1,5 @@
 import Circle from "@/src/core/shape/circle";
+import sound from "@/src/core/sound";
 import Vector from "@/src/core/vector";
 import GlobalMixin from "@/src/mixins/global";
 import Upgrade, { IUpgrade } from "./upgrades";
@@ -32,6 +33,7 @@ class ShieldUpgrade extends GlobalMixin(Upgrade<number>) {
     if (!super.upgrade()) return false;
     this._value++;
     this.decreaseCredits();
+    sound.play("upgrade").play();
     return true;
   }
   public draw() {

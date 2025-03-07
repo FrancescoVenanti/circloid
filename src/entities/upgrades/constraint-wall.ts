@@ -1,3 +1,4 @@
+import sound from "@/src/core/sound";
 import GlobalMixin from "@/src/mixins/global";
 import Upgrade, { IUpgrade } from "./upgrades";
 
@@ -21,10 +22,20 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
   public update(): void {
     this._angle = (this._angle + Math.PI / 360) % (Math.PI * 2);
   }
+  /*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Upgrades the constraint wall by increasing its value, which affects the angle.
+   * It checks if the upgrade can be performed by calling the superclass's upgrade method.
+   * Upon successful upgrade, it increases the value by a fixed angle increment,
+   * decreases credits, and plays an upgrade sound.
+   */
+
+  /******  d23895b2-98cf-451b-b05d-e37a7c58262f  *******/
   public upgrade(): boolean {
     if (!super.upgrade()) return false;
     this._value += (Math.PI / 180) * 12;
     this.decreaseCredits();
+    sound.play("upgrade").play();
     return true;
   }
 

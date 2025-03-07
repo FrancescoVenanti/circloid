@@ -1,5 +1,5 @@
+import sound from "@/src/core/sound";
 import Upgrade, { IUpgrade } from "./upgrades";
-
 class LifeUpgrade extends Upgrade<number> {
   public get value() {
     return this._value;
@@ -20,6 +20,7 @@ class LifeUpgrade extends Upgrade<number> {
     if (!super.upgrade()) return false;
     this._value++;
     this.decreaseCredits();
+    sound.play("upgrade").play();
     return true;
   }
 }
