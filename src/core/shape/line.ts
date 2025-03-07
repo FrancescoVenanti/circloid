@@ -23,6 +23,10 @@ class Line extends Shape {
     return this.vector.y - this.vector.x * Math.tan(this.angle);
   }
 
+  public get length() {
+    return this.vector.distance(this.end);
+  }
+
   public intersection(other: Line) {
     const m1 = Math.tan(this.angle);
     const m2 = Math.tan(other.angle);
@@ -39,7 +43,13 @@ class Line extends Shape {
     const other = new Line({ vect: this.vector, end: v });
     const m2 = Math.tan(other.angle);
     if (m1 !== m2) return false;
-    //todo
+
+    const d1 = this.vector.distance(v);
+    const d2 = this.end.distance(v);
+    const length = this.length;
+
+    if (d1 > length) return false;
+    if (d2 > length) return false;
 
     return true;
   }

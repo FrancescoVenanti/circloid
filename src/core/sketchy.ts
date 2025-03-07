@@ -1,6 +1,7 @@
 import rough from "roughjs";
 import { RoughCanvas } from "roughjs/bin/canvas";
 import { Drawable, Options as ROptions } from "roughjs/bin/core";
+import Line from "./shape/line";
 import Rect from "./shape/rect";
 import Vector from "./vector";
 
@@ -26,6 +27,7 @@ class Sketchy {
       false
     );
   }
+
   public moveTo(sketch: Drawable, { x, y }: Vector) {
     for (const s of sketch.sets) {
       if (s.size) {
@@ -33,9 +35,11 @@ class Sketchy {
       }
     }
   }
+
   public circle({ x, y }: Vector, radius: number, opt?: ROptions): Drawable {
     return this.r!.circle(x, y, radius * 2, opt);
   }
+
   public rect(
     { vector: { x, y }, height, width }: Rect,
     opt?: ROptions
@@ -44,6 +48,10 @@ class Sketchy {
   }
   public draw(shape: Drawable) {
     this.r?.draw(shape);
+  }
+
+  public line({ vector: s, end: e }: Line) {
+    return this.r!.line(s.x, s.y, e.x, e.y);
   }
 }
 
