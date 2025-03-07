@@ -51,9 +51,9 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       label: "Shield",
       keyPress: "5",
       costMultiplier: 2,
-      rotationSpeed: 4,
+      rotationSpeed: 3,
       radius: 12,
-      padding: 20,
+      padding: 24,
       // color: "violet",
     });
 

@@ -93,7 +93,7 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
   public decreaseCredits() {
     const player = this.global("player");
     if (!player) return;
-    player.credits -= this.cost;
+    player.credits -= this.cost / this.costMultiplier;
   }
 
   public override draw(): void {
