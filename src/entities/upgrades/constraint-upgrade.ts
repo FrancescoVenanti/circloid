@@ -18,7 +18,7 @@ class ConstraintUpgrade extends Upgrade<number> {
 
   public override upgrade(): boolean {
     if (!super.upgrade()) return false;
-    this._value += 5;
+    this._value += 10;
     const constraint = this.global("constraint");
     if (!constraint) return false;
     constraint.shape.radius = this._value;
