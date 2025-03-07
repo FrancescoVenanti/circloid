@@ -25,7 +25,7 @@ class EnemySpawner extends CanvasMixin(GlobalMixin(class {})) {
   public spawn(speedMultiplier: number) {
     const player = this.global("player")!;
     this.counter++;
-    const amount = Math.ceil(player.points / 60);
+    const amount = Math.ceil(player.points / 30);
     const fps = this.global("fps") * 2;
     let delay = 1;
     if (player.points == 0) return;
