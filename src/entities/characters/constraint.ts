@@ -36,6 +36,7 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
       vector: this.global("buttonPosition").clone().addX(300),
       initialValue: 0,
       maxLevel: 10,
+      radiant: 36,
     });
     this.shape.radius = this.radiusUpgrade.value;
     this.store();
