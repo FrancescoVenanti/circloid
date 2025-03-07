@@ -45,14 +45,14 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     });
     this.shield = new ShieldUpgrade({
       maxLevel: 5,
-      cost: 10,
+      cost: 5,
       vector: this.global("buttonPosition").clone().addX(400),
       initialValue: 0,
       label: "Shield",
       keyPress: "5",
-      rotationSpeed: 2,
-      radius: 8,
-      padding: 30,
+      rotationSpeed: 4,
+      radius: 12,
+      padding: 20,
       // color: "violet",
     });
 

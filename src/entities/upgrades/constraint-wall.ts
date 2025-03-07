@@ -33,7 +33,7 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
   /******  d23895b2-98cf-451b-b05d-e37a7c58262f  *******/
   public upgrade(): boolean {
     if (!super.upgrade()) return false;
-    this._value += (Math.PI / 180) * 12;
+    this._value += (Math.PI / 180) * 18;
     this.decreaseCredits();
     sound.play("upgrade").play();
     return true;
