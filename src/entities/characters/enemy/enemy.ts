@@ -50,7 +50,7 @@ class Enemy extends MovingEntity<any> {
       Math.abs(distance - maxDistance) <= this.speed
     ) {
       this.destroy();
-      constraint.wall.downgrade();
+      // constraint.wall.downgrade();
       this.explode(this.shape.vector, constraint.wall.color);
     }
   }
@@ -61,7 +61,7 @@ class Enemy extends MovingEntity<any> {
     for (const shield of shields) {
       if (shield.collide(this.shape)) {
         this.destroy();
-        player.shield.downgrade();
+        // player.shield.downgrade();
         this.explode(this.shape.vector, player.shield.color);
       }
     }

@@ -34,6 +34,7 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
       keyPress: "4",
       cost: 10,
       vector: this.global("buttonPosition").clone().addX(300),
+      costMultiplier: 2,
       initialValue: 0,
       maxLevel: 10,
       radiant: 36,
