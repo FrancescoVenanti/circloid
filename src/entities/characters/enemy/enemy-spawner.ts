@@ -32,7 +32,6 @@ class EnemySpawner extends CanvasMixin(GlobalMixin(class {})) {
     if (amount > 0) {
       delay = parseInt((fps / amount).toString());
     }
-    // console.log(amount, fps, this.counter, global.use("counter"));
 
     if (delay - this.counter > 1) return;
     this.storeEnemy(speedMultiplier);

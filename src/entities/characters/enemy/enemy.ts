@@ -60,6 +60,7 @@ class Enemy extends MovingEntity<any> {
     for (const shield of shields) {
       if (shield.collide(this.shape)) {
         this.destroy();
+        player.shield.downgrade();
         this.explode(this.shape.vector, player.shield.color);
       }
     }
