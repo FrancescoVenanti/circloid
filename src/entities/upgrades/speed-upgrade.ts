@@ -20,7 +20,7 @@ class SpeedUpgrade extends Upgrade<number> {
     const player = this.global("player");
     if (!player) return false;
 
-    this._value++;
+    this._value += 0.4;
     player.speed = this._value;
     sound.play("upgrade").play();
     this.decreaseCredits();

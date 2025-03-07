@@ -28,7 +28,7 @@ export default function Home() {
       new Player({
         vect: canvas.shape.center,
         angle: 0,
-        speed: 3,
+        speed: 1,
         lives: 3,
       })
     );
@@ -55,7 +55,9 @@ function loop(delay: number) {
     requestAnimationFrame(loop);
     return;
   }
+
   spawner.spawn(player.points / 20);
+
   if (global.use("counter") === 0) {
     player.setScore();
   }
