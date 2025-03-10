@@ -21,15 +21,6 @@ class SquareEnemy extends Enemy<Polygon> {
       }),
     });
   }
-  protected checkConstraintCollision(): boolean {
-    return false;
-  }
-  protected checkPlayerCollision(): boolean {
-    return false;
-  }
-  protected checkShieldCollisions(): boolean {
-    return false;
-  }
 
   public update(): void {
     super.update();

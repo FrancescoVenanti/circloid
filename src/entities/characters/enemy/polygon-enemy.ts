@@ -1,4 +1,5 @@
 import Polygon from "@/src/core/shape/polygon";
+import { inBetween } from "@/src/utils";
 import Enemy, { IEnemy } from "./enemy";
 
 class PolygonEnemy extends Enemy<Polygon> {
@@ -15,9 +16,25 @@ class PolygonEnemy extends Enemy<Polygon> {
     return false;
   }
   protected checkConstraintCollision(): boolean {
+    const constraint = this.global("constraint");
+    if (!constraint) return false;
+    let angle = constraint.shape.vector.angleFromVect(this.shape.vector);
+    if (angle < 0) angle += Math.PI * 2;
+    const distance = constraint.shape.vector.distance(this.shape.vector);
+    const maxDistance = constraint.shape.radius + this.shape.radius;
+    const [start, end] = [constraint.wall.start, constraint.wall.end];
+
+    if (
+      inBetween(angle, start, end) &&
+      Math.abs(distance - maxDistance) <= this.speed
+    ) {
+      return true;
+    }
     return false;
   }
   protected checkShieldCollisions(): boolean {
     return false;
   }
 }
+
+export default PolygonEnemy;

@@ -1,5 +1,9 @@
 import canvas from "@/src/core/canvas";
 import global from "@/src/core/global";
+import CanvasMixin from "@/src/mixins/canvas";
+import DrawerMixin from "@/src/mixins/drawer";
+import GlobalMixin from "@/src/mixins/global";
+import SoundMixin from "@/src/mixins/sound";
 import { Style, styles } from "@/src/style";
 import { generateKey } from "@/src/utils";
 
@@ -9,7 +13,9 @@ export interface IEntity {
   style?: Options;
 }
 
-class Entity {
+class Entity extends GlobalMixin(
+  CanvasMixin(SoundMixin(DrawerMixin(class {})))
+) {
   private _key: string;
   public zIndex: number;
   public style: Options;
@@ -23,7 +29,7 @@ class Entity {
   }
 
   constructor({ key, zIndex, style }: IEntity) {
-    console.log(key);
+    super();
     this._key = generateKey(key || "entity");
     this.zIndex = zIndex || 0;
     this.style = style || {};

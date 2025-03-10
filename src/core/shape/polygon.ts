@@ -7,11 +7,14 @@ interface IPolygon extends ICircle {
 }
 
 class Polygon extends Circle {
-  private points: number[];
+  private _points: number[];
   public rotationAngle: number = 0;
+  public get points() {
+    return this._points;
+  }
   constructor(props: IPolygon) {
     super(props);
-    this.points = this.generateRadius(props.angles, props.variance || 0);
+    this._points = this.generateRadius(props.angles, props.variance || 0);
   }
   private generateRadius(angles: number, variance: number): number[] {
     const result: number[] = [];
@@ -26,10 +29,10 @@ class Polygon extends Circle {
   public getLines(): Vector[] {
     let result: Vector[] = [];
     let vect = Vector.zero;
-    const angle = (Math.PI * 2) / this.points.length;
-    for (let i = 0; i < this.points.length; i++) {
+    const angle = (Math.PI * 2) / this._points.length;
+    for (let i = 0; i < this._points.length; i++) {
       vect = Vector.fromAngle(angle * i + this.rotationAngle);
-      result.push(vect.mulScalar(this.points[i]).add(this.vector));
+      result.push(vect.mulScalar(this._points[i]).add(this.vector));
     }
     return result;
   }

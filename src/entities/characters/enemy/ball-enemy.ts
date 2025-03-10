@@ -37,11 +37,24 @@ class BallEnemy extends CircleEnemy {
 
     this.shape.vector.add(direction);
 
-    const collisions = [
+    const [player, wall, shield] = [
       this.checkPlayerCollision(),
       this.checkConstraintCollision(),
       this.checkShieldCollisions(),
     ];
+    let extraColor = "";
+    if (!player || !wall || !shield) return;
+    if (player) {
+      this.global("player")?.decreaseLife();
+      extraColor = this.global("player")?.style.fillStyle || "";
+    }
+    if (wall) {
+      extraColor = this.global("constraint")?.style.strokeStyle || "";
+    }
+    if (shield) {
+      extraColor = this.global("player")?.style.fillStyle || "";
+    }
+    this.remove(extraColor);
   }
 }
 
