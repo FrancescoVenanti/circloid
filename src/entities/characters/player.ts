@@ -1,6 +1,5 @@
 "use client";
 import { addScore } from "@/lib/actions";
-import sound from "@/src/core/sound";
 import GlobalMixin from "@/src/mixins/global";
 import { KeyboardMixin } from "@/src/mixins/keyboard";
 import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
@@ -129,7 +128,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
   }
 
   private death() {
-    sound.play("death");
+    this.sound.play("death");
     this.postResults();
     this.reset();
   }

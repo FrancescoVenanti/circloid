@@ -1,25 +1,29 @@
-import { List } from "lucide-react";
 import GlobalMixin from "../mixins/global";
-
-// interface ISound {
-//   id: number,
-//   name:string,
-//   state:boolean
-// }
 
 class Sound extends GlobalMixin(class {}) {
   static instance = new Sound();
+
+  private sounds = {
+    hit: "hit",
+    hitShield: "hit_shield",
+    laser: "laser",
+    upgrade: "upgrade",
+    background: "bg_funky",
+    death: "death",
+  } as const;
   private constructor() {
     super();
   }
 
   public playBg() {
-    const audioBg = this.play("bg_funky");
-    audioBg.play();
+    this.play("background");
   }
 
-  public play(filename: string) {
-    return new Audio(`./sounds/${filename}.mp3`);
+  public play(filename: keyof typeof this.sounds) {
+    this.audio(filename).play();
+  }
+  public audio(filename: keyof typeof this.sounds) {
+    return new Audio(`./sounds/${this.sounds[filename]}.mp3`);
   }
 }
 

@@ -1,10 +1,10 @@
-import MovingEntity from "@/src/core/moving-entity";
+import SEntity from "@/src/core/entity/sentity";
 import Vector from "@/src/core/vector";
 import CanvasMixin from "@/src/mixins/canvas";
 import GlobalMixin from "@/src/mixins/global";
 import BallEnemy from "./ball-enemy";
-import Laser from "./laser-enemy";
 import SquareEnemy from "./square-enemy";
+import WarningLine from "./warning-line";
 
 class EnemySpawner extends CanvasMixin(GlobalMixin(class {})) {
   public static instance = new EnemySpawner();
@@ -14,10 +14,10 @@ class EnemySpawner extends CanvasMixin(GlobalMixin(class {})) {
     speedMultiplier: number,
     vect: Vector,
     angle: number
-  ) => MovingEntity<any> | null)[] = [
+  ) => SEntity<any> | null)[] = [
     BallEnemy.spawn,
     SquareEnemy.spawn,
-    Laser.spawn,
+    WarningLine.spawn,
   ];
   private constructor() {
     super();

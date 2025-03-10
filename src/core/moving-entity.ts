@@ -1,14 +1,14 @@
 "use client";
-import Entity, { IEntity } from "./entity";
+import SEntity, { ISEntity } from "./entity/sentity";
 import type Shape from "./shape/shape";
 import Vector from "./vector";
 
-export interface IMovingEntity<T extends Shape> extends IEntity<T> {
+export interface IMovingEntity<T extends Shape> extends ISEntity<T> {
   angle: number;
   speed: number;
 }
 
-abstract class MovingEntity<T extends Shape> extends Entity<T> {
+abstract class MovingEntity<T extends Shape> extends SEntity<T> {
   public angle: number;
   public speed: number;
   constructor({

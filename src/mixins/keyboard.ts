@@ -16,15 +16,15 @@ export function KeyboardMixin<Base extends Constructor<any>>(base: Base) {
       }
     }
 
-    public onKeyDown(e: KeyboardEvent) {
+    protected onKeyDown(e: KeyboardEvent) {
       this.keyPressed.add(e.key);
     }
 
-    public onKeyUp(e: KeyboardEvent) {
+    protected onKeyUp(e: KeyboardEvent) {
       this.keyPressed.delete(e.key);
     }
 
-    public destroyListeners() {
+    protected destroyListeners() {
       if (typeof window !== "undefined") {
         window.removeEventListener("keydown", this.onKeyDownBound);
         window.removeEventListener("keyup", this.onKeyUpBound);
