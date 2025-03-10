@@ -35,7 +35,7 @@ class Rect extends Shape {
   }
 
   public get diagonal(): number {
-    return this.bottomLeft.distance(this.topRight)
+    return this.bottomLeft.distance(this.topRight);
   }
 
   constructor({ height, width: witdh, ...props }: IRect) {
@@ -81,6 +81,12 @@ class Rect extends Shape {
       ) &&
       inBetween(vect.y, this.vector.y + padding, this.bottomRight.y - padding)
     );
+  }
+
+  public randomVect() {
+    const x = Math.random() * (this.width - this.vector.x) + this.vector.x;
+    const y = Math.random() * (this.height - this.vector.y) + this.vector.y;
+    return new Vector(x, y);
   }
 }
 

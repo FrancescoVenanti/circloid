@@ -1,10 +1,12 @@
 import MovingEntity, { IMovingEntity } from "@/src/core/moving-entity";
+import Shape from "@/src/core/shape/shape";
 import Vector from "@/src/core/vector";
-import { inBetween } from "@/src/utils";
 import Explosion from "../../effects/explosion";
 
-class Enemy extends MovingEntity<any> {
-  constructor(props: IMovingEntity<any>) {
+export interface IEnemy<T extends Shape> extends IMovingEntity<T> {}
+
+abstract class Enemy<T extends Shape> extends MovingEntity<T> {
+  constructor(props: IEnemy<T>) {
     super(props);
   }
 
@@ -28,51 +30,18 @@ class Enemy extends MovingEntity<any> {
     this.checkShieldCollisions();
   }
 
-  protected checkPlayerCollision() {
-    const player = this.global("player");
-    if (!player) return;
-    const distance = player.shape.vector.distance(this.shape.vector);
-    const maxDistance = player.shape.radius + this.shape.radius;
-    if (distance < maxDistance) {
-      this.sound.play("hit");
-      this.destroy();
-      player.decreaseLife();
-      this.explode(this.shape.vector, player.style.fillStyle || "");
-    }
-  }
-  protected checkConstraintCollision() {
-    const constraint = this.global("constraint");
-    if (!constraint) return;
-    let angle = constraint.shape.vector.angleFromVect(this.shape.vector);
-    if (angle < 0) angle += Math.PI * 2;
-    const distance = constraint.shape.vector.distance(this.shape.vector);
-    const maxDistance = constraint.shape.radius + this.shape.radius;
-    const [start, end] = [constraint.wall.start, constraint.wall.end];
+  protected abstract checkPlayerCollision(): boolean;
+  protected abstract checkConstraintCollision(): boolean;
+  protected abstract checkShieldCollisions(): boolean;
 
-    if (
-      inBetween(angle, start, end) &&
-      Math.abs(distance - maxDistance) <= this.speed
-    ) {
-      this.destroy();
-      this.sound.play("hitShield");
-      this.explode(this.shape.vector, constraint.wall.color);
-    }
-  }
-  protected checkShieldCollisions() {
-    const player = this.global("player");
-    if (!player) return;
-    const shields = player.shield.getShields();
-    for (const shield of shields) {
-      if (shield.collide(this.shape)) {
-        this.destroy();
-        this.sound.play("hitShield");
-        this.explode(this.shape.vector, player.shield.color);
-      }
-    }
+  protected remove() {
+    this.explode(this.shape.vector);
+    this.global("player")?.decreaseLife();
+    this.destroy();
   }
   public explode(vect: Vector, ...extraColors: string[]) {
-    new Explosion(this.shape.vector, [
-      this.style.fillStyle || "",
+    new Explosion(vect, [
+      this.style.fillStyle || this.style.strokeStyle || "",
       ...extraColors,
     ]).store();
   }

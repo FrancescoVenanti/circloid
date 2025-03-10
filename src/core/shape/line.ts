@@ -55,6 +55,14 @@ class Line extends Shape {
     return true;
   }
 
+  public minDistance(vect: Vector): number | undefined {
+    const angle = -1 / Math.tan(this.angle);
+    const end = Vector.fromAngle(angle).add(vect).mulScalar(2);
+    const intersection = this.intersection(new Line({ vect, end }));
+
+    return intersection?.distance(vect);
+  }
+
   public collide({ vector, radius: maxDistance }: Circle) {
     if (this.vector.distance(vector) < maxDistance) {
       return true;

@@ -1,8 +1,8 @@
-import Entity from "../../core/entity";
+import SEntity from "../../core/entity/sentity";
 import type Vector from "../../core/vector";
 import DebrisParticles from "./debris-particles";
 
-class Explosion extends Entity<DebrisParticles> {
+class Explosion extends SEntity<DebrisParticles> {
   constructor(vect: Vector, colors: string[] = []) {
     const shape = new DebrisParticles({
       vect,

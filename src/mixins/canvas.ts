@@ -1,5 +1,5 @@
 import canvas from "../core/canvas";
-import Entity from "../core/entity";
+import SEntity from "../core/entity/sentity";
 
 export default function CanvasMixin<T extends Constructor<any>>(base: T) {
   return class extends base {
@@ -12,7 +12,7 @@ export default function CanvasMixin<T extends Constructor<any>>(base: T) {
     protected get canvasShape() {
       return this.canvas.shape;
     }
-    protected getByClassName<T extends Entity<any>>(base: Constructor<T>) {
+    protected getByClassName<T extends SEntity<any>>(base: Constructor<T>) {
       return this.canvas.getByConstructor(base);
     }
   };

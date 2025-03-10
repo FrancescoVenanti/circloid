@@ -23,7 +23,7 @@ class Polygon extends Circle {
   public draw(): void {
     this.polygon(this.getLines());
   }
-  private getLines(): Vector[] {
+  public getLines(): Vector[] {
     let result: Vector[] = [];
     let vect = Vector.zero;
     const angle = (Math.PI * 2) / this.points.length;

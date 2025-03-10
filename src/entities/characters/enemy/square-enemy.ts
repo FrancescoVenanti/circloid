@@ -3,7 +3,7 @@ import Polygon from "@/src/core/shape/polygon";
 import Vector from "@/src/core/vector";
 import Enemy from "./enemy";
 
-class SquareEnemy extends Enemy {
+class SquareEnemy extends Enemy<Polygon> {
   constructor(props: IMovingEntity<Polygon>) {
     super({ ...props, key: "squareEnemy" });
   }
@@ -20,6 +20,15 @@ class SquareEnemy extends Enemy {
         vect,
       }),
     });
+  }
+  protected checkConstraintCollision(): boolean {
+    return false;
+  }
+  protected checkPlayerCollision(): boolean {
+    return false;
+  }
+  protected checkShieldCollisions(): boolean {
+    return false;
   }
 
   public update(): void {

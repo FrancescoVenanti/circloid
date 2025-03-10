@@ -1,11 +1,11 @@
 "use client";
 import { getTopScores } from "@/lib/actions";
 import canvas from "../core/canvas";
-import Entity from "../core/entity";
+import SEntity from "../core/entity/sentity";
 import Rect from "../core/shape/rect";
 import Vector from "../core/vector";
 
-class Highscore extends Entity<any> {
+class Highscore extends SEntity<any> {
   private scores: any[] = [];
   constructor(zIndex: number) {
     const shape = new Rect({

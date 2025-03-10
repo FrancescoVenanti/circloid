@@ -1,26 +1,24 @@
+import canvas from "@/src/core/canvas";
+import SEntity from "@/src/core/entity/sentity";
 import { IMovingEntity } from "@/src/core/moving-entity";
 import Line from "@/src/core/shape/line";
-import canvas from "@/src/core/canvas";
 import Vector from "@/src/core/vector";
-import { Drawable } from "roughjs/bin/core";
-import Enemy from "./enemy";
-import Entity from "@/src/core/entity";
 import ArrowEnemy from "./arrow-enemy";
 
-interface ILaser extends Omit<IMovingEntity<Line>, "key" | "shape"> {
+interface IWarningLine extends Omit<IMovingEntity<Line>, "key" | "shape"> {
   end: Vector;
   vect: Vector;
   frames: number;
   blinking: number;
 }
 
-class Laser extends Entity<Line> {
+class WarningLine extends SEntity<Line> {
   private frames: number;
   private blinking: [number, number, boolean];
 
-  constructor({ frames, blinking, end, vect, ...props }: ILaser) {
+  constructor({ frames, blinking, end, vect, ...props }: IWarningLine) {
     const shape = new Line({ end, vect });
-    super({ ...props, shape, key: "laserEnemy" });
+    super({ ...props, shape, key: "warningLine" });
     this.frames = frames;
     this.blinking = [0, blinking, true];
   }
@@ -29,7 +27,7 @@ class Laser extends Entity<Line> {
     const end = Vector.fromAngle(angle)
       .mulScalar(canvas.shape.diagonal)
       .add(vect);
-    return new Laser({
+    return new WarningLine({
       end,
       vect,
       angle,
@@ -99,4 +97,4 @@ class Laser extends Entity<Line> {
   }
 }
 
-export default Laser;
+export default WarningLine;

@@ -10,6 +10,8 @@ export interface Globals {
   running: boolean;
   style: number;
   counter: number;
+  music: HTMLAudioElement | null;
+  // environment: Environment | null;
 }
 
 class Global {
@@ -26,7 +28,9 @@ class Global {
       constraint: null,
       buttonPosition: Vector.zero,
       running: true,
+      music: null,
       style: this.getInitialStyle(),
+      // environment: null,
     };
     this.persistentValues = new Set(["style"]);
   }

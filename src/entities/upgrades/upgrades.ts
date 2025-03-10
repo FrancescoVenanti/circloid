@@ -1,12 +1,12 @@
 import GlobalMixin from "@/src/mixins/global";
 import { KeyboardMixin } from "@/src/mixins/keyboard";
 import { Drawable } from "roughjs/bin/core";
-import Entity, { IEntity } from "../../core/entity";
+import SEntity, { ISEntity } from "../../core/entity/sentity";
 import Rect from "../../core/shape/rect";
 import Vector from "../../core/vector";
 import Explosion from "../effects/explosion";
 
-export interface IUpgrade<T> extends Omit<IEntity<Rect>, "shape"> {
+export interface IUpgrade<T> extends Omit<ISEntity<Rect>, "shape"> {
   level?: number;
   maxLevel: number;
   cost: number;
@@ -18,7 +18,7 @@ export interface IUpgrade<T> extends Omit<IEntity<Rect>, "shape"> {
   color?: string;
 }
 
-abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(Entity<Rect>)) {
+abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(SEntity<Rect>)) {
   protected _value: T;
   protected _level: number;
   protected _maxLevel: number;

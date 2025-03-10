@@ -1,4 +1,3 @@
-import { List } from "lucide-react";
 import GlobalMixin from "../mixins/global";
 
 class Sound extends GlobalMixin(class {}) {
@@ -21,7 +20,10 @@ class Sound extends GlobalMixin(class {}) {
   }
 
   public play(filename: keyof typeof this.sounds) {
-    new Audio(`./sounds/${filename}.mp3`).play();
+    this.audio(filename).play();
+  }
+  public audio(filename: keyof typeof this.sounds) {
+    return new Audio(`./sounds/${this.sounds[filename]}.mp3`);
   }
 }
 

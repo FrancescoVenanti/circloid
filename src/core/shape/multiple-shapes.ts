@@ -1,12 +1,12 @@
 import Shape, { IShape } from "@/src/core/shape/shape";
-import Entity from "../entity";
+import SEntity from "../entity/sentity";
 
 export interface IMultipleShapes extends IShape {
   amount: number;
   speed: number;
 }
 
-abstract class MultipleShapes<T extends Entity<any>> extends Shape {
+abstract class MultipleShapes<T extends SEntity<any>> extends Shape {
   public particles: T[] = [];
   protected speed: number;
   constructor({ amount, speed, ...props }: IMultipleShapes) {

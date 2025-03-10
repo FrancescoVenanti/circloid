@@ -1,16 +1,15 @@
-import { IEntity } from "@/src/core/entity";
-import Enemy from "./enemy";
-import Line from "@/src/core/shape/line";
 import { IMovingEntity } from "@/src/core/moving-entity";
+import Line from "@/src/core/shape/line";
 import Vector from "@/src/core/vector";
-import Circle from "@/src/core/shape/circle";
+import { inBetween } from "@/src/utils";
+import Enemy from "./enemy";
 
 interface IArrowEnemy extends Omit<IMovingEntity<Line>, "shape" | "key"> {
   vect: Vector;
   length: number;
 }
 
-class ArrowEnemy extends Enemy {
+class ArrowEnemy extends Enemy<Line> {
   constructor({ vect, length, ...props }: IArrowEnemy) {
     const end = vect
       .clone()
@@ -32,7 +31,9 @@ class ArrowEnemy extends Enemy {
 
     this.checkConstraintCollision();
     this.checkShieldCollisions();
-    this.checkPlayerCollision();
+    if (this.checkPlayerCollision()) {
+      this.remove();
+    }
   }
 
   public draw(): void {
@@ -43,28 +44,49 @@ class ArrowEnemy extends Enemy {
   protected checkPlayerCollision() {
     const player = this.global("player");
     if (!player) return false;
-    const line = this.shape as Line;
+    const line = this.shape;
     const d1 = player.shape.vector.distance(line.vector);
     const d2 = player.shape.vector.distance(line.end);
-    if (d1 >= player.shape.radius) return;
-    if (d2 >= player.shape.radius) return;
+    if (d1 < player.shape.radius || d2 < player.shape.radius) {
+      return true;
+    }
 
-    if (!line.collide(player.shape)) return;
+    if (!line.collide(player.shape)) return false;
+
     const nextLine = new Line({
       vect: line.vector,
-      end: line.vector
+      end: line.end
         .clone()
         .add(Vector.fromAngle(this.angle).mulScalar(this.speed)),
     });
-    const movedShape = new Circle({
-      vect: player.shape.vector,
-      radius: player.shape.radius + player.speed,
-    });
 
-    if (!nextLine.collide(movedShape)) return;
+    if (!nextLine.collide(player.shape)) return false;
+    return true;
+  }
+  protected checkConstraintCollision(): boolean {
+    const constraint = this.global("constraint");
+    if (!constraint) return false;
+    const angle = this.shape.vector.angleFromVect(constraint.shape.vector);
+    const [s, e] = [constraint.wall.start, constraint.wall.end];
+    if (!inBetween(angle, s, e)) return false;
 
-    this.explode(line.vector, player.style.fillStyle || "");
+    return false;
+  }
+  protected checkShieldCollisions(): boolean {
+    const player = this.global("player");
+    if (!player) return false;
+    const shields = player.shield.getShields();
+    for (const shield of shields) {
+      if (this.shape.collide(shield)) return true;
+    }
+    return false;
+  }
+  protected remove() {
+    const line = this.shape;
+    const player = this.global("player")!;
+    this.explode(line.end, player.style.fillStyle || "");
     this.destroy();
+    player.decreaseLife();
     this.sound.play("hit");
   }
 }

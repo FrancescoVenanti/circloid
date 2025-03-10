@@ -2,9 +2,9 @@
 import Circle from "@/src/core/shape/circle";
 import Vector from "../../../core/vector";
 import { IBall } from "../../ball";
-import Enemy from "./enemy";
+import CircleEnemy from "./circle-enemy";
 
-class BallEnemy extends Enemy {
+class BallEnemy extends CircleEnemy {
   constructor({ radius, vect, ...props }: IBall) {
     const shape = new Circle({ radius, vect });
     super({ ...props, shape, key: "ballenemy" });
@@ -37,9 +37,11 @@ class BallEnemy extends Enemy {
 
     this.shape.vector.add(direction);
 
-    this.checkPlayerCollision();
-    this.checkConstraintCollision();
-    this.checkShieldCollisions();
+    const collisions = [
+      this.checkPlayerCollision(),
+      this.checkConstraintCollision(),
+      this.checkShieldCollisions(),
+    ];
   }
 }
 
