@@ -28,33 +28,7 @@ class BallEnemy extends CircleEnemy {
   }
 
   public override update(): void {
-    if (!this.canvasShape.containsVector(this.shape.vector, -10))
-      return this.destroy();
-
-    const direction = Vector.fromAngle(this.angle);
-
-    direction.mulScalar(this.speed);
-
-    this.shape.vector.add(direction);
-
-    const [player, wall, shield] = [
-      this.checkPlayerCollision(),
-      this.checkConstraintCollision(),
-      this.checkShieldCollisions(),
-    ];
-    let extraColor = "";
-    if (!player || !wall || !shield) return;
-    if (player) {
-      this.global("player")?.decreaseLife();
-      extraColor = this.global("player")?.style.fillStyle || "";
-    }
-    if (wall) {
-      extraColor = this.global("constraint")?.style.strokeStyle || "";
-    }
-    if (shield) {
-      extraColor = this.global("player")?.style.fillStyle || "";
-    }
-    this.remove(extraColor);
+    super.update();
   }
 }
 

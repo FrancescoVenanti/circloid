@@ -2,8 +2,9 @@ import { IMovingEntity } from "@/src/core/moving-entity";
 import Polygon from "@/src/core/shape/polygon";
 import Vector from "@/src/core/vector";
 import Enemy from "./enemy";
+import PolygonEnemy from "./polygon-enemy";
 
-class SquareEnemy extends Enemy<Polygon> {
+class SquareEnemy extends PolygonEnemy {
   constructor(props: IMovingEntity<Polygon>) {
     super({ ...props, key: "squareEnemy" });
   }

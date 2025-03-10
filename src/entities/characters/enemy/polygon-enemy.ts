@@ -33,6 +33,14 @@ class PolygonEnemy extends Enemy<Polygon> {
     return false;
   }
   protected checkShieldCollisions(): boolean {
+    const player = this.global("player");
+    if (!player) return false;
+    const shields = player.shield.getShields();
+    for (const shield of shields) {
+      if (shield.collide(this.shape)) {
+        return true;
+      }
+    }
     return false;
   }
 }
