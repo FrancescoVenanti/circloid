@@ -16,8 +16,8 @@ interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   vect: Vector;
 }
 class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
-  private livesUpgrade: LifeUpgrade;
-  private speedUpgrade: SpeedUpgrade;
+  public livesUpgrade: LifeUpgrade;
+  public speedUpgrade: SpeedUpgrade;
   public shield: ShieldUpgrade;
   public points: number;
   public credits: number;
