@@ -2,6 +2,8 @@ import global from "./core/global";
 import Upgrade from "./entities/upgrades/upgrades";
 import { styles } from "./style";
 
+export const DEGREE = Math.PI / 180;
+
 export function generateKey(name?: string): string {
   return (name || "") + "-" + Math.random().toString(36).substring(4);
 }
@@ -14,7 +16,7 @@ export function getUpgrades() {
   const p = global.use("player");
   const c = global.use("constraint");
   if (p) {
-    result.push(p.shield, p.livesUpgrade, p.speedUpgrade);
+    result.push(p.cyclone, p.livesUpgrade, p.speedUpgrade);
   }
   if (c) {
     result.push(c.radiusUpgrade, c.wall);

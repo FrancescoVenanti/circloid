@@ -75,12 +75,23 @@ class ArrowEnemy extends Enemy<Line> {
   protected checkShieldCollisions(): boolean {
     const player = this.global("player");
     if (!player) return false;
-    const shields = player.shield.getShields();
-    for (const shield of shields) {
-      if (this.shape.collide(shield)) return true;
+    const shields = player.cyclone.getShields();
+    for (const cyclone of shields) {
+      if (this.shape.collide(cyclone)) return true;
     }
     return false;
   }
+
+  protected checkCyclonCollisions(): boolean {
+    const player = this.global("player");
+    if (!player) return false;
+    const shields = player.cyclone.getShields();
+    for (const cyclone of shields) {
+      if (this.shape.collide(cyclone)) return true;
+    }
+    return false;
+  }
+
   protected remove() {
     const line = this.shape;
     const player = this.global("player")!;

@@ -3,6 +3,7 @@ import Vector from "@/src/core/vector";
 import CanvasMixin from "@/src/mixins/canvas";
 import GlobalMixin from "@/src/mixins/global";
 import Upgrade from "../../upgrades/upgrades";
+import { Globals } from "@/src/core/global";
 
 class BonusSpawner extends CanvasMixin(GlobalMixin(class {})) {
   public static instance = new BonusSpawner();
@@ -16,18 +17,21 @@ class BonusSpawner extends CanvasMixin(GlobalMixin(class {})) {
   private upgrades: Upgrade<any>[] = [];
   private constructor() {
     super();
-    const constraint = this.global("constraint");
-    const player = this.global("player");
-    if (constraint) {
-      this.upgrades.push(constraint.wall, constraint.radiusUpgrade);
+    this.upgrades = (["constraint", "player"] as (keyof Globals)[])
+      .map(this.global)
+      .flatMap((obj) => this.getUpgradeProps(obj as object));
+  }
+  private getUpgradeProps(obj: object | null) {
+    if (!obj) return [];
+    const result: Upgrade<any>[] = [];
+    for (const value in Object.values(obj)) {
+      if (!value) continue;
+      if (typeof value !== "object") continue;
+      if ((value as object) instanceof Upgrade) {
+        result.push(value);
+      }
     }
-    if (player) {
-      this.upgrades.push(
-        player.shield,
-        player.livesUpgrade,
-        player.speedUpgrade
-      );
-    }
+    return result;
   }
   public spawn(speedMultiplier: number) {
     const player = this.global("player")!;
