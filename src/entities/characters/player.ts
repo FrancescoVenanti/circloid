@@ -32,6 +32,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       label: "Speed",
       keyPress: "1",
     });
+    this.zIndex = 1000;
 
     this.livesUpgrade = new LifeUpgrade({
       maxLevel: 5,
@@ -68,8 +69,8 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.points = 0;
     this.livesUpgrade.reset();
     this.credits = 0;
-    this.speed = 3;
     this.speedUpgrade.reset();
+    this.speed = this.speedUpgrade.value;
     this.shield.reset();
     this.shape.vector = this.canvasShape.center.clone();
 

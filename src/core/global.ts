@@ -1,5 +1,6 @@
 import Constraint from "../entities/characters/constraint";
 import Player from "../entities/characters/player";
+import Environment from "../entities/environment";
 import Vector from "./vector";
 
 export interface Globals {
@@ -11,7 +12,7 @@ export interface Globals {
   style: number;
   counter: number;
   music: HTMLAudioElement | null;
-  // environment: Environment | null;
+  environment: Environment | null;
 }
 
 class Global {
@@ -30,7 +31,7 @@ class Global {
       running: true,
       music: null,
       style: this.getInitialStyle(),
-      // environment: null,
+      environment: null,
     };
     this.persistentValues = new Set(["style"]);
   }

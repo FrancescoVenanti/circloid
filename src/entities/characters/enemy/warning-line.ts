@@ -32,7 +32,7 @@ class WarningLine extends SEntity<Line> {
       vect,
       angle,
       speed: 0,
-      frames: 240,
+      frames: 120,
       blinking: 24,
     });
   }

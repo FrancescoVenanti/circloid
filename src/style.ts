@@ -23,6 +23,10 @@ export const styles: Style[] = [
       lineWidth: 5,
       strokeStyle: "rgba(255, 0, 0, 0.6)",
     },
+    environment: {
+      fill: true,
+      fillStyle: "coral",
+    },
   },
   {
     // Dark Neon Theme
