@@ -27,23 +27,22 @@ abstract class Enemy<T extends Shape> extends MovingEntity<T> {
   protected checkCollisions() {
     const player = this.global("player");
     const constraint = this.global("constraint");
-    if (this.checkPlayerCollision()) {
+    if (this.checkShieldCollisions()) {
+      this.remove(player?.shield.color || "");
+    } else if (this.checkPlayerCollision()) {
       player?.decreaseLife();
       this.remove(player?.style.fillStyle || "");
-      return;
-    }
-    if (this.checkConstraintCollision()) {
+    } else if (this.checkConstraintCollision()) {
       this.remove(constraint?.wall.style.strokeStyle || "");
-      return;
-    }
-    if (this.checkShieldCollisions()) {
-      this.remove(player?.shield.style.fillStyle || "");
+    } else if (this.checkCyclonCollisions()) {
+      this.remove(player?.cyclone.style.fillStyle || "");
     }
   }
 
   protected abstract checkPlayerCollision(): boolean;
   protected abstract checkConstraintCollision(): boolean;
   protected abstract checkShieldCollisions(): boolean;
+  protected abstract checkCyclonCollisions(): boolean;
 
   protected remove(...extraColors: string[]) {
     this.explode(this.shape.vector, ...extraColors);

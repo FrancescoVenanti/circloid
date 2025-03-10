@@ -2,14 +2,15 @@ import Circle from "@/src/core/shape/circle";
 import Vector from "@/src/core/vector";
 import GlobalMixin from "@/src/mixins/global";
 import Upgrade, { IUpgrade } from "./upgrades";
+import { DEGREE } from "@/src/utils";
 
-interface IShieldUpgrade extends IUpgrade<number> {
+interface ICycloneUpgrade extends IUpgrade<number> {
   rotationSpeed?: number;
   radius?: number;
   padding: number;
 }
 
-class ShieldUpgrade extends GlobalMixin(Upgrade<number>) {
+class CycloneUpgrade extends GlobalMixin(Upgrade<number>) {
   private angle: number;
   private rotationSpeed: number;
   private radius: number;
@@ -17,10 +18,10 @@ class ShieldUpgrade extends GlobalMixin(Upgrade<number>) {
   public get value() {
     return this._value;
   }
-  constructor({ rotationSpeed, padding, radius, ...props }: IShieldUpgrade) {
-    super({ ...props, key: "shieldUpgrade" });
+  constructor({ rotationSpeed, padding, radius, ...props }: ICycloneUpgrade) {
+    super({ ...props, key: "cycloneUpgrade" });
     this.angle = 0;
-    this.rotationSpeed = (Math.PI / 180) * (rotationSpeed || 1);
+    this.rotationSpeed = DEGREE * (rotationSpeed || 1);
     this.radius = radius || 5;
     this.padding = padding || 0;
   }
@@ -66,4 +67,4 @@ class ShieldUpgrade extends GlobalMixin(Upgrade<number>) {
   }
 }
 
-export default ShieldUpgrade;
+export default CycloneUpgrade;

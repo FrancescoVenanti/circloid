@@ -6,7 +6,7 @@ export interface IMEntity extends IEntity {
   length: number;
 }
 
-abstract class MEntity extends DrawerMixin(Entity) {
+abstract class MEntity extends Entity {
   public shapes: Shape[];
   constructor({ length, ...props }: IMEntity) {
     super(props);

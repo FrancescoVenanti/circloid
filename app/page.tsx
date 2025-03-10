@@ -7,6 +7,7 @@ import global from "@/src/core/global";
 import Constraint from "@/src/entities/characters/constraint";
 import spawner from "@/src/entities/characters/enemy/enemy-spawner";
 import Player from "@/src/entities/characters/player";
+import Environment from "@/src/entities/environment";
 import Highscore from "@/src/entities/highscore";
 import { useEffect } from "react";
 
@@ -36,6 +37,8 @@ export default function Home() {
       "constraint",
       new Constraint({ vect: canvas.shape.center, radius: 140 })
     );
+    global.use("environment", new Environment(200));
+    global.use("environment")?.store();
     loop(0);
   }, []);
   return (

@@ -26,10 +26,6 @@ class BallEnemy extends CircleEnemy {
   public override draw(): void {
     this.with(() => this.shape.draw(), this.style);
   }
-
-  public override update(): void {
-    super.update();
-  }
 }
 
 export default BallEnemy;

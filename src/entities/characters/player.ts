@@ -6,8 +6,9 @@ import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
 import LifeUpgrade from "../upgrades/life-upgrade";
-import ShieldUpgrade from "../upgrades/shield-upgrade";
+import CycloneUpgrade from "../upgrades/cyclone-upgrade";
 import SpeedUpgrade from "../upgrades/speed-upgrade";
+import ShieldUpgrade from "../upgrades/shield.upgrade";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   lives: number;
@@ -16,8 +17,9 @@ interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   vect: Vector;
 }
 class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
-  private livesUpgrade: LifeUpgrade;
-  private speedUpgrade: SpeedUpgrade;
+  public livesUpgrade: LifeUpgrade;
+  public speedUpgrade: SpeedUpgrade;
+  public cyclone: CycloneUpgrade;
   public shield: ShieldUpgrade;
   public points: number;
   public credits: number;
@@ -32,6 +34,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       label: "Speed",
       keyPress: "1",
     });
+    this.zIndex = 1000;
 
     this.livesUpgrade = new LifeUpgrade({
       maxLevel: 5,
@@ -42,7 +45,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       keyPress: "3",
       // color: "red",
     });
-    this.shield = new ShieldUpgrade({
+    this.cyclone = new CycloneUpgrade({
       maxLevel: 5,
       cost: 5,
       vector: this.global("buttonPosition").clone().addX(400),
@@ -55,12 +58,22 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       padding: 24,
       // color: "violet",
     });
+    this.shield = new ShieldUpgrade({
+      maxLevel: 5,
+      cost: 5,
+      vector: this.global("buttonPosition").clone().addX(600),
+      initialValue: 0,
+      label: "Shield",
+      keyPress: "6",
+      // costMultiplier: 2,
+    });
 
     this.points = points || 0;
     this.credits = credits || 0;
     this.store();
     this.speedUpgrade.store();
     this.livesUpgrade.store();
+    this.cyclone.store();
     this.shield.store();
   }
 
@@ -68,9 +81,9 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.points = 0;
     this.livesUpgrade.reset();
     this.credits = 0;
-    this.speed = 3;
     this.speedUpgrade.reset();
-    this.shield.reset();
+    this.speed = this.speedUpgrade.value;
+    this.cyclone.reset();
     this.shape.vector = this.canvasShape.center.clone();
 
     const constraints = this.global("constraint")!;
