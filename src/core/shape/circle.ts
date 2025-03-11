@@ -1,3 +1,4 @@
+import { ROUND } from "@/src/utils";
 import Vector from "../vector";
 import Shape, { IShape } from "./shape";
 
@@ -25,13 +26,13 @@ class Circle extends Shape {
     if (distance < radius) return [null, null];
 
     const alpha = v.angleFromVect(this.vector);
-    
+
     const theta = Math.asin(radius / distance);
     return [alpha - theta, alpha + theta];
   }
 
   public randomPointFromBorder(): Vector {
-    const randomAngle = Math.random() * Math.PI * 2;
+    const randomAngle = Math.random() * ROUND;
     return Vector.fromAngle(randomAngle).mulScalar(this.radius);
   }
 

@@ -80,7 +80,6 @@ class WarningLine extends SEntity<Line> {
     const intersection = line.intersection(new Line({ vect: vector, end }));
     if (!intersection) return false;
     if (!line.contains(intersection)) {
-      console.log("interseca ma non contiene");
       return false;
     }
     if (intersection.distance(vector) < maxDistance) {

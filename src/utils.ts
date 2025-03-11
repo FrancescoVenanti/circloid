@@ -3,6 +3,7 @@ import Upgrade from "./entities/upgrades/upgrades";
 import { styles } from "./style";
 
 export const DEGREE = Math.PI / 180;
+export const ROUND = Math.PI * 2;
 
 export function generateKey(name?: string): string {
   return (name || "") + "-" + Math.random().toString(36).substring(4);

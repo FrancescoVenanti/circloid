@@ -1,6 +1,7 @@
 import Drawer from "../core/drawer";
 import Rect from "../core/shape/rect";
 import Vector from "../core/vector";
+import { ROUND } from "../utils";
 
 export default function DrawerMixin<T extends Constructor<any>>(base: T) {
   return class extends base {
@@ -31,7 +32,7 @@ export default function DrawerMixin<T extends Constructor<any>>(base: T) {
       size?: { start?: number; end?: number }
     ) {
       const start = 0;
-      const end = Math.PI * 2;
+      const end = ROUND;
       if (!size) {
         size = { start, end };
       }

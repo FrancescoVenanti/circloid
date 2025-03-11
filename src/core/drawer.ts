@@ -1,4 +1,5 @@
 "use client";
+import { ROUND } from "../utils";
 import type Rect from "./shape/rect";
 import Sketchy from "./sketchy";
 import Vector from "./vector";
@@ -28,7 +29,7 @@ class Drawer {
       vect.y,
       radius,
       size?.start || 0,
-      size?.end || Math.PI * 2
+      size?.end || ROUND
     );
     this.context.stroke();
   }

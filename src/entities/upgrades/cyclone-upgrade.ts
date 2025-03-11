@@ -1,8 +1,8 @@
 import Circle from "@/src/core/shape/circle";
 import Vector from "@/src/core/vector";
 import GlobalMixin from "@/src/mixins/global";
+import { DEGREE, ROUND } from "@/src/utils";
 import Upgrade, { IUpgrade } from "./upgrades";
-import { DEGREE } from "@/src/utils";
 
 interface ICycloneUpgrade extends IUpgrade<number> {
   rotationSpeed?: number;
@@ -27,7 +27,7 @@ class CycloneUpgrade extends GlobalMixin(Upgrade<number>) {
   }
   public update() {
     this.angle += this.rotationSpeed;
-    this.angle %= Math.PI * 2;
+    this.angle %= ROUND;
   }
   public upgrade() {
     if (!super.upgrade()) return false;
@@ -51,7 +51,7 @@ class CycloneUpgrade extends GlobalMixin(Upgrade<number>) {
   public getShields(): Circle[] {
     const result: Circle[] = [];
     const { vector, radius } = this.global("player")!.shape;
-    const angle = (Math.PI * 2) / this._value;
+    const angle = ROUND / this._value;
     let vect = Vector.zero;
     for (let i = 0; i < this._value; i++) {
       vect = Vector.fromAngle(angle * i + this.angle)

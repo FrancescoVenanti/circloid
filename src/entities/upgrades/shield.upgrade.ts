@@ -1,4 +1,4 @@
-import { DEGREE } from "@/src/utils";
+import { DEGREE, ROUND } from "@/src/utils";
 import Upgrade, { IUpgrade } from "./upgrades";
 
 interface IShieldUpgrade extends IUpgrade<number> {
@@ -26,14 +26,14 @@ class ShieldUpgrade extends Upgrade<number> {
   }
 
   public get start() {
-    return (this.angle - this.variance) % (Math.PI * 2);
+    return (this.angle - this.variance) % ROUND;
   }
   public get end() {
     const result = this.angle + this.variance;
-    if (this.start < Math.PI * 2) {
+    if (this.start < ROUND) {
       return result;
     }
-    return result % (Math.PI * 2);
+    return result % ROUND;
   }
 
   public update(): void {
@@ -41,20 +41,20 @@ class ShieldUpgrade extends Upgrade<number> {
     if (!player) return;
 
     let targetAngle = player.angle;
-    if (targetAngle < 0) targetAngle += Math.PI * 2;
+    if (targetAngle < 0) targetAngle += ROUND;
 
     let diff = targetAngle - this.angle;
 
     if (diff > Math.PI) {
-      diff -= Math.PI * 2;
+      diff -= ROUND;
     } else if (diff < -Math.PI) {
-      diff += Math.PI * 2;
+      diff += ROUND;
     }
     const lerpFactor = 0.1;
 
     this.angle += diff * lerpFactor;
 
-    this.angle = (this.angle + Math.PI * 2) % (Math.PI * 2);
+    this.angle = (this.angle + ROUND) % ROUND;
   }
 
   public draw(): void {

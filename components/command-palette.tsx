@@ -4,18 +4,6 @@ import sound from "@/src/core/sound";
 import { Music, Palette } from "lucide-react";
 import * as React from "react";
 
-const themes = [
-  { name: "light", label: "Light" },
-  { name: "dark", label: "Dark" },
-  { name: "neon", label: "Neon" },
-  { name: "pastel", label: "Pastel" },
-  { name: "retro", label: "Retro" },
-  { name: "paper-light", label: "Paper Light" },
-  { name: "gruvbox", label: "Gruvbox" },
-  { name: "Pastel-2", label: "Pastel-2" },
-  { name: "swamp", label: "Swamp" },
-];
-
 import {
   Command,
   CommandEmpty,
