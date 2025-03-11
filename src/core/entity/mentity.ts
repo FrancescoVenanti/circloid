@@ -6,13 +6,13 @@ export interface IMEntity extends IEntity {
   length: number;
 }
 
-abstract class MEntity extends Entity {
-  public shapes: Shape[];
+abstract class MEntity<T extends Shape> extends Entity {
+  public shapes: T[];
   constructor({ length, ...props }: IMEntity) {
     super(props);
     this.shapes = Array.from({ length }, (_, i) => this.generate(i));
   }
-  protected abstract generate(index: number): Shape;
+  protected abstract generate(index: number): T;
 
   public draw() {
     this.with(() => this.drawShapes(), this.style);

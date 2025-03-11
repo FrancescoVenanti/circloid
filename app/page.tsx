@@ -37,7 +37,7 @@ export default function Home() {
       "constraint",
       new Constraint({ vect: canvas.shape.center, radius: 140 })
     );
-    global.use("environment", new Environment(200));
+    global.use("environment", new Environment(150));
     global.use("environment")?.store();
     loop(0);
   }, []);
