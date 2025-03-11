@@ -3,8 +3,8 @@ export type Style = { [key: string]: Options & Record<string, any> };
 export const styles: Style[] = [
   {
     // Default (Your Theme)
-    canvas: { fillStyle: "black", fill: true },
-    player: { fillStyle: "lightblue", lineWidth: 0, fill: true },
+    canvas: { fillStyle: "#FFFDF0", fill: true },
+    player: { fillStyle: "#D9DFC6", lineWidth: 0, fill: true },
     speedUpgrade: { color: "green" },
     lifeUpgrade: { color: "red" },
     wallUpgrade: { color: "blue" },
@@ -12,7 +12,7 @@ export const styles: Style[] = [
     cycloneUpgrade: { color: "violet" },
     shieldUpgrade: { color: "violet" },
     ballenemy: { fill: true, fillStyle: "coral" },
-    constraint: { fill: false, strokeStyle: "palegreen" },
+    constraint: { fill: false, strokeStyle: "#ADB2D4" },
     squareEnemy: { fill: true, fillStyle: "coral" },
     warningLine: {
       fill: false,

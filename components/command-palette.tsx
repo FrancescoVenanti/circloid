@@ -1,10 +1,7 @@
 "use client";
 
-import sound from '@/src/core/sound';
-import {
-  Music,
-  Palette
-} from "lucide-react";
+import sound from "@/src/core/sound";
+import { Music, Palette } from "lucide-react";
 import * as React from "react";
 
 const themes = [
@@ -15,6 +12,8 @@ const themes = [
   { name: "retro", label: "Retro" },
   { name: "paper-light", label: "Paper Light" },
   { name: "gruvbox", label: "Gruvbox" },
+  { name: "Pastel-2", label: "Pastel-2" },
+  { name: "swamp", label: "Swamp" },
 ];
 
 import {
@@ -38,7 +37,9 @@ import { styles } from "@/src/style";
 export function CommandPalette() {
   const [open, setOpen] = React.useState(false);
   const [_, setTheme] = React.useState(global.use("style"));
-  const [musicEnabled, setMusicEnabled] = React.useState(global.use('music') != null);
+  const [musicEnabled, setMusicEnabled] = React.useState(
+    global.use("music") != null
+  );
 
   React.useEffect(() => {
     canvas.onPause = () => setOpen(true);
@@ -54,13 +55,12 @@ export function CommandPalette() {
   function toggleMusic() {
     setMusicEnabled((prev) => !prev);
     if (musicEnabled) {
-      global.use("music", sound.audio('background'));
-      global.use('music')?.play();
-    }
-    else {
-      global.use('music')?.pause()
-      global.use('music')?.remove()
-      global.use('music', null);
+      global.use("music", sound.audio("background"));
+      global.use("music")?.play();
+    } else {
+      global.use("music")?.pause();
+      global.use("music")?.remove();
+      global.use("music", null);
     }
   }
 
