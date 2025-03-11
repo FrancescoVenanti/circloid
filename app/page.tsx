@@ -31,6 +31,7 @@ export default function Home() {
         angle: 0,
         speed: 1.5,
         lives: 3,
+        zIndex: 10000,
       })
     );
     global.use(

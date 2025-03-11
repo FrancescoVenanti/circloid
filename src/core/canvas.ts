@@ -40,7 +40,15 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
 
   public add(entity: Entity): void {
     this.entities.set(entity.key, entity as SEntity<any>);
+    // console.log(
+    //   "before SORTED ENTITIEWS: ",
+    //   JSON.parse(JSON.stringify(this.sortedEntities))
+    // );
     this.sortEntities(entity);
+    // console.log(
+    //   "after SORTED ENTITIEWS: ",
+    //   JSON.parse(JSON.stringify(this.sortedEntities))
+    // );
   }
 
   public destroy(entity: Entity): void {
@@ -51,27 +59,36 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
 
   public sortEntities(entity: Entity) {
     this.sortedEntities.push(entity.key);
-    let swapIndex = -1;
-    for (let i = this.sortedEntities.length - 2; i > 0; i--) {
-      if (entity.zIndex > this.entities.get(this.sortedEntities[i])!.zIndex) {
-        swapIndex = i + 1;
-        break;
-      }
-    }
-    console.log("SWAP INDEXX  " + swapIndex);
-    if (swapIndex == -1) return;
-    console.log("length " + this.sortedEntities.length);
-
-    for (let i = this.sortedEntities.length - 1; i > swapIndex; i--) {
-      console.log(this.sortedEntities[i], this.sortedEntities[i - 1]);
-      console.log(
-        this.entities.get(this.sortedEntities[i])?.key,
-        this.entities.get(this.sortedEntities[i])?.zIndex
-      );
-      this.sortedEntities[i] = this.sortedEntities[i - 1];
-    }
-    this.sortedEntities[swapIndex] = entity.key;
+    this.sortedEntities.sort((a, b) => {
+      const zA = this.entities.get(a)?.zIndex || 0;
+      const zB = this.entities.get(b)?.zIndex || 0;
+      return zA > zB ? 1 : -1;
+    });
   }
+
+  // public sortEntities(entity: Entity) {
+  //   this.sortedEntities.push(entity.key);
+  //   let swapIndex = -1;
+  //   for (let i = this.sortedEntities.length - 2; i >= 0; i--) {
+  //     if (entity.zIndex > this.entities.get(this.sortedEntities[i])!.zIndex) {
+  //       swapIndex = i;
+  //       console.log("inside if", swapIndex, this.sortedEntities.length);
+  //       break;
+  //     }
+  //   }
+
+  //   if (swapIndex == -1) return;
+  //   if (swapIndex !== -1) {
+  //     this.sortedEntities.splice(swapIndex, 0, entity.key);
+  //     this.sortedEntities.pop(); // Remove the duplicate last element
+  //   }
+
+  //   // for (let i = this.sortedEntities.length - 1; i > swapIndex; i--) {
+  //   //   console.log("swapping: ", this.sortedEntities[i]);
+  //   //   this.sortedEntities[i] = this.sortedEntities[i - 1];
+  //   // }
+  //   // this.sortedEntities[swapIndex] = entity.key;
+  // }
 
   public render(): void {
     this.fillRect(

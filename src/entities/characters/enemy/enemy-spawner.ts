@@ -16,8 +16,8 @@ class EnemySpawner extends CanvasMixin(GlobalMixin(class {})) {
   public static instance = new EnemySpawner();
 
   private options: Record<number, [SpawnFunc, number]> = {
-    0: [BallEnemy.spawn, 3],
-    30: [SquareEnemy.spawn, 2],
+    0: [BallEnemy.spawn, 6],
+    30: [SquareEnemy.spawn, 3],
     60: [WarningLine.spawn, 1],
   };
 
