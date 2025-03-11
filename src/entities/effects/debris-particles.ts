@@ -1,3 +1,4 @@
+import { ROUND } from "@/src/utils";
 import MultipleShapes, {
   IMultipleShapes,
 } from "../../core/shape/multiple-shapes";
@@ -19,7 +20,7 @@ class DebrisParticles extends MultipleShapes<Debris> {
   }
 
   protected generate(): Debris {
-    const angle = Math.PI * 2 * Math.random();
+    const angle = ROUND * Math.random();
     return new Debris({
       zIndex: -1,
       radius: this.radius,

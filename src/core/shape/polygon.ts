@@ -1,3 +1,4 @@
+import { ROUND } from "@/src/utils";
 import Vector from "../vector";
 import Circle, { ICircle } from "./circle";
 
@@ -29,7 +30,7 @@ class Polygon extends Circle {
   public getLines(): Vector[] {
     let result: Vector[] = [];
     let vect = Vector.zero;
-    const angle = (Math.PI * 2) / this._points.length;
+    const angle = ROUND / this._points.length;
     for (let i = 0; i < this._points.length; i++) {
       vect = Vector.fromAngle(angle * i + this.rotationAngle);
       result.push(vect.mulScalar(this._points[i]).add(this.vector));

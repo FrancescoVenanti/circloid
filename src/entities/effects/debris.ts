@@ -1,4 +1,5 @@
 import Vector from "@/src/core/vector";
+import { ROUND } from "@/src/utils";
 import Ball, { IBall } from "../ball";
 
 export interface IDebris extends IBall {
@@ -35,7 +36,7 @@ class Debris extends Ball {
       }
       this.randomRadius[i] += 0.01;
     }
-    this.rotationAngle = (this.rotationAngle + this.rotation) % (Math.PI * 2);
+    this.rotationAngle = (this.rotationAngle + this.rotation) % ROUND;
 
     this.shape.vector.translate(this.angle, this.speed);
   }

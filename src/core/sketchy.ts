@@ -1,6 +1,7 @@
 import rough from "roughjs";
 import { RoughCanvas } from "roughjs/bin/canvas";
 import { Drawable, Options as ROptions } from "roughjs/bin/core";
+import { ROUND } from "../utils";
 import Line from "./shape/line";
 import Rect from "./shape/rect";
 import Vector from "./vector";
@@ -23,7 +24,7 @@ class Sketchy {
       width,
       height,
       size?.start || 0,
-      size?.end || Math.PI * 2,
+      size?.end || ROUND,
       false
     );
   }

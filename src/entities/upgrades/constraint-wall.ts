@@ -1,6 +1,6 @@
 import GlobalMixin from "@/src/mixins/global";
+import { DEGREE, ROUND } from "@/src/utils";
 import Upgrade, { IUpgrade } from "./upgrades";
-import { DEGREE } from "@/src/utils";
 
 interface IConstraintWall extends IUpgrade<number> {
   // angle: number;
@@ -23,7 +23,7 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
   }
 
   public update(): void {
-    this._angle = (this._angle + DEGREE / 2) % (Math.PI * 2);
+    this._angle = (this._angle + DEGREE / 2) % ROUND;
   }
   public upgrade(): boolean {
     if (!super.upgrade()) return false;
@@ -34,11 +34,11 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
   }
 
   public get start() {
-    return (this._angle - this._value / 2) % (Math.PI * 2);
+    return (this._angle - this._value / 2) % ROUND;
   }
   public get end() {
     const baseAngle = this._angle + this._value / 2;
-    const angle = baseAngle % (Math.PI * 2);
+    const angle = baseAngle % ROUND;
     if (angle < this.start) {
       return baseAngle;
     }

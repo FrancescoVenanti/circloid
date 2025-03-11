@@ -1,5 +1,5 @@
 import Circle from "@/src/core/shape/circle";
-import { inBetween } from "@/src/utils";
+import { inBetween, ROUND } from "@/src/utils";
 import Enemy, { IEnemy } from "./enemy";
 
 abstract class CircleEnemy extends Enemy<Circle> {
@@ -21,7 +21,7 @@ abstract class CircleEnemy extends Enemy<Circle> {
     const constraint = this.global("constraint");
     if (!constraint) return false;
     let angle = constraint.shape.vector.angleFromVect(this.shape.vector);
-    if (angle < 0) angle += Math.PI * 2;
+    if (angle < 0) angle += ROUND;
     const distance = constraint.shape.vector.distance(this.shape.vector);
     const maxDistance = constraint.shape.radius + this.shape.radius;
     const [start, end] = [constraint.wall.start, constraint.wall.end];
@@ -42,8 +42,8 @@ abstract class CircleEnemy extends Enemy<Circle> {
     const maxDistance = this.shape.radius + player.shape.radius;
     if (distance >= maxDistance) return false;
 
-    const angle = this.shape.vector.angleFromVect(player.shape.vector);
-
+    let angle = player.shape.vector.angleFromVect(this.shape.vector);
+    if (angle < start) angle += ROUND;
     return inBetween(angle, start, end);
   }
   protected checkCyclonCollisions(): boolean {
