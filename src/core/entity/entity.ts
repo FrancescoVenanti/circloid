@@ -25,7 +25,7 @@ class Entity extends GlobalMixin(
   }
 
   public get options() {
-    return styles[global.use("style")];
+    return styles[Object.keys(styles)[global.use("style")]];
   }
 
   constructor({ key, zIndex, style }: IEntity) {

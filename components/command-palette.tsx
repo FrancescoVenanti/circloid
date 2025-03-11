@@ -77,13 +77,13 @@ export function CommandPalette() {
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Themes">
-              {styles.map((_, i) => (
-                <CommandItem key={i} onSelect={() => changeTheme(i)}>
+              {Object.keys(styles).map((key, i) => (
+                <CommandItem key={key} onSelect={() => changeTheme(i)}>
                   <Palette className="mr-2 h-4 w-4" />
                   <span
                     className={i === global.use("style") ? "font-bold" : ""}
                   >
-                    {themes[i]?.label || "No name"}
+                    {key[0].toUpperCase() + key.substring(1).toLowerCase() || "No name"}
                   </span>
                 </CommandItem>
               ))}

@@ -25,5 +25,5 @@ export function getUpgrades() {
 }
 
 export function currentStyle() {
-  return styles[global.use("style")];
+  return styles[Object.keys(styles)[global.use("style")]];
 }
