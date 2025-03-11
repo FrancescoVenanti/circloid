@@ -1,4 +1,3 @@
-import sound from "@/src/core/sound";
 import Upgrade, { IUpgrade } from "./upgrades";
 
 class SpeedUpgrade extends Upgrade<number> {
@@ -22,7 +21,7 @@ class SpeedUpgrade extends Upgrade<number> {
 
     this._value += 0.4;
     player.speed = this._value;
-    sound.play("upgrade").play();
+    this.sound.play("upgrade");
     this.decreaseCredits();
 
     return true;

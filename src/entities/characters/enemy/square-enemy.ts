@@ -2,8 +2,10 @@ import { IMovingEntity } from "@/src/core/moving-entity";
 import Polygon from "@/src/core/shape/polygon";
 import Vector from "@/src/core/vector";
 import Enemy from "./enemy";
+import PolygonEnemy from "./polygon-enemy";
+import { DEGREE } from "@/src/utils";
 
-class SquareEnemy extends Enemy {
+class SquareEnemy extends PolygonEnemy {
   constructor(props: IMovingEntity<Polygon>) {
     super({ ...props, key: "squareEnemy" });
   }
@@ -24,7 +26,7 @@ class SquareEnemy extends Enemy {
 
   public update(): void {
     super.update();
-    this.shape.rotationAngle += Math.PI / 360;
+    this.shape.rotationAngle += DEGREE / 2;
     this.shape.rotationAngle %= Math.PI * 2;
   }
 }

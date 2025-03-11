@@ -1,5 +1,6 @@
 import Constraint from "../entities/characters/constraint";
 import Player from "../entities/characters/player";
+import Environment from "../entities/environment";
 import Vector from "./vector";
 
 export interface Globals {
@@ -10,6 +11,8 @@ export interface Globals {
   running: boolean;
   style: number;
   counter: number;
+  music: HTMLAudioElement | null;
+  environment: Environment | null;
 }
 
 class Global {
@@ -26,7 +29,9 @@ class Global {
       constraint: null,
       buttonPosition: Vector.zero,
       running: true,
+      music: null,
       style: this.getInitialStyle(),
+      environment: null,
     };
     this.persistentValues = new Set(["style"]);
   }
@@ -41,10 +46,22 @@ class Global {
       this.globals[provider] = newValue;
     }
     if (this.persistentValues.has(provider)) {
-      localStorage.setItem(provider, this.globals[provider]!.toString());
+      this.storeKey(provider);
     }
     return this.globals[provider];
   }
+
+  private storeKey(key: keyof Globals) {
+    const value = this.globals[key];
+    let str: string = "";
+    if (typeof value === "object") {
+      str = JSON.stringify(value);
+    } else {
+      str = value.toString();
+    }
+    localStorage.setItem(key, str);
+  }
+
   private getInitialStyle() {
     if (typeof window === "undefined") return 0;
     const style = localStorage.getItem("style");

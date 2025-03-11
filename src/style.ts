@@ -9,11 +9,25 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "red" },
     wallUpgrade: { color: "blue" },
     constraintUpgrade: { color: "palegreen" },
+    cycloneUpgrade: { color: "violet" },
     shieldUpgrade: { color: "violet" },
     ballenemy: { fill: true, fillStyle: "coral" },
     constraint: { fill: false, strokeStyle: "palegreen" },
     squareEnemy: { fill: true, fillStyle: "coral" },
-    laserEnemy: { fill: false, lineWidth: 5, strokeStyle: "white" },
+    warningLine: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 255, 255, 0.1)",
+    },
+    arrowEnemy: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 0, 0, 0.6)",
+    },
+    environment: {
+      fill: true,
+      fillStyle: "coral",
+    },
   },
   {
     // Dark Neon Theme
@@ -28,11 +42,13 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "magenta" },
     wallUpgrade: { color: "dodgerblue" },
     constraintUpgrade: { color: "springgreen" },
+    cycloneUpgrade: { color: "deeppink" },
     shieldUpgrade: { color: "deeppink" },
     ballenemy: { fill: true, fillStyle: "orangered" },
     constraint: { fill: false, strokeStyle: "deepskyblue" },
     squareEnemy: { fill: true, fillStyle: "coral" },
-    laserEnemy: { fill: false, lineWidth: 5, strokeStyle: "white" },
+    warningLine: { fill: false, lineWidth: 5, strokeStyle: "white" },
+    arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "red" },
   },
   {
     // Pastel Dream Theme
@@ -47,11 +63,13 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "salmon" },
     wallUpgrade: { color: "lightblue" },
     constraintUpgrade: { color: "mintcream" },
-    shieldUpgrade: { color: "plum" },
+    cycloneUpgrade: { color: "plum" },
+    shieldUpgrade: { color: "deeppink" },
     ballenemy: { fill: true, fillStyle: "peachpuff" },
     constraint: { fill: false, strokeStyle: "thistle" },
     squareEnemy: { fill: true, fillStyle: "coral" },
-    laserEnemy: { fill: false, lineWidth: 5, strokeStyle: "white" },
+    warningLine: { fill: false, lineWidth: 5, strokeStyle: "lightgray" },
+    arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "pink" },
   },
   {
     // Retro Arcade Theme
@@ -66,10 +84,13 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "orange" },
     wallUpgrade: { color: "purple" },
     constraintUpgrade: { color: "cyan" },
-    shieldUpgrade: { color: "pink" },
+    cycloneUpgrade: { color: "pink" },
+    shieldUpgrade: { color: "deeppink" },
     ballenemy: { fill: true, fillStyle: "red" },
     constraint: { fill: false, strokeStyle: "white" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    warningLine: { fill: false, lineWidth: 5, strokeStyle: "yellow" },
+    arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "red" },
   },
   {
     // Cyberpunk Theme
@@ -84,10 +105,13 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "hotpink" },
     wallUpgrade: { color: "neonpurple" },
     constraintUpgrade: { color: "limegreen" },
-    shieldUpgrade: { color: "cyan" },
+    cycloneUpgrade: { color: "cyan" },
+    shieldUpgrade: { color: "deeppink" },
     ballenemy: { fill: true, fillStyle: "neonred" },
     constraint: { fill: false, strokeStyle: "brightyellow" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    warningLine: { fill: false, lineWidth: 5, strokeStyle: "yellow" },
+    arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "red" },
   },
   {
     // Fire & Ice Theme
@@ -102,10 +126,13 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "firebrick" },
     wallUpgrade: { color: "navy" },
     constraintUpgrade: { color: "snow" },
+    cycloneUpgrade: { color: "deeppink" },
     shieldUpgrade: { color: "crimson" },
     ballenemy: { fill: true, fillStyle: "orangered" },
     constraint: { fill: false, strokeStyle: "powderblue" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    warningLine: { fill: false, lineWidth: 5, strokeStyle: "white" },
+    arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "red" },
   },
   {
     // Soft Creamy Light Theme
@@ -120,10 +147,12 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "#d05353" },
     wallUpgrade: { color: "#7c8c5a" },
     constraintUpgrade: { color: "#d0c3b0" },
-    shieldUpgrade: { color: "#a892d4" },
+    cycloneUpgrade: { color: "#a892d4" },
     ballenemy: { fill: true, fillStyle: "#c1a183" },
     constraint: { fill: false, strokeStyle: "#b1a99e" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    warningLine: { fill: false, lineWidth: 5, strokeStyle: "brown" },
+    arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "darkred" },
   },
   {
     // Gruvbox Theme
@@ -138,10 +167,12 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "#cc241d" },
     wallUpgrade: { color: "#689d6a" },
     constraintUpgrade: { color: "#b16286" },
-    shieldUpgrade: { color: "#d79921" },
+    cycloneUpgrade: { color: "#d79921" },
     ballenemy: { fill: true, fillStyle: "#fb4934" },
     constraint: { fill: false, strokeStyle: "#d5c4a1" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    warningLine: { fill: false, lineWidth: 5, strokeStyle: "#d65d0e" },
+    arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "#cc241d" },
   },
   {
     // Monokai Theme (VSCode-like)
@@ -156,9 +187,11 @@ export const styles: Style[] = [
     lifeUpgrade: { color: "#f92672" },
     wallUpgrade: { color: "#66d9ef" },
     constraintUpgrade: { color: "#f4bf75" },
-    shieldUpgrade: { color: "#ae81ff" },
+    cycloneUpgrade: { color: "#ae81ff" },
     ballenemy: { fill: true, fillStyle: "#f92672" },
     constraint: { fill: false, strokeStyle: "#f8f8f2" },
     squareEnemy: { fill: true, fillStyle: "coral" },
+    warningLine: { fill: false, lineWidth: 5, strokeStyle: "#fd971f" },
+    arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "#f92672" },
   },
 ];

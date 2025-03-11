@@ -1,24 +1,27 @@
-import MovingEntity from "@/src/core/moving-entity";
+import SEntity from "@/src/core/entity/sentity";
 import Vector from "@/src/core/vector";
 import CanvasMixin from "@/src/mixins/canvas";
 import GlobalMixin from "@/src/mixins/global";
 import BallEnemy from "./ball-enemy";
-import Laser from "./laser-enemy";
 import SquareEnemy from "./square-enemy";
+import WarningLine from "./warning-line";
+
+type SpawnFunc = (
+  speedMultiplier: number,
+  vect: Vector,
+  angle: number
+) => SEntity<any> | null;
 
 class EnemySpawner extends CanvasMixin(GlobalMixin(class {})) {
   public static instance = new EnemySpawner();
 
+  private options: Record<number, [SpawnFunc, number]> = {
+    0: [BallEnemy.spawn, 3],
+    30: [SquareEnemy.spawn, 2],
+    60: [WarningLine.spawn, 1],
+  };
+
   private counter = 0;
-  private enemies: ((
-    speedMultiplier: number,
-    vect: Vector,
-    angle: number
-  ) => MovingEntity<any> | null)[] = [
-    BallEnemy.spawn,
-    SquareEnemy.spawn,
-    Laser.spawn,
-  ];
   private constructor() {
     super();
   }
@@ -37,8 +40,21 @@ class EnemySpawner extends CanvasMixin(GlobalMixin(class {})) {
     this.storeEnemy(speedMultiplier);
     this.counter = 0;
   }
+  private getEnemies(): [SpawnFunc, number][] {
+    const result: [SpawnFunc, number][] = [];
+    const points = this.global("player")?.points || 0;
+    for (const key in this.options) {
+      const value = parseInt(key);
+      if (points >= value) {
+        result.push(this.options[key]);
+      }
+    }
+    return result;
+  }
   private storeEnemy(speedMultiplier: number) {
-    const rand = Math.floor(Math.random() * this.enemies.length);
+    const enemies = this.getEnemies();
+    let amount = enemies.reduce((acc, [_, p]) => acc + p, 0);
+    const rand = Math.floor(Math.random() * amount);
     const constraint = this.global("constraint");
     if (!constraint) return null;
 
@@ -51,8 +67,23 @@ class EnemySpawner extends CanvasMixin(GlobalMixin(class {})) {
     if (max) {
       angle = Math.random() * (max - min) + min;
     }
-    let entity = this.enemies[rand](speedMultiplier, vect, angle);
+
+    const func = this.getEnemyFunc(rand, enemies);
+    if (!func) return;
+    let entity = func(speedMultiplier, vect, angle);
     if (entity) entity.store();
+  }
+  private getEnemyFunc(
+    rand: number,
+    enemies: [SpawnFunc, number][]
+  ): SpawnFunc | null {
+    let cumulative = 0;
+    for (const [f, p] of enemies) {
+      cumulative += p;
+      if (rand < cumulative) return f;
+    }
+    if (enemies.length === 0) return null;
+    return enemies[enemies.length - 1][0];
   }
 }
 

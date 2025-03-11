@@ -1,6 +1,6 @@
-import sound from "@/src/core/sound";
 import GlobalMixin from "@/src/mixins/global";
 import Upgrade, { IUpgrade } from "./upgrades";
+import { DEGREE } from "@/src/utils";
 
 interface IConstraintWall extends IUpgrade<number> {
   // angle: number;
@@ -19,17 +19,17 @@ class ConstraintWall extends GlobalMixin(Upgrade<number>) {
   constructor({ radiant, ...props }: IConstraintWall) {
     super({ ...props, key: "wallUpgrade" });
     this._angle = 0;
-    this._radiant = (Math.PI / 180) * radiant;
+    this._radiant = DEGREE * radiant;
   }
 
   public update(): void {
-    this._angle = (this._angle + Math.PI / 360) % (Math.PI * 2);
+    this._angle = (this._angle + DEGREE / 2) % (Math.PI * 2);
   }
   public upgrade(): boolean {
     if (!super.upgrade()) return false;
     this._value += this._radiant;
     this.decreaseCredits();
-    sound.play("upgrade").play();
+    this.sound.play("upgrade");
     return true;
   }
 

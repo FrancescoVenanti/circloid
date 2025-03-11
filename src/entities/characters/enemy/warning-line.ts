@@ -1,50 +1,66 @@
+import canvas from "@/src/core/canvas";
+import SEntity from "@/src/core/entity/sentity";
 import { IMovingEntity } from "@/src/core/moving-entity";
 import Line from "@/src/core/shape/line";
-import sound from "@/src/core/sound";
 import Vector from "@/src/core/vector";
-import { Drawable } from "roughjs/bin/core";
-import Enemy from "./enemy";
+import ArrowEnemy from "./arrow-enemy";
 
-interface ILaser extends Omit<IMovingEntity<Line>, "key" | "shape"> {
+interface IWarningLine extends Omit<IMovingEntity<Line>, "key" | "shape"> {
   end: Vector;
   vect: Vector;
   frames: number;
-  warning: number;
+  blinking: number;
 }
 
-class Laser extends Enemy {
+class WarningLine extends SEntity<Line> {
   private frames: number;
-  private warning: number;
-  private line: Drawable;
-  constructor({ warning, frames, end, vect, ...props }: ILaser) {
+  private blinking: [number, number, boolean];
+
+  constructor({ frames, blinking, end, vect, ...props }: IWarningLine) {
     const shape = new Line({ end, vect });
-    super({ ...props, shape, key: "laserEnemy" });
+    super({ ...props, shape, key: "warningLine" });
     this.frames = frames;
-    this.warning = warning;
-    this.line = this.drawer.sketchy.line(shape);
+    this.blinking = [0, blinking, true];
   }
 
   public static spawn(speedMultiplier: number, vect: Vector, angle: number) {
-    const end = Vector.fromAngle(angle).mulScalar(700).add(vect);
-    return new Laser({
+    const end = Vector.fromAngle(angle)
+      .mulScalar(canvas.shape.diagonal)
+      .add(vect);
+    return new WarningLine({
       end,
       vect,
       angle,
       speed: 0,
       frames: 120,
-      warning: 120,
-      zIndex: -100000,
+      blinking: 24,
     });
   }
 
+  private generateArrow() {
+    const line = this.shape as Line;
+    this.destroy();
+    const arrow = new ArrowEnemy({
+      vect: line.vector,
+      angle: line.angle,
+      speed: 50,
+      length: 100,
+    });
+    arrow.store();
+  }
+
   public update(): void {
-    if (this.warning > 0) {
-      this.warning--;
+    if (this.frames <= 0) {
+      this.generateArrow();
       return;
     }
-    if (this.frames <= 0) return this.destroy();
-    this.checkPlayerCollision() && this.remove();
     this.frames--;
+
+    if (this.blinking[0] >= this.blinking[1]) {
+      this.blinking[0] = 0;
+      this.blinking[2] = !this.blinking[2];
+    }
+    this.blinking[0]++;
   }
   protected checkPlayerCollision() {
     const player = this.global("player");
@@ -73,25 +89,12 @@ class Laser extends Enemy {
   }
 
   public draw(): void {
-    if (this.warning > 0) {
-      this.with(() => this.drawer.sketchy.draw(this.line), {
-        ...this.style,
-        strokeStyle: "yellow",
-      });
-      return;
-    }
-    this.with(() => this.drawer.sketchy.draw(this.line), this.style);
-  }
+    const lines = [this.shape.vector, this.shape.end];
+    const [_, __, blink] = this.blinking;
+    if (!blink) return;
 
-  private remove() {
-    console.log("dai");
-    const player = this.global("player")!;
-
-    this.explode(this.shape.end, player.style.fillStyle || "");
-    player.decreaseLife();
-    sound.play("hit").play();
-    this.destroy();
+    this.with(() => this.drawer.polygon(lines), this.style);
   }
 }
 
-export default Laser;
+export default WarningLine;

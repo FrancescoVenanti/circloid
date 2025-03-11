@@ -1,18 +1,17 @@
 "use client";
 import Vector from "@/src/core/vector";
 import GlobalMixin from "@/src/mixins/global";
-import RotatingMixin from "@/src/mixins/rotating";
-import Entity, { IEntity } from "../../core/entity";
+import SEntity, { ISEntity } from "../../core/entity/sentity";
 import Circle from "../../core/shape/circle";
 import ConstraintUpgrade from "../upgrades/constraint-upgrade";
 import ConstraintWall from "../upgrades/constraint-wall";
 
-interface IConstraint extends Omit<IEntity<Circle>, "shape"> {
+interface IConstraint extends Omit<ISEntity<Circle>, "shape"> {
   vect: Vector;
   radius: number;
 }
 
-class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
+class Constraint extends GlobalMixin(SEntity<Circle>) {
   public radiusUpgrade: ConstraintUpgrade;
   public wall: ConstraintWall;
   // private drawable: Drawable;
@@ -43,13 +42,7 @@ class Constraint extends GlobalMixin(RotatingMixin(Entity<Circle>)) {
     this.store();
     this.radiusUpgrade.store();
     this.wall.store();
-    // this.listenResize();
   }
-  // private listenResize() {
-  //   this.addEventListener("resize", () => {
-  //     this.shape.vector = this.canvasShape.center;
-  //   });
-  // }
 
   public upgradeRadius(): boolean {
     const upgrade = this.radiusUpgrade.upgrade();

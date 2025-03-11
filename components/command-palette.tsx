@@ -1,13 +1,9 @@
 "use client";
 
+import sound from '@/src/core/sound';
 import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Palette,
-  Settings,
-  Smile,
-  User,
+  Music,
+  Palette
 } from "lucide-react";
 import * as React from "react";
 
@@ -18,10 +14,6 @@ const themes = [
   { name: "pastel", label: "Pastel" },
   { name: "retro", label: "Retro" },
   { name: "paper-light", label: "Paper Light" },
-  { name: "gruvbox", label: "Gruvbox" },
-  { name: "gruvbox", label: "Gruvbox" },
-  { name: "gruvbox", label: "Gruvbox" },
-  { name: "gruvbox", label: "Gruvbox" },
   { name: "gruvbox", label: "Gruvbox" },
 ];
 
@@ -40,12 +32,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import canvas from "@/src/core/canvas";
-import { styles } from "@/src/style";
 import global from "@/src/core/global";
+import { styles } from "@/src/style";
 
 export function CommandPalette() {
   const [open, setOpen] = React.useState(false);
   const [_, setTheme] = React.useState(global.use("style"));
+  const [musicEnabled, setMusicEnabled] = React.useState(global.use('music') != null);
 
   React.useEffect(() => {
     canvas.onPause = () => setOpen(true);
@@ -56,6 +49,19 @@ export function CommandPalette() {
   function changeTheme(index: number) {
     global.use("style", index);
     setTheme(index);
+  }
+
+  function toggleMusic() {
+    setMusicEnabled((prev) => !prev);
+    if (musicEnabled) {
+      global.use("music", sound.audio('background'));
+      global.use('music')?.play();
+    }
+    else {
+      global.use('music')?.pause()
+      global.use('music')?.remove()
+      global.use('music', null);
+    }
   }
 
   return (
@@ -81,6 +87,12 @@ export function CommandPalette() {
                   </span>
                 </CommandItem>
               ))}
+            </CommandGroup>
+            <CommandGroup heading="Music">
+              <CommandItem onSelect={toggleMusic}>
+                <Music className="mr-2 h-4 w-4" />
+                <span>{musicEnabled ? "Disable Music" : "Enable Music"}</span>
+              </CommandItem>
             </CommandGroup>
           </CommandList>
         </Command>
