@@ -28,9 +28,10 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     super({ shape, key: "player", angle, speed });
     this.speedUpgrade = new SpeedUpgrade({
       maxLevel: 10,
-      cost: 5,
+      cost: 3,
       vector: this.global("buttonPosition").clone(),
       initialValue: speed,
+      costMultiplier: 2,
       label: "Speed",
       keyPress: "1",
     });

@@ -29,7 +29,7 @@ export default function Home() {
       new Player({
         vect: canvas.shape.center,
         angle: 0,
-        speed: 1.5,
+        speed: 2,
         lives: 3,
         zIndex: 10000,
       })
