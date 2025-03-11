@@ -49,7 +49,7 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
     this.sortedEntities.splice(delIndex, 1);
   }
 
-  public sortEntities(entity: Entity<any>) {
+  public sortEntities(entity: Entity) {
     this.sortedEntities.push(entity.key);
     let swapIndex = -1;
     for (let i = this.sortedEntities.length - 2; i > 0; i--) {
