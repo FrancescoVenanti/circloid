@@ -13,7 +13,7 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
   public onPause?: () => void;
   public onToggle?: (v: boolean) => void;
   public static instance: Canvas = new Canvas();
-
+  private sortedEntities: string[] = [];
   private entities: Map<string, Entity<any>> = new Map();
   private canvas: HTMLCanvasElement | null = null;
 
@@ -40,10 +40,37 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
 
   public add(entity: Entity<any>): void {
     this.entities.set(entity.key, entity);
+    this.sortEntities(entity);
   }
 
   public destroy(entity: Entity<any>): void {
     this.entities.delete(entity.key);
+    const delIndex = this.sortedEntities.indexOf(entity.key);
+    this.sortedEntities.splice(delIndex, 1);
+  }
+
+  public sortEntities(entity: Entity<any>) {
+    this.sortedEntities.push(entity.key);
+    let swapIndex = -1;
+    for (let i = this.sortedEntities.length - 2; i > 0; i--) {
+      if (entity.zIndex > this.entities.get(this.sortedEntities[i])!.zIndex) {
+        swapIndex = i + 1;
+        break;
+      }
+    }
+    console.log("SWAP INDEXX  " + swapIndex);
+    if (swapIndex == -1) return;
+    console.log("length " + this.sortedEntities.length);
+
+    for (let i = this.sortedEntities.length - 1; i > swapIndex; i--) {
+      console.log(this.sortedEntities[i], this.sortedEntities[i - 1]);
+      console.log(
+        this.entities.get(this.sortedEntities[i])?.key,
+        this.entities.get(this.sortedEntities[i])?.zIndex
+      );
+      this.sortedEntities[i] = this.sortedEntities[i - 1];
+    }
+    this.sortedEntities[swapIndex] = entity.key;
   }
 
   public render(): void {
@@ -55,9 +82,11 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
       }),
       currentStyle().canvas.fillStyle
     );
-    this.entities.forEach((e) => {
-      e.update();
-      e.draw();
+    this.sortedEntities.forEach((e) => {
+      const entity = this.entities.get(e);
+      if (!entity) return;
+      entity.update();
+      entity.draw();
     });
   }
 

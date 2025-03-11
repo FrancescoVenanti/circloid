@@ -26,7 +26,15 @@ class Laser extends Enemy {
 
   public static spawn(speedMultiplier: number, vect: Vector, angle: number) {
     const end = Vector.fromAngle(angle).mulScalar(700).add(vect);
-    return new Laser({ end, vect, angle, speed: 0, frames: 120, warning: 120 });
+    return new Laser({
+      end,
+      vect,
+      angle,
+      speed: 0,
+      frames: 120,
+      warning: 120,
+      zIndex: -100000,
+    });
   }
 
   public update(): void {
