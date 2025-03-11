@@ -1,4 +1,5 @@
 import GlobalMixin from "../mixins/global";
+import { styles } from "../style";
 
 class Sound extends GlobalMixin(class {}) {
   static instance = new Sound();
@@ -23,7 +24,11 @@ class Sound extends GlobalMixin(class {}) {
     this.audio(filename).play();
   }
   public audio(filename: keyof typeof this.sounds) {
-    return new Audio(`./sounds/${this.sounds[filename]}.mp3`);
+    return new Audio(
+      `./${Object.keys(styles)[this.global("style")]}/${
+        this.sounds[filename]
+      }.mp3`
+    );
   }
 }
 

@@ -2,7 +2,6 @@ import MEntity from "../core/entity/mentity";
 import Circle from "../core/shape/circle";
 import Shape from "../core/shape/shape";
 import Vector from "../core/vector";
-import CanvasMixin from "../mixins/canvas";
 
 class Environment extends MEntity<Circle> {
   private offsets: number[] = [];
@@ -26,7 +25,6 @@ class Environment extends MEntity<Circle> {
   }
 
   protected drawShapesWithOffset(offset: Vector): void {
-    console.log(this.shapes.length);
     for (let i = 0; i < this.shapes.length; i++) {
       this.with(
         () =>

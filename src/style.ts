@@ -1,7 +1,7 @@
 export type Style = { [key: string]: Options & Record<string, any> };
 
-export const styles: Style[] = [
-  {
+export const styles: Record<string, Style> = {
+  default: {
     // Default (Your Theme)
     canvas: { fillStyle: "#FFFDF0", fill: true },
     player: { fillStyle: "#D9DFC6", lineWidth: 0, fill: true },
@@ -29,7 +29,7 @@ export const styles: Style[] = [
       fillStyle: "coral",
     },
   },
-  {
+  neon: {
     // Dark Neon Theme
     canvas: { fillStyle: "rgb(10, 10, 30)", fill: true },
     player: {
@@ -50,7 +50,7 @@ export const styles: Style[] = [
     warningLine: { fill: false, lineWidth: 5, strokeStyle: "white" },
     arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "red" },
   },
-  {
+  pastel: {
     // Pastel Dream Theme
     canvas: { fillStyle: "lavenderblush", fill: true },
     player: {
@@ -71,7 +71,7 @@ export const styles: Style[] = [
     warningLine: { fill: false, lineWidth: 5, strokeStyle: "lightgray" },
     arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "pink" },
   },
-  {
+  retro: {
     // Retro Arcade Theme
     canvas: { fillStyle: "black", fill: true },
     player: {
@@ -92,7 +92,7 @@ export const styles: Style[] = [
     warningLine: { fill: false, lineWidth: 5, strokeStyle: "yellow" },
     arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "red" },
   },
-  {
+  cyberpunk: {
     // Cyberpunk Theme
     canvas: { fillStyle: "rgb(10, 10, 20)", fill: true },
     player: {
@@ -113,7 +113,7 @@ export const styles: Style[] = [
     warningLine: { fill: false, lineWidth: 5, strokeStyle: "yellow" },
     arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "red" },
   },
-  {
+  ice: {
     // Fire & Ice Theme
     canvas: { fillStyle: "midnightblue", fill: true },
     player: {
@@ -134,7 +134,7 @@ export const styles: Style[] = [
     warningLine: { fill: false, lineWidth: 5, strokeStyle: "white" },
     arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "red" },
   },
-  {
+  creamy: {
     // Soft Creamy Light Theme
     canvas: { fillStyle: "#f5f0e1", fill: true },
     player: {
@@ -154,7 +154,7 @@ export const styles: Style[] = [
     warningLine: { fill: false, lineWidth: 5, strokeStyle: "brown" },
     arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "darkred" },
   },
-  {
+  gruvbox: {
     // Gruvbox Theme
     canvas: { fillStyle: "#282828", fill: true },
     player: {
@@ -174,7 +174,7 @@ export const styles: Style[] = [
     warningLine: { fill: false, lineWidth: 5, strokeStyle: "#d65d0e" },
     arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "#cc241d" },
   },
-  {
+  monokai: {
     // Monokai Theme (VSCode-like)
     canvas: { fillStyle: "#272822", fill: true },
     player: {
@@ -194,4 +194,4 @@ export const styles: Style[] = [
     warningLine: { fill: false, lineWidth: 5, strokeStyle: "#fd971f" },
     arrowEnemy: { fill: false, lineWidth: 5, strokeStyle: "#f92672" },
   },
-];
+};

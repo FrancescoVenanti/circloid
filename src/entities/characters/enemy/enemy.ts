@@ -29,12 +29,16 @@ abstract class Enemy<T extends Shape> extends MovingEntity<T> {
     const constraint = this.global("constraint");
     if (this.checkShieldCollisions()) {
       this.remove(player?.shield.color || "");
+      this.sound.play("hitShield");
     } else if (this.checkPlayerCollision()) {
+      this.sound.play("hit");
       player?.decreaseLife();
       this.remove(player?.style.fillStyle || "");
     } else if (this.checkConstraintCollision()) {
+      this.sound.play("hitShield");
       this.remove(constraint?.wall.style.strokeStyle || "");
     } else if (this.checkCyclonCollisions()) {
+      this.sound.play("hitShield");
       this.remove(player?.cyclone.style.fillStyle || "");
     }
   }
