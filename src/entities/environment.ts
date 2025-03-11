@@ -8,7 +8,7 @@ class Environment extends MEntity<Circle> {
   private offsets: number[] = [];
   constructor(length: number) {
     super({ key: "environment", length, zIndex: -100 });
-    this.offsets = Array.from({ length }, (_, i) => this.shapes[i].radius / 7);
+    this.offsets = Array.from({ length }, (_, i) => this.shapes[i].radius / 8);
   }
   protected generate(index: number): Circle {
     const vect = this.canvasShape.randomVect();
