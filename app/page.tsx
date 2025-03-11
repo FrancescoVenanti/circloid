@@ -3,6 +3,7 @@
 import { CommandPalette } from "@/components/command-palette";
 // import ProxyComponent from "@/components/proxy-component";
 import canvas from "@/src/core/canvas";
+import Animation from "@/src/core/entity/animate";
 import global from "@/src/core/global";
 import Constraint from "@/src/entities/characters/constraint";
 import spawner from "@/src/entities/characters/enemy/enemy-spawner";
@@ -38,6 +39,7 @@ export default function Home() {
       "constraint",
       new Constraint({ vect: canvas.shape.center, radius: 140 })
     );
+    new Animation().store();
     global.use("environment", new Environment(150));
     global.use("environment")?.store();
     loop(0);
