@@ -5,10 +5,10 @@ import { KeyboardMixin } from "@/src/mixins/keyboard";
 import MovingEntity, { IMovingEntity } from "../../core/moving-entity";
 import Circle from "../../core/shape/circle";
 import Vector from "../../core/vector";
-import LifeUpgrade from "../upgrades/life-upgrade";
 import CycloneUpgrade from "../upgrades/cyclone-upgrade";
-import SpeedUpgrade from "../upgrades/speed-upgrade";
+import LifeUpgrade from "../upgrades/life-upgrade";
 import ShieldUpgrade from "../upgrades/shield.upgrade";
+import SpeedUpgrade from "../upgrades/speed-upgrade";
 
 interface IPlayer extends Omit<IMovingEntity<Circle>, "shape" | "key"> {
   lives: number;
@@ -76,6 +76,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.livesUpgrade.store();
     this.cyclone.store();
     this.shield.store();
+    this.animate().after(() => console.log("player animation"), 1000);
   }
 
   public reset() {
