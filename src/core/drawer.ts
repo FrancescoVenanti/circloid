@@ -136,12 +136,13 @@ class Drawer {
     ctx.fillStyle = "white";
     ctx.font = "20px monospace";
     ctx.textAlign = "start";
-    ctx.textBaseline = "top"; // Setting a default text baseline
+    ctx.textBaseline = "top";
 
-    // Set a default stroke style (optional)
     ctx.strokeStyle = "black";
     ctx.lineWidth = 1;
 
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
     // Reset transformations (if any)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
