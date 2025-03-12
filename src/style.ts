@@ -1,7 +1,46 @@
 export type Style = { [key: string]: Options & Record<string, any> };
 
 export const styles: Record<string, Style> = {
-  none: {},
+  none: {
+    canvas: { fillStyle: "#FFFDF0", fill: true },
+    player: {
+      fillStyle: "#D9DFC6",
+      lineWidth: 0,
+      fill: true,
+      credits: {
+        fillStyle: "black",
+      },
+      lifes: {
+        fill: true,
+        lineWidth: 0,
+        fillStyle: "coral",
+      },
+    },
+    highscore: { fillStyle: "black" },
+    speedUpgrade: { color: "green", fillStyle: "black" },
+    lifeUpgrade: { color: "red", fillStyle: "black" },
+    wallUpgrade: { color: "blue", fillStyle: "black" },
+    constraintUpgrade: { color: "palegreen", fillStyle: "black" },
+    cycloneUpgrade: { color: "violet", fillStyle: "black" },
+    shieldUpgrade: { color: "lightblue", fillStyle: "black" },
+    ballenemy: { fill: true, fillStyle: "#83c5be" },
+    constraint: { fill: false, strokeStyle: "#ADB2D4" },
+    squareEnemy: { fill: true, fillStyle: "#83c5be" },
+    warningLine: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 255, 255, 0.1)",
+    },
+    arrowEnemy: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 0, 0, 0.6)",
+    },
+    environment: {
+      fill: true,
+      fillStyle: "coral",
+    },
+  },
   light: {
     // Default (Your Theme)
     canvas: { fillStyle: "#FFFDF0", fill: true },
