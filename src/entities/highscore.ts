@@ -29,9 +29,7 @@ class Highscore extends SEntity<any> {
   public draw(): void {
     const vect = this.shape.vector.clone();
     for (let i = 0; i < this.scores.length; i++) {
-      this.with(() => this.drawScore(vect.addY(40), i), {
-        fillStyle: "white",
-      });
+      this.with(() => this.drawScore(vect.addY(40), i), this.style);
     }
   }
 

@@ -51,7 +51,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
       cost: 5,
       vector: this.global("buttonPosition").clone().addX(400),
       initialValue: 0,
-      label: "Shield",
+      label: "Cyclone",
       keyPress: "5",
       costMultiplier: 2,
       rotationSpeed: 3,
@@ -62,7 +62,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.shield = new ShieldUpgrade({
       maxLevel: 5,
       cost: 5,
-      vector: this.global("buttonPosition").clone().addX(600),
+      vector: this.global("buttonPosition").clone().addX(500),
       initialValue: 0,
       label: "Shield",
       keyPress: "6",
@@ -186,11 +186,6 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
   }
 
   private drawPoints() {
-    const style = {
-      fillStyle: "white",
-      fill: true,
-    };
-
     this.with(
       () =>
         this.text(
@@ -200,7 +195,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
             font: "50px monospace",
           }
         ),
-      style
+      this.getCurrentStyle()["credits"] || {}
     );
   }
 
@@ -214,19 +209,13 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
             font: "50px monospace",
           }
         ),
-      {
-        fillStyle: "white",
-        fill: true,
-      }
+      this.getCurrentStyle()["credits"] || {}
     );
   }
 
   private drawLives() {
     for (let i = 0; i < this.livesUpgrade.value; i++) {
-      this.with(() => this.drawLife(i), {
-        fill: true,
-        fillStyle: "red",
-      });
+      this.with(() => this.drawLife(i), this.getCurrentStyle()["lifes"] || {});
     }
   }
   private drawLife(index: number) {

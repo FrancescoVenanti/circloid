@@ -39,7 +39,9 @@ export default function Home() {
       "constraint",
       new Constraint({ vect: canvas.shape.center, radius: 140 })
     );
-    new Animation().store();
+    const animation = new Animation();
+    animation.store();
+
     global.use("environment", new Environment(150));
     global.use("environment")?.store();
     loop(0);

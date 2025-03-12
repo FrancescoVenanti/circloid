@@ -98,15 +98,23 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(SEntity<Rect>)) {
 
   public override draw(): void {
     this.drawRect();
-    this.text(this.label, this.shape.vector.clone().addY(60).addX(120), {
-      textAlign: "center",
-    });
-    this.text(
-      "Cost: " + this.cost.toString(),
-      this.shape.vector.clone().addY(80).addX(120),
-      {
-        textAlign: "center",
-      }
+    this.with(
+      () =>
+        this.text(this.label, this.shape.vector.clone().addY(60).addX(120), {
+          textAlign: "center",
+        }),
+      this.style
+    );
+    this.with(
+      () =>
+        this.text(
+          "Cost: " + this.cost.toString(),
+          this.shape.vector.clone().addY(80).addX(120),
+          {
+            textAlign: "center",
+          }
+        ),
+      this.style
     );
   }
 
@@ -135,10 +143,14 @@ abstract class Upgrade<T> extends KeyboardMixin(GlobalMixin(SEntity<Rect>)) {
         fillStyle: this.color,
       }
     );
-    this.text(this.keyPress, vect.addX(20).addY(5), {
-      textAlign: "center",
-      font: "40px monospace",
-    });
+    this.with(
+      () =>
+        this.text(this.keyPress, vect.addX(20).addY(5), {
+          textAlign: "center",
+          font: "40px monospace",
+        }),
+      this.style
+    );
   }
 
   public override update() {}
