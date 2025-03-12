@@ -194,8 +194,8 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
           {
             font: "50px monospace",
           }
-        ),
-      this.getCurrentStyle()["credits"] || {}
+        )
+      // this.getCurrentStyle()["credits"] || {}
     );
   }
 
@@ -208,8 +208,8 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
           {
             font: "50px monospace",
           }
-        ),
-      this.getCurrentStyle()["credits"] || {}
+        )
+      // this.getCurrentStyle()["credits"] || {}
     );
   }
 
