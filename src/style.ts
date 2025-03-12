@@ -282,48 +282,56 @@ export const styles: Record<string, Style> = {
       credits: {
         fillStyle: "#FFFFFF",
         shadowBlur: 10,
+        shadowColor: "#FFFFFF",
       },
       lifes: {
         fill: true,
         lineWidth: 0,
         fillStyle: "#39FF14",
         shadowBlur: 10,
+        shadowColor: "#39FF14",
       },
     },
     highscore: {
       fillStyle: "#FFFFFF",
-      shadowColor: "red",
       shadowBlur: 10,
+      shadowColor: "#FFFFFF",
     },
     speedUpgrade: {
       color: "#E7080E",
       shadowBlur: 10,
+      shadowColor: "#E7080E",
     },
     lifeUpgrade: {
       color: "#E7920E",
       shadowBlur: 10,
+      shadowColor: "#E7920E",
     },
     wallUpgrade: {
       color: "#E7EE0E",
       shadowBlur: 10,
+      shadowColor: "#E7EE0E",
     },
     constraintUpgrade: {
       color: "#2FEE0E",
       shadowBlur: 10,
+      shadowColor: "#2FEE0E",
     },
     cycloneUpgrade: {
       color: "#0192F4",
       shadowBlur: 10,
+      shadowColor: "#0192F4",
     },
     shieldUpgrade: {
       color: "#5D36F4",
-
       shadowBlur: 10,
+      shadowColor: "#5D36F4",
     },
     ballenemy: {
       fill: true,
       fillStyle: "#FF1493",
       shadowBlur: 15,
+      shadowColor: "#FF1493",
     },
     constraint: {
       fill: false,
@@ -333,6 +341,7 @@ export const styles: Record<string, Style> = {
       fill: true,
       fillStyle: "#FF69B4",
       shadowBlur: 15,
+      shadowColor: "#FF69B4",
     },
     warningLine: {
       fill: false,
@@ -348,6 +357,7 @@ export const styles: Record<string, Style> = {
       fill: true,
       fillStyle: "#FFD700",
       shadowBlur: 20,
+      shadowColor: "#FFD700",
     },
   },
 };
