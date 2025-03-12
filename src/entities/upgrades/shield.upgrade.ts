@@ -17,6 +17,7 @@ class ShieldUpgrade extends Upgrade<number> {
   }
   public upgrade(): boolean {
     if (!super.upgrade()) return false;
+    this.decreaseCredits();
     this._value += DEGREE * 18;
     return true;
   }
