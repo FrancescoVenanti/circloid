@@ -131,6 +131,86 @@ export const styles: Record<string, Style> = {
       fillStyle: "#FFFDF0",
     },
   },
+  vscodeTheme: {
+    canvas: { fillStyle: "#1E1E1E", fill: true }, // VSCode dark background
+    player: {
+      fillStyle: "#007ACC", // VSCode blue
+      lineWidth: 0,
+      fill: true,
+      credits: {
+        fillStyle: "#D4D4D4", // Light gray
+      },
+      lifes: {
+        fill: true,
+        lineWidth: 0,
+        fillStyle: "#C586C0", // Pinkish-purple
+      },
+    },
+    highscore: { fillStyle: "#D4D4D4" }, // Light gray
+    speedUpgrade: { color: "#4EC9B0", fillStyle: "#FFFFFF" }, // Greenish cyan
+    lifeUpgrade: { color: "#F44747", fillStyle: "#FFFFFF" }, // VSCode error red
+    wallUpgrade: { color: "#569CD6", fillStyle: "#FFFFFF" }, // Light blue
+    constraintUpgrade: { color: "#B5CEA8", fillStyle: "#FFFFFF" }, // Greenish
+    cycloneUpgrade: { color: "#C586C0", fillStyle: "#FFFFFF" }, // Pinkish-purple
+    shieldUpgrade: { color: "#9CDCFE", fillStyle: "#FFFFFF" }, // Light cyan
+    ballenemy: { fill: true, fillStyle: "#D16969" }, // Light red
+    constraint: { fill: false, strokeStyle: "#808080" }, // Gray
+    squareEnemy: { fill: true, fillStyle: "#D16969" }, // Light red
+    warningLine: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 255, 255, 0.1)", // Subtle white
+    },
+    arrowEnemy: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 0, 0, 0.6)", // Red with transparency
+    },
+    environment: {
+      fill: true,
+      fillStyle: "#3A3D41", // Lighter gray for contrast
+    },
+  },
+  softLightTheme: {
+    canvas: { fillStyle: "#F7F5F2", fill: true }, // Warm off-white background
+    player: {
+      fillStyle: "#A7C7E7", // Soft pastel blue
+      lineWidth: 0,
+      fill: true,
+      credits: {
+        fillStyle: "#6D6D6D", // Soft gray
+      },
+      lifes: {
+        fill: true,
+        lineWidth: 0,
+        fillStyle: "#F5A9A9", // Soft pastel pink
+      },
+    },
+    highscore: { fillStyle: "#6D6D6D" }, // Muted gray
+    speedUpgrade: { color: "#8FC1A9", fillStyle: "#6D6D6D" }, // Pastel green
+    lifeUpgrade: { color: "#F4B6B6", fillStyle: "#6D6D6D" }, // Pastel red
+    wallUpgrade: { color: "#B0C4DE", fillStyle: "#6D6D6D" }, // Light blue
+    constraintUpgrade: { color: "#D4E2D4", fillStyle: "#6D6D6D" }, // Soft green
+    cycloneUpgrade: { color: "#D2B3E5", fillStyle: "#6D6D6D" }, // Light purple
+    shieldUpgrade: { color: "#CFE7F2", fillStyle: "#6D6D6D" }, // Pastel cyan
+    ballenemy: { fill: true, fillStyle: "#E6C3C3" }, // Soft pinkish-red
+    constraint: { fill: false, strokeStyle: "#BABABA" }, // Light gray
+    squareEnemy: { fill: true, fillStyle: "#E6C3C3" }, // Soft pinkish-red
+    warningLine: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(150, 150, 150, 0.2)", // Very subtle gray
+    },
+    arrowEnemy: {
+      fill: false,
+      lineWidth: 5,
+      strokeStyle: "rgba(255, 0, 0, 0.4)", // Soft red
+    },
+    environment: {
+      fill: true,
+      fillStyle: "#EFE7D9", // Warm beige for a soft contrast
+    },
+  },
   underwater: {
     // Default (Inverted Dark Theme)
     canvas: { fillStyle: "#0f5e9c", fill: true },

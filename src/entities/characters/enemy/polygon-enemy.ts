@@ -1,5 +1,5 @@
 import Polygon from "@/src/core/shape/polygon";
-import { inBetween, ROUND } from "@/src/utils";
+import { DEGREE, inBetween, ROUND } from "@/src/utils";
 import Enemy, { IEnemy } from "./enemy";
 
 class PolygonEnemy extends Enemy<Polygon> {
@@ -57,6 +57,12 @@ class PolygonEnemy extends Enemy<Polygon> {
       }
     }
     return false;
+  }
+
+  public update(): void {
+    super.update();
+    this.shape.rotationAngle += DEGREE / 2;
+    this.shape.rotationAngle %= ROUND;
   }
 }
 
