@@ -30,7 +30,7 @@ export function CommandPalette() {
   );
 
   React.useEffect(() => {
-    canvas.onPause = () => setOpen(true);
+    canvas.onPlay = () => setOpen(true);
     canvas.onPause = () => setOpen(false);
     canvas.onToggle = (v) => setOpen(!v);
   }, []);
@@ -71,7 +71,8 @@ export function CommandPalette() {
                   <span
                     className={i === global.use("style") ? "font-bold" : ""}
                   >
-                    {key[0].toUpperCase() + key.substring(1).toLowerCase() || "No name"}
+                    {key[0].toUpperCase() + key.substring(1).toLowerCase() ||
+                      "No name"}
                   </span>
                 </CommandItem>
               ))}

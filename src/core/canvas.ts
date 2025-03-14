@@ -32,10 +32,23 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
   }
 
   private resize() {
+    // this.togglePause();
     this.canvas!.width = window.innerWidth;
     this.canvas!.height = window.innerHeight;
     this.shape.width = this.canvas!.width;
     this.shape.height = this.canvas!.height;
+
+    const constraint = this.global("constraint");
+    const player = this.global("player");
+    if (!constraint || !player) return;
+    constraint.shape.vector = this.shape.center;
+    player.shape.vector = this.shape.center;
+
+    if (
+      window.innerWidth < constraint.shape.radius * 4 ||
+      window.innerHeight < constraint.shape.radius * 4
+    ) {
+    }
   }
 
   public add(entity: Entity): void {
@@ -62,7 +75,7 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
     this.sortedEntities.sort((a, b) => {
       const zA = this.entities.get(a)?.zIndex || 0;
       const zB = this.entities.get(b)?.zIndex || 0;
-      return zA >= zB ? 1 : -1;
+      return zA - zB;
     });
   }
 
@@ -118,7 +131,7 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
   }
 
   public pause(): void {
-    this.global("running", true);
+    this.global("running", false);
     if (!this.onPause) return;
     this.onPause();
   }
