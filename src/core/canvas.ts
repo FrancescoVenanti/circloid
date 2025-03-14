@@ -62,7 +62,7 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
     this.sortedEntities.sort((a, b) => {
       const zA = this.entities.get(a)?.zIndex || 0;
       const zB = this.entities.get(b)?.zIndex || 0;
-      return zA > zB ? 1 : -1;
+      return zA >= zB ? 1 : -1;
     });
   }
 

@@ -16,7 +16,7 @@ class SquareEnemy extends PolygonEnemy {
       speed: 2,
       shape: new Polygon({
         angles: 3,
-        radius: 20 + speedMultiplier * 2,
+        radius: 20,
         vect,
       }),
     });
