@@ -1,6 +1,8 @@
 "use client";
 
+import BuyMeACoffee from "@/components/buymeacoffee";
 import { CommandPalette } from "@/components/command-palette";
+import GithubButton from "@/components/github";
 // import ProxyComponent from "@/components/proxy-component";
 import canvas from "@/src/core/canvas";
 import Animation from "@/src/core/entity/animate";
@@ -47,8 +49,12 @@ export default function Home() {
     loop(0);
   }, []);
   return (
-    <div id="app">
+    <div id="app" className="relative">
       <CommandPalette />
+      <div className="absolute bottom-0 right-0 p-6 flex gap-2">
+        <GithubButton />
+        <BuyMeACoffee />
+      </div>
     </div>
   );
 }

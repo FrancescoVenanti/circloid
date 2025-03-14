@@ -66,30 +66,6 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
     });
   }
 
-  // public sortEntities(entity: Entity) {
-  //   this.sortedEntities.push(entity.key);
-  //   let swapIndex = -1;
-  //   for (let i = this.sortedEntities.length - 2; i >= 0; i--) {
-  //     if (entity.zIndex > this.entities.get(this.sortedEntities[i])!.zIndex) {
-  //       swapIndex = i;
-  //       console.log("inside if", swapIndex, this.sortedEntities.length);
-  //       break;
-  //     }
-  //   }
-
-  //   if (swapIndex == -1) return;
-  //   if (swapIndex !== -1) {
-  //     this.sortedEntities.splice(swapIndex, 0, entity.key);
-  //     this.sortedEntities.pop(); // Remove the duplicate last element
-  //   }
-
-  //   // for (let i = this.sortedEntities.length - 1; i > swapIndex; i--) {
-  //   //   console.log("swapping: ", this.sortedEntities[i]);
-  //   //   this.sortedEntities[i] = this.sortedEntities[i - 1];
-  //   // }
-  //   // this.sortedEntities[swapIndex] = entity.key;
-  // }
-
   public render(): void {
     this.fillRect(
       new Rect({

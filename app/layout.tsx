@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Circloid",
+  title: "CIRCLOID",
   description: "The cleanest game ever coded",
+  icons: {
+    icon: "/logo2.png",
+  },
 };
 
 export default function RootLayout({
