@@ -3,6 +3,7 @@
 import BuyMeACoffee from "@/components/buymeacoffee";
 import { CommandPalette } from "@/components/command-palette";
 import GithubButton from "@/components/github";
+import SponsorCarousel from "@/components/sponsor-carusel";
 // import ProxyComponent from "@/components/proxy-component";
 import canvas from "@/src/core/canvas";
 import Animation from "@/src/core/entity/animate";
@@ -50,6 +51,7 @@ export default function Home() {
   }, []);
   return (
     <div id="app" className="relative">
+      <SponsorCarousel />
       <CommandPalette />
       <div className="absolute bottom-0 right-0 p-6 flex gap-2">
         <GithubButton />
