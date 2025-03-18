@@ -28,7 +28,7 @@ class Global {
       counter: 0,
       constraint: null,
       buttonPosition: Vector.zero,
-      running: true,
+      running: false,
       music: null,
       style: this.getInitialStyle(),
       environment: null,
