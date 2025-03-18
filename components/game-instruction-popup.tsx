@@ -37,19 +37,15 @@ export default function GameInstructionsPopup() {
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog open={isOpen} onOpenChange={handleClose}>
         <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold">
               How to Play
             </DialogTitle>
             <DialogDescription>
-              Learn the rules and controls of the game
+              Learn the rules and controls of the game. Press ESC to continue
             </DialogDescription>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-            ></button>
           </DialogHeader>
 
           <div className="space-y-6 py-4">
@@ -67,6 +63,9 @@ export default function GameInstructionsPopup() {
               <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
                 <li>
                   <span className="font-medium">Move:</span> Arrow keys or WASD
+                </li>
+                <li>
+                  <span className="font-medium">Pause:</span> ESC
                 </li>
                 <li>
                   <span className="font-medium">Upgrades:</span> Numbers from 1
