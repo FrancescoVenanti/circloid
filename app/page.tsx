@@ -77,7 +77,7 @@ function loop(delay: number) {
   if (global.use("counter") === 0) {
     player.setScore();
   }
-  global.use("fps", 1000 / (delay - beforeDelay));
+  global.use("fps", 60 / (1000 / (delay - beforeDelay)));
   beforeDelay = delay;
   canvas.render();
   global.use("counter", (prev) => (prev + 1) % fps);

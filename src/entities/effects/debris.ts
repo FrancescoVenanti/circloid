@@ -38,7 +38,7 @@ class Debris extends Ball {
     }
     this.rotationAngle = (this.rotationAngle + this.rotation) % ROUND;
 
-    this.shape.vector.translate(this.angle, this.speed);
+    this.shape.vector.translate(this.angle, this.speed * this.global("fps"));
   }
 
   public draw(): void {
