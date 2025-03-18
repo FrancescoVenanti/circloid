@@ -1,7 +1,6 @@
 import { IMovingEntity } from "@/src/core/moving-entity";
 import Polygon from "@/src/core/shape/polygon";
 import Vector from "@/src/core/vector";
-import { DEGREE, ROUND } from "@/src/utils";
 import PolygonEnemy from "./polygon-enemy";
 
 class SquareEnemy extends PolygonEnemy {
@@ -16,17 +15,11 @@ class SquareEnemy extends PolygonEnemy {
       angle,
       speed: 2,
       shape: new Polygon({
-        angles: 4,
+        angles: 3,
         radius: 20,
         vect,
       }),
     });
-  }
-
-  public update(): void {
-    super.update();
-    this.shape.rotationAngle += DEGREE / 2;
-    this.shape.rotationAngle %= ROUND;
   }
 }
 export default SquareEnemy;
