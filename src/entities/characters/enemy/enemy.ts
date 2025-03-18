@@ -17,7 +17,7 @@ abstract class Enemy<T extends Shape> extends MovingEntity<T> {
 
     const direction = Vector.fromAngle(this.angle);
 
-    direction.mulScalar(this.speed);
+    direction.mulScalar(this.speed * this.global("fps"));
 
     this.shape.vector.add(direction);
 

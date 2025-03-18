@@ -53,20 +53,13 @@ class Canvas extends DrawerMixin(KeyboardMixin(GlobalMixin(class {}))) {
 
   public add(entity: Entity): void {
     this.entities.set(entity.key, entity as SEntity<any>);
-    // console.log(
-    //   "before SORTED ENTITIEWS: ",
-    //   JSON.parse(JSON.stringify(this.sortedEntities))
-    // );
     this.sortEntities(entity);
-    // console.log(
-    //   "after SORTED ENTITIEWS: ",
-    //   JSON.parse(JSON.stringify(this.sortedEntities))
-    // );
   }
 
   public destroy(entity: Entity): void {
     this.entities.delete(entity.key);
     const delIndex = this.sortedEntities.indexOf(entity.key);
+    if (delIndex === -1) return;
     this.sortedEntities.splice(delIndex, 1);
   }
 

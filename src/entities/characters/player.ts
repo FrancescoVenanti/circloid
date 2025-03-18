@@ -118,7 +118,11 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     if (newDirection.isZero()) return;
 
     this.angle = newDirection.atan2();
-    this.shape.vector.add(Vector.fromAngle(this.angle).mulScalar(this.speed));
+
+    const vector = Vector.fromAngle(this.angle);
+    vector.mulScalar(this.speed);
+
+    this.shape.vector.add(vector);
     this.preventEscape(newDirection);
   }
 
@@ -137,7 +141,9 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
 
     const newPosition = center.clone();
 
-    newPosition.add(vector.mulScalar(maxDistance));
+    vector.mulScalar(maxDistance);
+
+    newPosition.add(vector);
 
     this.shape.vector.set(newPosition);
     return true;

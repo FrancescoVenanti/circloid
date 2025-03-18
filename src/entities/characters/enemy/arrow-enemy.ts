@@ -24,7 +24,9 @@ class ArrowEnemy extends Enemy<Line> {
       return;
     }
     const direction = Vector.fromAngle(this.angle);
+
     direction.mulScalar(this.speed);
+    direction.mulScalar(this.global("fps"));
 
     this.shape.vector.add(direction);
     this.shape.end.add(direction);
