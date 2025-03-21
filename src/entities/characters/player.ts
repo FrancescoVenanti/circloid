@@ -85,6 +85,7 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.livesUpgrade.reset();
     this.credits = 0;
     this.speedUpgrade.reset();
+    this.shield.reset();
     this.speed = this.speedUpgrade.value;
     this.cyclone.reset();
     this.shape.vector = this.canvasShape.center.clone();
@@ -196,10 +197,11 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.with(
       () =>
         this.text(
-          "POINTS: " + this.points.toString(),
-          this.canvasShape.topLeft.clone().addScalar(60),
+          "POINTS:" + this.points.toString(),
+          this.canvasShape.topLeft.clone().addScalar(120).addX(60),
           {
             font: "50px monospace",
+            textAlign: "center",
           }
         ),
       this.getCurrentStyle()["credits"] || {}
@@ -210,10 +212,11 @@ class Player extends GlobalMixin(KeyboardMixin(MovingEntity<Circle>)) {
     this.with(
       () =>
         this.text(
-          "CREDITS: " + this.credits.toString(),
-          this.canvasShape.topLeft.clone().addScalar(120).addX(-60),
+          this.credits.toString(),
+          this.shape.vector.clone().addY(-12.5),
           {
-            font: "50px monospace",
+            font: "25px monospace",
+            textAlign: "center",
           }
         ),
       this.getCurrentStyle()["credits"] || {}
