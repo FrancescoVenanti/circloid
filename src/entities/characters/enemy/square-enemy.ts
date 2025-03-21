@@ -15,7 +15,7 @@ class SquareEnemy extends PolygonEnemy {
       angle,
       speed: 2,
       shape: new Polygon({
-        angles: 3,
+        angles: Math.floor(Math.random() * 2 + 3),
         radius: 20,
         vect,
       }),
