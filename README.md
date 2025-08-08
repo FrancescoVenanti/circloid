@@ -21,7 +21,7 @@ Survive as long as possible to earn points, then spend them on upgrades such as 
 - Upgrade system for abilities.
 - Minimalist and clean design.
 
-## Play it [Here}(https://circloid.vercel.app/)
+## Play it [Here](https://circloid.vercel.app/)
 
 ## 🛠️ Installation & Running
 1. Clone the repository:
