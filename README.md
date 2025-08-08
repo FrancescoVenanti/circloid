@@ -5,7 +5,7 @@ You control a ball trapped inside a circular boundary, dodging objects flying in
 Survive as long as possible to earn points, then spend them on upgrades such as speed, constraint size, and more.
 
 ## 🎥 Gameplay Preview
-![Circloid Gameplay](assets/gameplay.gif)  
+![Circloid Gameplay](gameplay.gif)  
 *Dodge incoming objects, survive longer, and upgrade your abilities.*
 
 ##🎮 Play it [Here](https://circloid.vercel.app/)
