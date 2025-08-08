@@ -8,6 +8,12 @@ Survive as long as possible to earn points, then spend them on upgrades such as 
 ![Circloid Gameplay](assets/gameplay.gif)  
 *Dodge incoming objects, survive longer, and upgrade your abilities.*
 
+##🎮 Play it [Here](https://circloid.vercel.app/)
+- Use wasd or arrows to move
+- press esc for settings and themes
+- use numbers to upgrade
+- set the best records
+
 ## 🎮 Gameplay
 - **Objective**: Stay alive by avoiding incoming obstacles.
 - **Controls**: Move your ball within the circular boundary to dodge projectiles.
@@ -20,8 +26,6 @@ Survive as long as possible to earn points, then spend them on upgrades such as 
 - Progressive difficulty curve.
 - Upgrade system for abilities.
 - Minimalist and clean design.
-
-## Play it [Here](https://circloid.vercel.app/)
 
 ## 🛠️ Installation & Running
 1. Clone the repository:
